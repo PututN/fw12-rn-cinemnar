@@ -205,6 +205,7 @@ export class Home extends Component {
             ))}
           </ScrollView>
         </View>
+        {/* MOVIE UPCOMING */}
         <View
           style={{
             flexDirection: 'row',

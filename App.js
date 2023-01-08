@@ -5,6 +5,7 @@ import SignUp from './src/screens/SignUp'
 import ForgotPassword from './src/screens/ForgotPassword'
 import ResetPassword from './src/screens/ResetPassword'
 import Home from './src/screens/Home'
+import ViewAll from './src/screens/ViewAll'
 
 const App = () => {
   return (
@@ -14,7 +15,8 @@ const App = () => {
       {/* <SignUp /> */}
       {/* <ForgotPassword /> */}
       {/* <ResetPassword /> */}
-      <Home />
+      {/* <Home /> */}
+      <ViewAll />
     </ScrollView>
     </>
   );
