@@ -3,7 +3,8 @@ import {View, Text} from 'react-native';
 import Login from './src/screens/Login';
 import SignUp from './src/screens/SignUp'
 import ForgotPassword from './src/screens/ForgotPassword'
-import ResetPassowrd from './src/screens/ResetPassword'
+import ResetPassword from './src/screens/ResetPassword'
+import Home from './src/screens/Home'
 
 const App = () => {
   return (
@@ -11,7 +12,8 @@ const App = () => {
       {/* <Login /> */}
       {/* <SignUp /> */}
       {/* <ForgotPassword /> */}
-      <ResetPassowrd />
+      {/* <ResetPassword /> */}
+      <Home />
     </View>
   );
 };
