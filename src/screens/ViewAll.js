@@ -147,57 +147,71 @@ export class ViewAll extends Component {
               </ScrollView>
             </View>
             {/* MOVIE VIEW ALL */}
-            <View style={{flexDirection: 'row', 
-            flexWrap: 'wrap'
-            }}>
-            {data.map(data => (
-              <View
-                key={data.id}
-                style={{
-                  //   flexWrap: 'wrap',
-                  borderColor: 'black',
-                  borderStyle: 'solid',
-                  borderWidth: 1,
-                  borderRadius: 10,
-                  marginRight: 20,
-                  paddingVertical: 15,
-                  width: '50%',
-                }}>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    paddingHorizontal: 20,
-                    paddingVertical: 10,
-                  }}>
-                  <Image source={data.picture} alt={data.title} />
+            <View
+              style={{
+                flexDirection: 'row',
+                // flexWrap: 'wrap'
+              }}>
+              {/* <ScrollView horizontal> */}
+                {data.map(data => (
                   <View
+                    key={data.id}
                     style={{
-                      alignContent: 'center',
-                      alignItems: 'center',
-                      justifyContent: 'center',
+                      marginTop: 15,
+                      borderColor: 'black',
+                      borderStyle: 'solid',
+                      borderWidth: 1,
+                      borderRadius: 10,
+                      marginRight: 20,
+                      paddingVertical: 15,
+                      width: '50%',
                     }}>
-                    <Text
+                    <View
                       style={{
-                        fontSize: 20,
-                        fontWeight: 'bold',
-                        marginVertical: 10,
+                        alignItems: 'center',
+                        paddingHorizontal: 20,
+                        paddingVertical: 10,
                       }}>
-                      {data.title}
-                    </Text>
-                    <View>
-                      <Text>{data.genre}</Text>
+                      <Image source={data.picture} alt={data.title} />
+                      <View
+                        style={{
+                          alignContent: 'center',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}>
+                        <Text
+                          style={{
+                            fontSize: 20,
+                            fontWeight: 'bold',
+                            marginVertical: 10,
+                          }}>
+                          {data.title}
+                        </Text>
+                        <View>
+                          <Text>{data.genre}</Text>
+                        </View>
+                      </View>
+                    </View>
+                    <View style={{alignItems: 'center'}}>
+                      <NativeBaseProvider>
+                        <Button size="md">Details</Button>
+                      </NativeBaseProvider>
                     </View>
                   </View>
-                </View>
-                <View style={{alignItems: 'center'}}>
-                  <NativeBaseProvider>
-                    <Button size="md">Details</Button>
-                  </NativeBaseProvider>
-                </View>
-              </View>
-            ))}
-
+                ))}
+              {/* </ScrollView> */}
             </View>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              marginBottom: 15,
+            }}>
+            <Button style={{width: '10%'}}>1</Button>
+            <Button style={{width: '10%', marginLeft: 7}}>2</Button>
+            <Button style={{width: '10%', marginLeft: 7}}>3</Button>
+            <Button style={{width: '10%', marginLeft: 7}}>4</Button>
           </View>
         </View>
         <Footer />
