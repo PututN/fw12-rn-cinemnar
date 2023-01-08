@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, ScrollView, SafeAreaView } from 'react-native';
 import Login from './src/screens/Login';
 import SignUp from './src/screens/SignUp'
 import ForgotPassword from './src/screens/ForgotPassword'
@@ -8,13 +8,15 @@ import Home from './src/screens/Home'
 
 const App = () => {
   return (
-    <View>
+    <>
+    <ScrollView>
       {/* <Login /> */}
       {/* <SignUp /> */}
       {/* <ForgotPassword /> */}
       {/* <ResetPassword /> */}
       <Home />
-    </View>
+    </ScrollView>
+    </>
   );
 };
 

@@ -7,30 +7,26 @@ import {AlignRight} from 'react-native-feather';
 export class Navbar extends Component {
   render() {
     return (
-      <Header
-        containerStyle={{
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          paddingHorizontal: 30,
+          paddingVertical: 10,
           backgroundColor: 'blue',
-        }}
-        leftComponent={
-          <Text
-            style={{
-              color: '#fff',
-              fontSize: 18,
-              fontWeight: 'bold',
-              //   paddingHorizontal: 30,
-              paddingTop: 20,
-            }}>
-            CINEMNAR
-          </Text>
-        }
-        rightComponent={
-          <AlignRight
-            size={50}
-            color="#fff"
-            style={{paddingHorizontal: 30, marginTop: 20}}
-          />
-        }
-      />
+        }}>
+        <Text
+          style={{
+            fontSize: 20,
+            fontWeight: 'bold',
+            color: 'white',
+            paddingVertical: 20,
+          }}>
+          CINEMNAR
+        </Text>
+        <AlignRight size={50} color="#fff" style={{paddingVertical: 20}} />
+      </View>
     );
   }
 }
