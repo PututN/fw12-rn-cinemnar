@@ -12,7 +12,7 @@ import React, {Component} from 'react';
 import Logo from '../images/logo.png';
 import {AlignRight, Search} from 'react-native-feather';
 
-const Navbar = () => {
+const NavbarAdmin = () => {
   const [toggle, setToggle] = React.useState(false);
   return (
     <>
@@ -52,11 +52,15 @@ const Navbar = () => {
           </HStack>
           <Box borderColor="#DEDEDE" borderWidth="1" />
           <Text fontWeight="bold" fontSize="lg" textAlign="center">
-            Home
+            Dashboard
           </Text>
           <Box borderColor="#DEDEDE" borderWidth="1" />
           <Text fontWeight="bold" fontSize="lg" textAlign="center">
-            List Movie
+            Manage Movie
+          </Text>
+          <Box borderColor="#DEDEDE" borderWidth="1" />
+          <Text fontWeight="bold" fontSize="lg" textAlign="center">
+            Manage Schedule
           </Text>
           <Box borderColor="#DEDEDE" borderWidth="1" />
           <Text fontWeight="bold" fontSize="lg" textAlign="center">
@@ -76,4 +80,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default NavbarAdmin;

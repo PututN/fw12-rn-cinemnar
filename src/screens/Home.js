@@ -19,6 +19,8 @@ import {
   Pressable,
 } from 'native-base';
 import Footer from '../components/Footer';
+import NavbarAdmin from '../components/NavbarAdmin';
+import NavbarBeforeLogin from '../components/NavbarBeforeLogin';
 
 const data = [
   {
@@ -108,7 +110,9 @@ const Home = () => {
   };
   return (
     <NativeBaseProvider>
-      <Navbar />
+      {/* <Navbar /> */}
+      {/* <NavbarAdmin /> */}
+      <NavbarBeforeLogin />
       {/* TOP SECTION */}
       <VStack my="30" justifyContent="center" space="5" px="5">
         <Text fontSize="lg">Nearest Cinema, Newest Movie,</Text>
