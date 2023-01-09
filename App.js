@@ -16,9 +16,9 @@ const App = () => {
       {/* <SignUp /> */}
       {/* <ForgotPassword /> */}
       {/* <ResetPassword /> */}
-      {/* <Home /> */}
+      <Home />
       {/* <ViewAll /> */}
-      <MovieDetail />
+      {/* <MovieDetail /> */}
     </ScrollView>
     </NativeBaseProvider>
   );
