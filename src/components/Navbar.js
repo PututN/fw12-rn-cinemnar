@@ -12,7 +12,7 @@ export class Navbar extends Component {
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
-          paddingHorizontal: 30,
+          paddingHorizontal: 10,
           paddingVertical: 10,
           backgroundColor: 'blue',
         }}>

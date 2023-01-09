@@ -5,11 +5,11 @@ import {
   Select,
   CheckIcon,
   Input,
-  ScrollView,
   Image,
   Button,
 } from 'native-base';
 import React, {Component} from 'react';
+import {ScrollView} from 'react-native'
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import BlackWidow from '../images/imgBlackWidow.png';
@@ -97,7 +97,7 @@ export class ViewAll extends Component {
     return (
       <NativeBaseProvider>
         <Navbar />
-        <View style={{backgroundColor: '#E5E5E5'}}>
+        <View style={{backgroundColor: '#E5E5E5', marginBottom:30}}>
           <View style={{paddingHorizontal: 20, paddingVertical: 30}}>
             <Text fontSize="xl" style={{fontWeight: 'bold'}}>
               List Movie
@@ -150,9 +150,9 @@ export class ViewAll extends Component {
             <View
               style={{
                 flexDirection: 'row',
-                // flexWrap: 'wrap'
+                flexWrap: 'wrap'
               }}>
-              {/* <ScrollView horizontal> */}
+              <ScrollView horizontal>
                 {data.map(data => (
                   <View
                     key={data.id}
@@ -164,7 +164,7 @@ export class ViewAll extends Component {
                       borderRadius: 10,
                       marginRight: 20,
                       paddingVertical: 15,
-                      width: '50%',
+                      width: 200,
                     }}>
                     <View
                       style={{
@@ -199,7 +199,7 @@ export class ViewAll extends Component {
                     </View>
                   </View>
                 ))}
-              {/* </ScrollView> */}
+              </ScrollView>
             </View>
           </View>
           <View
