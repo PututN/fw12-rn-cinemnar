@@ -17,10 +17,10 @@ const App = () => {
         {/* <SignUp /> */}
         {/* <ForgotPassword /> */}
         {/* <ResetPassword /> */}
-        <Home />
+        {/* <Home /> */}
         {/* <ViewAll /> */}
         {/* <MovieDetail /> */}
-        {/* <Order /> */}
+        <Order />
       </ScrollView>
     </NativeBaseProvider>
   );
