@@ -11,6 +11,7 @@ import Order from './src/screens/Order';
 import Payment from './src/screens/Payment';
 import Profile from './src/screens/Profile';
 import History from './src/screens/History';
+import TicketResult from './src/screens/TicketResult';
 
 const App = () => {
   return (
@@ -26,7 +27,8 @@ const App = () => {
         {/* <Order /> */}
         {/* <Payment /> */}
         {/* <Profile /> */}
-        <History />
+        {/* <History /> */}
+        <TicketResult />
       </ScrollView>
     </NativeBaseProvider>
   );
