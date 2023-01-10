@@ -1,5 +1,5 @@
 import {View, ScrollView} from 'react-native';
-import {Text, Image, NativeBaseProvider} from 'native-base';
+import {Text, Image, NativeBaseProvider, HStack, VStack} from 'native-base';
 import React, {Component} from 'react';
 import Logo from '../images/logo.png';
 import {Instagram, Youtube, Twitter, Facebook} from 'react-native-feather';
@@ -11,7 +11,7 @@ export class Footer extends Component {
   render() {
     return (
       <NativeBaseProvider>
-        <View style={{paddingHorizontal: 30}}>
+        <VStack p="5">
           <Image
             source={Logo}
             size={150}
@@ -36,23 +36,27 @@ export class Footer extends Component {
             style={{fontWeight: 'bold', marginBottom: 20, marginTop: 50}}>
             Our Sponsor
           </Text>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <HStack alignItems="center" space="5" >
             <Image
               source={imgCineOne}
               alt="Sponsor"
-            //   style={{resizeMode: 'contain'}}
+              width="100"
+              resizeMode="contain"
             />
             <Image
               source={imgEbv}
               alt="Sponsor"
-            //   style={{resizeMode: 'contain'}}
+              width="100"
+              resizeMode="contain"
             />
             <Image
               source={imgHiflix}
               alt="Sponsor"
-            //   style={{resizeMode: 'contain'}}
+              width="100"
+              resizeMode="contain"
+              //   style={{resizeMode: 'contain'}}
             />
-          </View>
+          </HStack>
           <Text
             fontSize="xl"
             style={{fontWeight: 'bold', marginBottom: 20, marginTop: 50}}>
@@ -64,8 +68,10 @@ export class Footer extends Component {
             <Twitter size={50} color="#6E7191" style={{marginRight: 40}} />
             <Youtube size={50} color="#6E7191" style={{marginRight: 40}} />
           </View>
-          <Text style={{color:"#6E7191", marginTop:50}}>© 2023 Cinemnar. All Rights Reserved.</Text>
-        </View>
+          <Text style={{color: '#6E7191', marginTop: 50}}>
+            © 2023 Cinemnar. All Rights Reserved.
+          </Text>
+        </VStack>
       </NativeBaseProvider>
     );
   }
