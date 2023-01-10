@@ -1,5 +1,14 @@
-import {View, StyleSheet} from 'react-native';
-import {Input, Button, Text, Image} from '@rneui/themed';
+import {
+  View,
+  Input,
+  Button,
+  Text,
+  Image,
+  HStack,
+  VStack,
+  Box,
+  Pressable,
+} from 'native-base';
 import Logo from '../images/logo.png';
 import {Eye, EyeOff} from 'react-native-feather';
 import React from 'react';
@@ -8,6 +17,7 @@ import * as Yup from 'yup';
 import YupPassword from 'yup-password';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {ScrollView} from 'native-base';
+import {useNavigation} from '@react-navigation/native';
 
 YupPassword(Yup);
 
@@ -25,18 +35,20 @@ const SignUpSchema = Yup.object().shape({
   lastName: Yup.string().required('Last Name is required'),
   phoneNumber: Yup.string()
     .required('Phone Number is required')
+    .matches(/^[0-9]+$/, 'Phone Number must be only number')
     .min(10, 'Phone Number must be at least 10 characters')
-    .max(13, 'Phone Number must be at most 13 characters')
-    .matches(/^[0-9]+$/, 'Phone Number must be only number'),
+    .max(13, 'Phone Number must be at most 13 characters'),
 });
 
 const SignUp = () => {
+  const navigation = useNavigation();
   const [showPassword, setShowPassword] = React.useState(false);
   const {
     control,
     handleSubmit,
     formState: {errors, isDirty},
   } = useForm({
+    mode: 'all',
     resolver: yupResolver(SignUpSchema),
     defaultValues: {
       email: '',
@@ -51,176 +63,195 @@ const SignUp = () => {
   };
   return (
     <ScrollView>
-      <View style={SignUpStyle.authWrapper}>
-        <View>
+      <VStack p="8">
+        <View alignItems="center">
           <Image
+            h="100"
+            w="100"
             source={Logo}
-            style={{height: 100, width: 'auto'}}
-            resizeMode="center"
+            resizeMode="contain"
+            alt="logo"
           />
         </View>
-        <View>
-          <Text
-            style={{
-              fontSize: 40,
-              marginBottom: 15,
-              fontWeight: 'bold',
-              marginTop: 15,
-            }}>
+        <VStack space="3" mb="8">
+          <Text fontSize="5xl" fontWeight="bold">
             Sign Up
           </Text>
-        </View>
-        <View>
-          <Text style={{fontSize: 20, color: '#8692A6'}}>
+          <Text color="#8692A6" fontSize="lg">
             Fill your additional details
           </Text>
-        </View>
-        <Controller
-          control={control}
-          render={({field: {onChange, onBlur, value}}) => (
-            <View style={{marginTop: 30}}>
-              <Text style={{color: '#4E4B66', fontSize: 20}}>First Name</Text>
-              <Input
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                placeholder="Write your First Name"
-              />
-            </View>
-          )}
-          name="firstName"
-        />
-        {errors.firstName && (
-          <Text style={{color: 'red', fontWeight: 'bold', marginBottom: 10}}>
-            {errors.firstName.message}
-          </Text>
-        )}
-        <Controller
-          control={control}
-          render={({field: {onChange, onBlur, value}}) => (
-            <View style={{marginTop: 30}}>
-              <Text style={{color: '#4E4B66', fontSize: 20}}>Last Name</Text>
-              <Input
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                placeholder="Write your Last Name"
-              />
-            </View>
-          )}
-          name="lastName"
-        />
-        {errors.lastName && (
-          <Text style={{color: 'red', fontWeight: 'bold', marginBottom: 10}}>
-            {errors.lastName.message}
-          </Text>
-        )}
-        <Controller
-          control={control}
-          render={({field: {onChange, onBlur, value}}) => (
-            <View style={{marginTop: 30}}>
-              <Text style={{color: '#4E4B66', fontSize: 20}}>Phone Number</Text>
-              <Input
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                placeholder="Write your Phone Number"
-              />
-            </View>
-          )}
-          name="phoneNumber"
-        />
-        {errors.phoneNumber && (
-          <Text style={{color: 'red', fontWeight: 'bold', marginBottom: 10}}>
-            {errors.phoneNumber.message}
-          </Text>
-        )}
-        <Controller
-          control={control}
-          render={({field: {onChange, onBlur, value}}) => (
-            <View style={{marginTop: 30}}>
-              <Text style={{color: '#4E4B66', fontSize: 20}}>Email</Text>
-              <Input
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                placeholder="Write your email"
-              />
-            </View>
-          )}
-          name="email"
-        />
-        {errors.email && (
-          <Text style={{color: 'red', fontWeight: 'bold', marginBottom: 10}}>
-            {errors.email.message}
-          </Text>
-        )}
-        <Controller
-          control={control}
-          render={({field: {onChange, onBlur, value}}) => (
-            <View style={{position: 'relative', marginTop: 30}}>
-              <Text style={{color: '#4E4B66', fontSize: 20}}>Password</Text>
-              <Input
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                placeholder="Write your password"
-                secureTextEntry={showPassword ? false : true}
-              />
-              {showPassword ? (
-                <Eye
-                  onPress={() => setShowPassword(!showPassword)}
-                  width={24}
-                  height={24}
-                  stroke="red"
-                  fill="#0000"
-                  style={{position: 'absolute', top: 33, right: 20}}
-                />
-              ) : (
-                <EyeOff
-                  onPress={() => setShowPassword(!showPassword)}
-                  width={24}
-                  height={24}
-                  stroke="black"
-                  fill="#0000"
-                  style={{position: 'absolute', top: 33, right: 20}}
-                />
+        </VStack>
+        <VStack space="5">
+          <VStack space="2">
+            <Controller
+              control={control}
+              render={({field: {onChange, onBlur, value}}) => (
+                <>
+                  <VStack space="2">
+                    <Text fontSize="lg">First Name</Text>
+                    <Input
+                      borderColor="black"
+                      borderRadius="10"
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                      placeholder="Write your First Name"></Input>
+                  </VStack>
+                </>
               )}
-            </View>
-          )}
-          name="password"
-        />
-        {errors.password && (
-          <Text style={{color: 'red', fontWeight: 'bold', marginBottom: 10}}>
-            {errors.password.message}
-          </Text>
-        )}
-        <View>
-          <Button
-            title="Sign Up"
-            disable={!isDirty}
-            onPress={handleSubmit(SignUpSubmit)}
-          />
-        </View>
-        <View style={{alignItems: 'center', marginTop: 30}}>
-          <Text style={{marginBottom: 15, color: '#8692A6'}}>
+              name="firstName"
+            />
+            {errors.firstName && (
+              <Text
+                style={{color: 'red', fontWeight: 'bold', marginBottom: 10}}>
+                {errors.firstName.message}
+              </Text>
+            )}
+          </VStack>
+          <VStack space="2">
+            <Controller
+              control={control}
+              render={({field: {onChange, onBlur, value}}) => (
+                <VStack space="2">
+                  <Text fontSize="lg">Last Name</Text>
+                  <Input
+                    borderColor="black"
+                    borderRadius="10"
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                    placeholder="Write your Last Name"
+                  />
+                </VStack>
+              )}
+              name="lastName"
+            />
+            {errors.lastName && (
+              <Text
+                style={{color: 'red', fontWeight: 'bold', marginBottom: 10}}>
+                {errors.lastName.message}
+              </Text>
+            )}
+          </VStack>
+          <VStack space="2">
+            <Controller
+              control={control}
+              render={({field: {onChange, onBlur, value}}) => (
+                <VStack space="2">
+                  <Text fontSize="lg">Phone Number</Text>
+                  <Input
+                    borderColor="black"
+                    borderRadius="10"
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                    placeholder="Write your Phone Number"
+                  />
+                </VStack>
+              )}
+              name="phoneNumber"
+            />
+            {errors.phoneNumber && (
+              <Text
+                style={{color: 'red', fontWeight: 'bold', marginBottom: 10}}>
+                {errors.phoneNumber.message}
+              </Text>
+            )}
+          </VStack>
+          <VStack space="2">
+            <Controller
+              control={control}
+              render={({field: {onChange, onBlur, value}}) => (
+                <VStack space="2">
+                  <Text fontSize="lg">Email</Text>
+                  <Input
+                    borderColor="black"
+                    borderRadius="10"
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                    placeholder="Write your email"
+                  />
+                </VStack>
+              )}
+              name="email"
+            />
+            {errors.email && (
+              <Text
+                style={{color: 'red', fontWeight: 'bold', marginBottom: 10}}>
+                {errors.email.message}
+              </Text>
+            )}
+          </VStack>
+          <VStack space="2">
+            <Controller
+              control={control}
+              render={({field: {onChange, onBlur, value}}) => (
+                <View position="relative" space="2">
+                  <Text fontSize="lg">Password</Text>
+                  <Input
+                    borderColor="black"
+                    borderRadius="10"
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                    placeholder="Write your password"
+                    secureTextEntry={showPassword ? false : true}
+                  />
+                  {showPassword ? (
+                    <Eye
+                      onPress={() => setShowPassword(!showPassword)}
+                      width={24}
+                      height={24}
+                      stroke="black"
+                      fill="#0000"
+                      style={{position: 'absolute', top: 33, right: 20}}
+                    />
+                  ) : (
+                    <EyeOff
+                      onPress={() => setShowPassword(!showPassword)}
+                      width={24}
+                      height={24}
+                      stroke="black"
+                      fill="#0000"
+                      style={{position: 'absolute', top: 33, right: 20}}
+                    />
+                  )}
+                </View>
+              )}
+              name="password"
+            />
+            {errors.password && (
+              <Text
+                style={{color: 'red', fontWeight: 'bold', marginBottom: 10}}>
+                {errors.password.message}
+              </Text>
+            )}
+          </VStack>
+        </VStack>
+        <Button
+          mt="10"
+          borderRadius="10"
+          fontWeight="bold"
+          fontSize="3xl"
+          title="Sign Up"
+          disable={!isDirty}
+          onPress={handleSubmit(SignUpSubmit)}>
+          Sign Up
+        </Button>
+        <VStack alignItems="center" mt="5">
+          <Text color="#8692A6" fontSize="lg">
             Already have account ?{' '}
-            <Text style={{color: 'blue', textDecorationLine: 'underline'}}>
-              Sign In
-            </Text>
+            <Pressable onPress={()=> navigation.navigate("Login")}>
+              <Text color="blue" textDecorationLine="underline">
+                Sign In
+              </Text>
+            </Pressable>
           </Text>
-        </View>
-      </View>
+        </VStack>
+      </VStack>
     </ScrollView>
   );
 };
-
-const SignUpStyle = StyleSheet.create({
-  authWrapper: {
-    paddingHorizontal: 20,
-    paddingBottom: 50,
-    paddingTop: 15,
-  },
-});
 
 export default SignUp;
