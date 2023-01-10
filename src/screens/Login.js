@@ -1,5 +1,14 @@
-import {View, StyleSheet} from 'react-native';
-import {Input, Button, Text, Image} from '@rneui/themed';
+import {
+  View,
+  Input,
+  Button,
+  Text,
+  Image,
+  VStack,
+  HStack,
+  Pressable,
+  Box,
+} from 'native-base';
 import Logo from '../images/logo.png';
 import {Eye, EyeOff} from 'react-native-feather';
 import React from 'react';
@@ -8,6 +17,7 @@ import * as Yup from 'yup';
 import YupPassword from 'yup-password';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {ScrollView} from 'native-base';
+import {useNavigation} from '@react-navigation/native';
 
 YupPassword(Yup);
 
@@ -24,12 +34,14 @@ const LoginSchema = Yup.object().shape({
 });
 
 const Login = () => {
+  const navigation = useNavigation();
   const [showPassword, setShowPassword] = React.useState(false);
   const {
     control,
     handleSubmit,
     formState: {errors, isDirty},
   } = useForm({
+    mode: 'all',
     resolver: yupResolver(LoginSchema),
     defaultValues: {
       email: '',
@@ -41,116 +53,150 @@ const Login = () => {
   };
   return (
     <ScrollView>
-      <View style={LoginStyle.authWrapper}>
-        <View>
+      <VStack p="8">
+        <View alignItems="center">
           <Image
+            h="100"
+            w="100"
             source={Logo}
-            style={{height: 100, width: 'auto'}}
-            resizeMode="center"
+            resizeMode="contain"
+            alt="logo"
           />
         </View>
-        <View>
-          <Text
-            style={{
-              fontSize: 40,
-              marginBottom: 15,
-              fontWeight: 'bold',
-              marginTop: 15,
-            }}>
+        <VStack space="3" mb="8">
+          <Text fontSize="5xl" fontWeight="bold">
             Sign In
           </Text>
-        </View>
-        <View>
-          <Text style={{fontSize: 20, color: '#8692A6'}}>
+          <Text color="#8692A6" fontSize="lg">
             Sign in with your data that you entered during your registration
           </Text>
-        </View>
-        <Controller
-          control={control}
-          render={({field: {onChange, onBlur, value}}) => (
-            <View style={{marginTop: 30}}>
-              <Text style={{color: '#4E4B66', fontSize: 20}}>Email</Text>
-              <Input
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                placeholder="Write your email"
-              />
-            </View>
-          )}
-          name="email"
-        />
-        {errors.email && (
-          <Text style={{color: 'red', fontWeight: 'bold', marginBottom: 10}}>
-            {errors.email.message}
-          </Text>
-        )}
-        <Controller
-          control={control}
-          render={({field: {onChange, onBlur, value}}) => (
-            <View style={{position: 'relative'}}>
-              <Text style={{color: '#4E4B66', fontSize: 20}}>Password</Text>
-              <Input
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                placeholder="Write your password"
-                secureTextEntry={showPassword ? false : true}
-              />
-              {showPassword ? (
-                <Eye
-                  onPress={() => setShowPassword(!showPassword)}
-                  width={24}
-                  height={24}
-                  stroke="red"
-                  fill="#0000"
-                  style={{position: 'absolute', top: 33, right: 20}}
-                />
-              ) : (
-                <EyeOff
-                  onPress={() => setShowPassword(!showPassword)}
-                  width={24}
-                  height={24}
-                  stroke="black"
-                  fill="#0000"
-                  style={{position: 'absolute', top: 33, right: 20}}
-                />
+        </VStack>
+        <VStack space="5">
+          <VStack space="2">
+            <Controller
+              control={control}
+              render={({field: {onChange, onBlur, value}}) => (
+                <VStack space="2">
+                  <Text fontSize="lg">Email</Text>
+                  <Input
+                    borderColor="black"
+                    borderRadius="10"
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                    placeholder="Write your email"
+                  />
+                </VStack>
               )}
-            </View>
-          )}
-          name="password"
-        />
-        {errors.password && (
-          <Text style={{color: 'red', fontWeight: 'bold', marginBottom: 10}}>
-            {errors.password.message}
-          </Text>
-        )}
-        <View>
-          <Button
-            title="Sign In"
-            disable={!isDirty}
-            onPress={handleSubmit(loginSubmit)}
-          />
-        </View>
-        <View style={{alignItems: 'center', marginTop: 30}}>
-          <Text style={{marginBottom: 15, color: '#8692A6'}}>
-            Forgot your password? <Text style={{color: 'blue'}}>Reset now</Text>
-          </Text>
-          <Text style={{color: '#8692A6'}}>
-            Don’t have an account? <Text style={{color: 'blue'}}> Sign Up</Text>
-          </Text>
-        </View>
-      </View>
+              name="email"
+            />
+            {errors.email && (
+              <Text
+                style={{color: 'red', fontWeight: 'bold', marginBottom: 10}}>
+                {errors.email.message}
+              </Text>
+            )}
+          </VStack>
+          <VStack space="2">
+            <Controller
+              control={control}
+              render={({field: {onChange, onBlur, value}}) => (
+                <VStack position="relative" space="2">
+                  <Text fontSize="lg">Password</Text>
+                  <Input
+                    borderColor="black"
+                    borderRadius="10"
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                    placeholder="Write your password"
+                    secureTextEntry={showPassword ? false : true}
+                  />
+                  {showPassword ? (
+                    <Eye
+                      onPress={() => setShowPassword(!showPassword)}
+                      width={24}
+                      height={24}
+                      stroke="black"
+                      fill="#0000"
+                      style={{position: 'absolute', top: 40, right: 20}}
+                    />
+                  ) : (
+                    <EyeOff
+                      onPress={() => setShowPassword(!showPassword)}
+                      width={24}
+                      height={24}
+                      stroke="black"
+                      fill="#0000"
+                      style={{position: 'absolute', top: 40, right: 20}}
+                    />
+                  )}
+                </VStack>
+              )}
+              name="password"
+            />
+            {errors.password && (
+              <Text
+                style={{color: 'red', fontWeight: 'bold', marginBottom: 10}}>
+                {errors.password.message}
+              </Text>
+            )}
+          </VStack>
+        </VStack>
+        <Button
+          mt="10"
+          borderRadius="10"
+          fontWeight="bold"
+          fontSize="3xl"
+          title="Sign In"
+          disable={!isDirty}
+          onPress={handleSubmit(loginSubmit)}>
+          Sign In
+        </Button>
+        <VStack alignItems="center" mt="5" space="3">
+          <HStack
+            alignItems="center"
+            justifyContent="center"
+            flexDirection="row">
+            <Text
+              color="#8692A6"
+              fontSize="lg"
+              alignItems="center"
+              justifyContent="center">
+              Forgot your password?{' '}
+            </Text>
+            <Pressable onPress={() => navigation.navigate('ForgotPassword')}>
+              <Text
+                fontSize="lg"
+                color="blue"
+                fontWeight="bold"
+                textDecorationLine="underline">
+                Reset now
+              </Text>
+            </Pressable>
+          </HStack>
+          <HStack
+            alignItems="center"
+            justifyContent="center"
+            flexDirection="row">
+            <Text color="#8692A6" fontSize="lg">
+              Don't have an account?
+            </Text>
+            <Pressable onPress={() => navigation.navigate('SignUp')}>
+              <Text
+                fontSize="lg"
+                color="blue"
+                fontWeight="bold"
+                textDecorationLine="underline">
+                {' '}
+                Sign Up
+              </Text>
+            </Pressable>
+          </HStack>
+        </VStack>
+      </VStack>
     </ScrollView>
   );
 };
-
-const LoginStyle = StyleSheet.create({
-  authWrapper: {
-    paddingHorizontal: 20,
-    paddingBottom: 50,
-    paddingTop: 15,
-  },
-});
 
 export default Login;

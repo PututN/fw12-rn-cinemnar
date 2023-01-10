@@ -36,6 +36,11 @@ const App = () => {
             component={ForgotPassword}
             options={{headerShown: false}}
           />
+             <Stack.Screen
+            name="ResetPassword"
+            component={ResetPassword}
+            options={{headerShown: false}}
+          />
         </Stack.Navigator>
         {/* <Login /> */}
         {/* <SignUp /> */}

@@ -187,7 +187,7 @@ const SignUp = () => {
             <Controller
               control={control}
               render={({field: {onChange, onBlur, value}}) => (
-                <View position="relative" space="2">
+                <VStack position="relative" space="2">
                   <Text fontSize="lg">Password</Text>
                   <Input
                     borderColor="black"
@@ -205,7 +205,7 @@ const SignUp = () => {
                       height={24}
                       stroke="black"
                       fill="#0000"
-                      style={{position: 'absolute', top: 33, right: 20}}
+                      style={{position: 'absolute', top: 40, right: 20}}
                     />
                   ) : (
                     <EyeOff
@@ -214,10 +214,10 @@ const SignUp = () => {
                       height={24}
                       stroke="black"
                       fill="#0000"
-                      style={{position: 'absolute', top: 33, right: 20}}
+                      style={{position: 'absolute', top: 40, right: 20}}
                     />
                   )}
-                </View>
+                </VStack>
               )}
               name="password"
             />
@@ -239,16 +239,24 @@ const SignUp = () => {
           onPress={handleSubmit(SignUpSubmit)}>
           Sign Up
         </Button>
-        <VStack alignItems="center" mt="5">
+        <HStack
+          alignItems="center"
+          mt="5"
+          justifyContent="center"
+          flexDirection="row">
           <Text color="#8692A6" fontSize="lg">
             Already have account ?{' '}
-            <Pressable onPress={()=> navigation.navigate("Login")}>
-              <Text color="blue" textDecorationLine="underline">
-                Sign In
-              </Text>
-            </Pressable>
           </Text>
-        </VStack>
+          <Pressable onPress={() => navigation.navigate('Login')}>
+            <Text
+              fontSize="lg"
+              fontWeight="bold"
+              color="blue"
+              textDecorationLine="underline">
+              Sign In
+            </Text>
+          </Pressable>
+        </HStack>
       </VStack>
     </ScrollView>
   );
