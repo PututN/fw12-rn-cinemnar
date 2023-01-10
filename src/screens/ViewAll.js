@@ -97,7 +97,7 @@ const data = [
 
 const ViewAll = () => {
   return (
-    <NativeBaseProvider>
+    <ScrollView>
       <Navbar />
       <View style={{backgroundColor: '#E5E5E5', marginBottom: 30}}>
         <View style={{paddingHorizontal: 20, paddingVertical: 30}}>
@@ -249,7 +249,7 @@ const ViewAll = () => {
         </View>
       </View>
       <Footer />
-    </NativeBaseProvider>
+    </ScrollView>
   );
 };
 

@@ -8,6 +8,7 @@ import {
   View,
   VStack,
   Button,
+  ScrollView
 } from 'native-base';
 import React, {Component} from 'react';
 import {AlertTriangle} from 'react-native-feather';
@@ -57,7 +58,7 @@ const Payment = () => {
   //   ];
 
   return (
-    <>
+    <ScrollView>
       <Navbar />
       <VStack bg="#E5E5E5">
         <HStack
@@ -230,7 +231,7 @@ const Payment = () => {
         </Button>
       </VStack>
       <Footer />
-    </>
+    </ScrollView>
   );
 };
 

@@ -8,6 +8,7 @@ import {
   Button,
   Input,
   Pressable,
+  ScrollView
 } from 'native-base';
 import React, {Component} from 'react';
 import {Eye, EyeOff} from 'react-native-feather';
@@ -21,7 +22,7 @@ const Profile = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const [showPassword2, setShowPassword2] = React.useState(false);
   return (
-    <>
+    <ScrollView>
       <Navbar />
       <VStack bg="#E5E5E5">
         <HStack
@@ -182,7 +183,7 @@ const Profile = () => {
         </Button>
       </VStack>
       <Footer />
-    </>
+    </ScrollView>
   );
 };
 

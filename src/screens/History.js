@@ -1,4 +1,4 @@
-import {Text, View, HStack, VStack, Image, Box, Button} from 'native-base';
+import {Text, View, HStack, VStack, Image, Box, Button, ScrollView} from 'native-base';
 import React, {Component} from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -8,7 +8,7 @@ import Ebv from '../images/imgEbv.png'
 
 const History = () => {
   return (
-    <>
+    <ScrollView>
       <Navbar />
       <VStack bg="#E5E5E5">
         <HStack
@@ -74,7 +74,7 @@ const History = () => {
 
       </VStack>
       <Footer />
-    </>
+    </ScrollView>
   );
 };
 

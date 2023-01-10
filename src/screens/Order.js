@@ -7,6 +7,7 @@ import {
   Pressable,
   Image,
   Button,
+  ScrollView,
 } from 'native-base';
 import React, {Component} from 'react';
 import Navbar from '../components/Navbar';
@@ -16,7 +17,7 @@ import Footer from '../components/Footer';
 
 const Order = () => {
   return (
-    <>
+    <ScrollView>
       <Navbar />
       <VStack bg="#E5E5E5" px="5" py="10" mb="10">
         <Text fontSize="2xl" fontWeight="bold" mb="5">
@@ -667,7 +668,7 @@ const Order = () => {
         </Button>
       </VStack>
       <Footer />
-    </>
+    </ScrollView>
   );
 };
 

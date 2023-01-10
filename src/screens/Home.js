@@ -109,7 +109,7 @@ const Home = () => {
     }
   };
   return (
-    <NativeBaseProvider>
+    <ScrollView>
       {/* <Navbar /> */}
       {/* <NavbarAdmin /> */}
       <NavbarBeforeLogin />
@@ -293,7 +293,7 @@ const Home = () => {
         </View>
       </NativeBaseProvider>
       <Footer />
-    </NativeBaseProvider>
+    </ScrollView>
   );
 };
 

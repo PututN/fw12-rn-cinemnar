@@ -7,7 +7,7 @@ import {useForm, Controller} from 'react-hook-form';
 import * as Yup from 'yup';
 import YupPassword from 'yup-password';
 import {yupResolver} from '@hookform/resolvers/yup';
-import {ScrollView} from 'react-native-gesture-handler';
+import {ScrollView} from 'native-base';
 
 YupPassword(Yup);
 

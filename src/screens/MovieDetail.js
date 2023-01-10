@@ -7,6 +7,7 @@ import {
   Button,
   Select,
   CheckIcon,
+  ScrollView
 } from 'native-base';
 import React, {Component, useState} from 'react';
 import {Calendar, MapPin} from 'react-native-feather';
@@ -21,7 +22,7 @@ const MovieDetail = () => {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   return (
-    <>
+    <ScrollView>
       <Navbar />
       <VStack alignItems="center" justifyContent="center">
         <Box
@@ -251,7 +252,7 @@ const MovieDetail = () => {
         </HStack>
       </VStack>
       <Footer />
-    </>
+    </ScrollView>
   );
 };
 
