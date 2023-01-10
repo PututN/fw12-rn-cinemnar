@@ -1,5 +1,14 @@
-import {View, StyleSheet} from 'react-native';
-import {Input, Button, Text, Image} from '@rneui/themed';
+import {
+  View,
+  Input,
+  Button,
+  Text,
+  Image,
+  ScrollView,
+  VStack,
+  HStack,
+  Box,
+} from 'native-base';
 import Logo from '../images/logo.png';
 import {Eye, EyeOff} from 'react-native-feather';
 import React from 'react';
@@ -7,6 +16,7 @@ import {useForm, Controller} from 'react-hook-form';
 import * as Yup from 'yup';
 import YupPassword from 'yup-password';
 import {yupResolver} from '@hookform/resolvers/yup';
+import {useNavigation} from '@react-navigation/native';
 
 YupPassword(Yup);
 
@@ -27,6 +37,7 @@ const ResetPasswordSchema = Yup.object().shape({
 });
 
 const ResetPassword = () => {
+  const navigation = useNavigation();
   const [showPassword1, setShowPassword1] = React.useState(false);
   const [showPassword2, setShowPassword2] = React.useState(false);
   const {
@@ -34,6 +45,7 @@ const ResetPassword = () => {
     handleSubmit,
     formState: {errors, isDirty},
   } = useForm({
+    mode: 'all',
     resolver: yupResolver(ResetPasswordSchema),
     defaultValues: {
       email: '',
@@ -44,130 +56,131 @@ const ResetPassword = () => {
     Alert.alert('data', JSON.stringify(data));
   };
   return (
-    <View style={ResetPasswordStyle.authWrapper}>
-      <View>
-        <Image
-          source={Logo}
-          style={{height: 100, width: 'auto'}}
-          resizeMode="center"
-        />
-      </View>
-      <View>
-        <Text
-          style={{
-            fontSize: 40,
-            marginBottom: 15,
-            fontWeight: 'bold',
-            marginTop: 15,
-          }}>
-          Set Password
-        </Text>
-      </View>
-      <View>
-        <Text style={{fontSize: 20, color: '#8692A6'}}>
-          set your new password{' '}
-        </Text>
-      </View>
-      <Controller
-        control={control}
-        render={({field: {onChange, onBlur, value}}) => (
-          <View style={{position: 'relative', marginTop: 30}}>
-            <Text style={{color: '#4E4B66', fontSize: 20}}>Password</Text>
-            <Input
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              placeholder="Write your password"
-              secureTextEntry={showPassword1 ? false : true}
+    <ScrollView>
+      <VStack p="8">
+        <View alignItems="center">
+          <Image
+            h="100"
+            w="100"
+            source={Logo}
+            resizeMode="contain"
+            alt="logo"
+          />
+        </View>
+        <VStack space="3" mb="8">
+          <Text fontSize="5xl" fontWeight="bold">
+            Set Password
+          </Text>
+          <Text color="#8692A6" fontSize="lg">
+            set your new password{' '}
+          </Text>
+        </VStack>
+        <VStack space="5">
+          <VStack space="2">
+            <Controller
+              control={control}
+              render={({field: {onChange, onBlur, value}}) => (
+                <VStack position="relative" space="2">
+                  <Text fontSize="lg">Password</Text>
+                  <Input
+                    borderColor="black"
+                    borderRadius="10"
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                    placeholder="Write your password"
+                    secureTextEntry={showPassword1 ? false : true}
+                  />
+                  {showPassword1 ? (
+                    <Eye
+                      onPress={() => setShowPassword1(!showPassword1)}
+                      width={24}
+                      height={24}
+                      stroke="black"
+                      fill="#0000"
+                      style={{position: 'absolute', top: 40, right: 20}}
+                    />
+                  ) : (
+                    <EyeOff
+                      onPress={() => setShowPassword1(!showPassword1)}
+                      width={24}
+                      height={24}
+                      stroke="black"
+                      fill="#0000"
+                      style={{position: 'absolute', top: 40, right: 20}}
+                    />
+                  )}
+                </VStack>
+              )}
+              name="password"
             />
-            {showPassword1 ? (
-              <Eye
-                onPress={() => setShowPassword1(!showPassword1)}
-                width={24}
-                height={24}
-                stroke="red"
-                fill="#0000"
-                style={{position: 'absolute', top: 33, right: 20}}
-              />
-            ) : (
-              <EyeOff
-                onPress={() => setShowPassword1(!showPassword1)}
-                width={24}
-                height={24}
-                stroke="black"
-                fill="#0000"
-                style={{position: 'absolute', top: 33, right: 20}}
-              />
+            {errors.password && (
+              <Text
+                style={{color: 'red', fontWeight: 'bold', marginBottom: 10}}>
+                {errors.password.message}
+              </Text>
             )}
-          </View>
-        )}
-        name="password"
-      />
-      {errors.password && (
-        <Text style={{color: 'red', fontWeight: 'bold', marginBottom: 10}}>
-          {errors.password.message}
-        </Text>
-      )}
-      <Controller
-        control={control}
-        render={({field: {onChange, onBlur, value}}) => (
-          <View style={{position: 'relative', marginTop: 30}}>
-            <Text style={{color: '#4E4B66', fontSize: 20}}>
-              Confirm Password
-            </Text>
-            <Input
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              placeholder="Write your Confirm Password"
-              secureTextEntry={showPassword2 ? false : true}
+          </VStack>
+          <VStack space="2">
+            <Controller
+              control={control}
+              render={({field: {onChange, onBlur, value}}) => (
+                <VStack position="relative" space="2">
+                  <Text fontSize="lg">Confirm Password</Text>
+                  <Input
+                    borderColor="black"
+                    borderRadius="10"
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                    placeholder="Write your Confirm Password"
+                    secureTextEntry={showPassword2 ? false : true}
+                  />
+                  {showPassword2 ? (
+                    <Eye
+                      onPress={() => setShowPassword2(!showPassword2)}
+                      width={24}
+                      height={24}
+                      stroke="black"
+                      fill="#0000"
+                      style={{position: 'absolute', top: 40, right: 20}}
+                    />
+                  ) : (
+                    <EyeOff
+                      onPress={() => setShowPassword2(!showPassword2)}
+                      width={24}
+                      height={24}
+                      stroke="black"
+                      fill="#0000"
+                      style={{position: 'absolute', top: 40, right: 20}}
+                    />
+                  )}
+                </VStack>
+              )}
+              name="confirmPassword"
             />
-            {showPassword2 ? (
-              <Eye
-                onPress={() => setShowPassword2(!showPassword2)}
-                width={24}
-                height={24}
-                stroke="red"
-                fill="#0000"
-                style={{position: 'absolute', top: 33, right: 20}}
-              />
-            ) : (
-              <EyeOff
-                onPress={() => setShowPassword2(!showPassword2)}
-                width={24}
-                height={24}
-                stroke="black"
-                fill="#0000"
-                style={{position: 'absolute', top: 33, right: 20}}
-              />
+            {errors.confirmPassword && (
+              <Text
+                style={{color: 'red', fontWeight: 'bold', marginBottom: 10}}>
+                {errors.confirmPassword.message}
+              </Text>
             )}
-          </View>
-        )}
-        name="confirmPassword"
-      />
-      {errors.confirmPassword && (
-        <Text style={{color: 'red', fontWeight: 'bold', marginBottom: 10}}>
-          {errors.confirmPassword.message}
-        </Text>
-      )}
+          </VStack>
+        </VStack>
 
-      <View>
         <Button
+          mt="10"
+          borderRadius="10"
+          fontWeight="bold"
+          fontSize="3xl"
           title="Submit"
           disable={!isDirty}
-          onPress={handleSubmit(ResetPasswordSubmit)}
-        />
-      </View>
-    </View>
+          onPress={handleSubmit(ResetPasswordSubmit)}>
+          Submit
+        </Button>
+      </VStack>
+    </ScrollView>
   );
 };
-
-const ResetPasswordStyle = StyleSheet.create({
-  authWrapper: {
-    paddingHorizontal: 20,
-    paddingBottom: 50,
-    paddingTop: 15,
-  },
-});
 
 export default ResetPassword;

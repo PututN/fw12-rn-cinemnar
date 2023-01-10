@@ -8,6 +8,7 @@ import {
   VStack,
   Box,
   Pressable,
+  ScrollView
 } from 'native-base';
 import Logo from '../images/logo.png';
 import {Eye, EyeOff} from 'react-native-feather';
@@ -16,7 +17,6 @@ import {useForm, Controller} from 'react-hook-form';
 import * as Yup from 'yup';
 import YupPassword from 'yup-password';
 import {yupResolver} from '@hookform/resolvers/yup';
-import {ScrollView} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 
 YupPassword(Yup);
