@@ -1,4 +1,4 @@
-import {Text, HStack, VStack, Image, Stack, View, Box} from 'native-base';
+import {Text, HStack, VStack, Image, Stack, View, Box, ScrollView} from 'native-base';
 import React, {Component} from 'react';
 
 import Navbar from '../components/Navbar';
@@ -8,7 +8,7 @@ import QR from '../images/QR.png';
 
 const TicketResult = () => {
   return (
-    <>
+    <ScrollView>
       <Navbar />
       <VStack bg="#F5F6F8" p="10">
         <VStack
@@ -93,7 +93,7 @@ const TicketResult = () => {
         </VStack>
       </VStack>
       <Footer />
-    </>
+    </ScrollView>
   );
 };
 
