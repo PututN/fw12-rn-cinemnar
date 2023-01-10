@@ -7,9 +7,12 @@ import {
   Input,
   Image,
   Button,
+  FlatList,
+  HStack,
+  ScrollView,
+  VStack,
 } from 'native-base';
 import React, {Component} from 'react';
-import {ScrollView} from 'react-native'
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import BlackWidow from '../images/imgBlackWidow.png';
@@ -92,132 +95,162 @@ const data = [
   },
 ];
 
-export class ViewAll extends Component {
-  render() {
-    return (
-      <NativeBaseProvider>
-        <Navbar />
-        <View style={{backgroundColor: '#E5E5E5', marginBottom:30}}>
-          <View style={{paddingHorizontal: 20, paddingVertical: 30}}>
-            <Text fontSize="xl" style={{fontWeight: 'bold'}}>
-              List Movie
-            </Text>
-            {/* FILTER */}
-            <View style={{marginVertical: 20, flexDirection: 'row'}}>
-              <View style={{width: '30%', marginRight: 10}}>
-                <Select
-                  variant="rounded"
-                  accessibilityLabel="Sort"
-                  placeholder="Sort"
-                  _selectedItem={{
-                    bg: 'teal.600',
-                    endIcon: <CheckIcon size={5} />,
-                  }}
-                  mt="1">
-                  <Select.Item label="A-Z" value="DESC" />
-                  <Select.Item label="Z-A" value="ASC" />
-                </Select>
-              </View>
-              <View style={{width: '60%'}}>
-                <Input
-                  variant="rounded"
-                  placeholder="Search Movie Name..."
-                  style={{width: '90%'}}
-                />
-              </View>
+const ViewAll = () => {
+  return (
+    <NativeBaseProvider>
+      <Navbar />
+      <View style={{backgroundColor: '#E5E5E5', marginBottom: 30}}>
+        <View style={{paddingHorizontal: 20, paddingVertical: 30}}>
+          <Text fontSize="xl" style={{fontWeight: 'bold'}}>
+            List Movie
+          </Text>
+          {/* FILTER */}
+          <View style={{marginVertical: 20, flexDirection: 'row'}}>
+            <View style={{width: '30%', marginRight: 10}}>
+              <Select
+                variant="rounded"
+                accessibilityLabel="Sort"
+                placeholder="Sort"
+                _selectedItem={{
+                  bg: 'teal.600',
+                  endIcon: <CheckIcon size={5} />,
+                }}
+                mt="1">
+                <Select.Item label="A-Z" value="DESC" />
+                <Select.Item label="Z-A" value="ASC" />
+              </Select>
             </View>
-            {/* MONTH */}
-            <View style={{flexDirection: 'row'}}>
-              <ScrollView horizontal>
-                {month.map(month => (
-                  <View
-                    key={month.id}
-                    style={{
-                      paddingHorizontal: 20,
-                      paddingVertical: 15,
-                      borderStyle: 'solid',
-                      borderColor: 'black',
-                      borderWidth: 1,
-                      borderRadius: 10,
-                      marginRight: 10,
-                    }}>
-                    <Text style={{fontWeight: '800'}}>{month.time}</Text>
-                  </View>
-                ))}
-              </ScrollView>
-            </View>
-            {/* MOVIE VIEW ALL */}
-            <View
-              style={{
-                flexDirection: 'row',
-                flexWrap: 'wrap'
-              }}>
-              <ScrollView horizontal>
-                {data.map(data => (
-                  <View
-                    key={data.id}
-                    style={{
-                      marginTop: 15,
-                      borderColor: 'black',
-                      borderStyle: 'solid',
-                      borderWidth: 1,
-                      borderRadius: 10,
-                      marginRight: 20,
-                      paddingVertical: 15,
-                      width: 200,
-                    }}>
-                    <View
-                      style={{
-                        alignItems: 'center',
-                        paddingHorizontal: 20,
-                        paddingVertical: 10,
-                      }}>
-                      <Image source={data.picture} alt={data.title} />
-                      <View
-                        style={{
-                          alignContent: 'center',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                        }}>
-                        <Text
-                          style={{
-                            fontSize: 20,
-                            fontWeight: 'bold',
-                            marginVertical: 10,
-                          }}>
-                          {data.title}
-                        </Text>
-                        <View>
-                          <Text>{data.genre}</Text>
-                        </View>
-                      </View>
-                    </View>
-                    <View style={{alignItems: 'center'}}>
-                      <NativeBaseProvider>
-                        <Button size="md">Details</Button>
-                      </NativeBaseProvider>
-                    </View>
-                  </View>
-                ))}
-              </ScrollView>
+            <View style={{width: '60%'}}>
+              <Input
+                variant="rounded"
+                placeholder="Search Movie Name..."
+                style={{width: '90%'}}
+              />
             </View>
           </View>
-          <View
+          {/* MONTH */}
+          <View style={{flexDirection: 'row'}}>
+            <ScrollView horizontal>
+              {month.map(month => (
+                <View
+                  key={month.id}
+                  style={{
+                    paddingHorizontal: 20,
+                    paddingVertical: 15,
+                    borderStyle: 'solid',
+                    borderColor: 'black',
+                    borderWidth: 1,
+                    borderRadius: 10,
+                    marginRight: 10,
+                  }}>
+                  <Text style={{fontWeight: '800'}}>{month.time}</Text>
+                </View>
+              ))}
+            </ScrollView>
+          </View>
+          {/* MOVIE VIEW ALL */}
+          <FlatList
+            numColumns="2"
+            data={data}
+            renderItem={({item}) => {
+              return (
+                <HStack>
+                  <ScrollView horizontal>
+                    <VStack
+                      mt="5"
+                      mr="2"
+                      borderWidth="1"
+                      borderColor="black"
+                      borderStyle="solid"
+                      borderRadius="10"
+                      width="180">
+                      <VStack alignItems="center" p="2">
+                        <Image source={item.picture} alt={item.title} />
+                        <VStack alignItems="center" space="3">
+                          <Text fontSize="lg" fontWeight="bold">
+                            {item.title}
+                          </Text>
+                          <Text>{item.genre}</Text>
+                          <Button size="md">Details</Button>
+                        </VStack>
+                      </VStack>
+                    </VStack>
+                  </ScrollView>
+                </HStack>
+              );
+            }}
+          />
+          {/* <View
             style={{
               flexDirection: 'row',
-              justifyContent: 'center',
-              marginBottom: 15,
+              flexWrap: 'wrap',
             }}>
-            <Button style={{width: '10%'}}>1</Button>
-            <Button style={{width: '10%', marginLeft: 7}}>2</Button>
-            <Button style={{width: '10%', marginLeft: 7}}>3</Button>
-            <Button style={{width: '10%', marginLeft: 7}}>4</Button>
-          </View>
+            <ScrollView horizontal>
+              {data.map(data => (
+                <View
+                  key={data.id}
+                  style={{
+                    marginTop: 15,
+                    borderColor: 'black',
+                    borderStyle: 'solid',
+                    borderWidth: 1,
+                    borderRadius: 10,
+                    marginRight: 20,
+                    paddingVertical: 15,
+                    width: 200,
+                  }}>
+                  <View
+                    style={{
+                      alignItems: 'center',
+                      paddingHorizontal: 20,
+                      paddingVertical: 10,
+                    }}>
+                    <Image source={data.picture} alt={data.title} />
+                    <View
+                      style={{
+                        alignContent: 'center',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: 20,
+                          fontWeight: 'bold',
+                          marginVertical: 10,
+                        }}>
+                        {data.title}
+                      </Text>
+                      <View>
+                        <Text>{data.genre}</Text>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={{alignItems: 'center'}}>
+                    <NativeBaseProvider>
+                      <Button size="md">Details</Button>
+                    </NativeBaseProvider>
+                  </View>
+                </View>
+              ))}
+            </ScrollView>
+          </View> */}
         </View>
-        <Footer />
-      </NativeBaseProvider>
-    );
-  }
-}
+        {/* PAGE */}
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            marginBottom: 15,
+          }}>
+          <Button style={{width: '10%'}}>1</Button>
+          <Button style={{width: '10%', marginLeft: 7}}>2</Button>
+          <Button style={{width: '10%', marginLeft: 7}}>3</Button>
+          <Button style={{width: '10%', marginLeft: 7}}>4</Button>
+        </View>
+      </View>
+      <Footer />
+    </NativeBaseProvider>
+  );
+};
 
 export default ViewAll;
