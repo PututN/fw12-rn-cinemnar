@@ -117,6 +117,10 @@ const Profile = () => {
             </HStack>
           </VStack>
         </VStack>
+        <Button mb="10" borderRadius="10" fontWeight="bold" fontSize="3xl">
+          Update Changes
+        </Button>
+
         <VStack bg="white" p="5" borderRadius="10" space="5">
           <VStack space="2">
             <Text fontSize="lg">Account and Privacy</Text>
