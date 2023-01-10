@@ -8,6 +8,7 @@ import Home from './src/screens/Home';
 import ViewAll from './src/screens/ViewAll';
 import MovieDetail from './src/screens/MovieDetail.js';
 import Order from './src/screens/Order';
+import Payment from './src/screens/Payment';
 
 const App = () => {
   return (
@@ -18,9 +19,10 @@ const App = () => {
         {/* <ForgotPassword /> */}
         {/* <ResetPassword /> */}
         {/* <Home /> */}
-        <ViewAll />
+        {/* <ViewAll /> */}
         {/* <MovieDetail /> */}
         {/* <Order /> */}
+        <Payment />
       </ScrollView>
     </NativeBaseProvider>
   );

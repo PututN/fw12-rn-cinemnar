@@ -164,7 +164,7 @@ const ViewAll = () => {
                       borderStyle="solid"
                       borderRadius="10"
                       width="180">
-                      <VStack alignItems="center" p="2">
+                      <VStack alignItems="center" p="2" space="3">
                         <Image source={item.picture} alt={item.title} />
                         <VStack alignItems="center" space="3">
                           <Text fontSize="lg" fontWeight="bold">
