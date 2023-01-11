@@ -14,8 +14,11 @@ import Navbar from '../components/Navbar';
 import {ArrowDown, ArrowRight} from 'react-native-feather';
 import CinemaOne from '../images/imgCineOne.png';
 import Footer from '../components/Footer';
+import {useNavigate} from '@react-navigation/native'
+
 
 const Order = () => {
+  const navigation = useNavigate()
   return (
     <ScrollView>
       <Navbar />
@@ -663,7 +666,7 @@ const Order = () => {
             </Text>
           </HStack>
         </VStack>
-        <Button mt="10" borderRadius="10" fontWeight="bold" fontSize="3xl">
+        <Button mt="10" borderRadius="10" fontWeight="bold" fontSize="3xl" onPress={()=>navigation.navigate('Payment')}>
           Checkout Now
         </Button>
       </VStack>

@@ -8,7 +8,7 @@ import {
   View,
   VStack,
   Button,
-  ScrollView
+  ScrollView,
 } from 'native-base';
 import React, {Component} from 'react';
 import {AlertTriangle} from 'react-native-feather';
@@ -21,6 +21,7 @@ import Gopay from '../images/paymentGopay.png';
 import Gpay from '../images/paymentGpay.png';
 import Paypal from '../images/paymentPaypal.png';
 import Visa from '../images/paymentVisa.png';
+import {useNavigate} from '@react-navigation/native';
 
 const Payment = () => {
   //   const payment = [
@@ -56,7 +57,7 @@ const Payment = () => {
   //       picture: Visa,
   //     },
   //   ];
-
+  const navigation = useNavigate();
   return (
     <ScrollView>
       <Navbar />
@@ -226,7 +227,12 @@ const Payment = () => {
             </Text>
           </HStack>
         </VStack>
-        <Button mb="10" borderRadius="10" fontWeight="bold" fontSize="3xl">
+        <Button
+          mb="10"
+          borderRadius="10"
+          fontWeight="bold"
+          fontSize="3xl"
+          onPress={() => navigation.navigate('History')}>
           Pay your order
         </Button>
       </VStack>

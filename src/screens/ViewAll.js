@@ -11,12 +11,14 @@ import {
   HStack,
   ScrollView,
   VStack,
+  Pressable
 } from 'native-base';
 import React, {Component} from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import BlackWidow from '../images/imgBlackWidow.png';
 import Witches from '../images/imgWitches.png';
+import {useNavigate} from '@react-navigation/native'
 
 const month = [
   {
@@ -96,6 +98,7 @@ const data = [
 ];
 
 const ViewAll = () => {
+  const navigation = useNavigate()
   return (
     <ScrollView>
       <Navbar />
@@ -171,7 +174,7 @@ const ViewAll = () => {
                             {item.title}
                           </Text>
                           <Text>{item.genre}</Text>
-                          <Button size="md">Details</Button>
+                          <Button size="md" onPress={() => navigation.navigate('MovieDetail')}>Details</Button>
                         </VStack>
                       </VStack>
                     </VStack>
