@@ -21,7 +21,7 @@ import Gopay from '../images/paymentGopay.png';
 import Gpay from '../images/paymentGpay.png';
 import Paypal from '../images/paymentPaypal.png';
 import Visa from '../images/paymentVisa.png';
-import {useNavigate} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const Payment = () => {
   //   const payment = [
@@ -57,7 +57,7 @@ const Payment = () => {
   //       picture: Visa,
   //     },
   //   ];
-  const navigation = useNavigate();
+  const navigation = useNavigation();
   return (
     <ScrollView>
       <Navbar />

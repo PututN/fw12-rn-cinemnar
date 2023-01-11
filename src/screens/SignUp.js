@@ -19,6 +19,7 @@ import YupPassword from 'yup-password';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
+import {registerAction} from '../redux/actions/authActions';
 
 YupPassword(Yup);
 
@@ -77,7 +78,6 @@ const SignUp = () => {
           cb: () => navigation.navigate('Home'),
         }),
       );
-      cb();
     } catch (error) {
       console.log(error);
     }

@@ -18,7 +18,8 @@ export const registerAction = createAsyncThunk(
   'auth/registerAction',
   async ({firstName, lastName, email, password, phoneNumber, cb}) => {
     try {
-      const {data} = await http().post('/auth/register', {
+      console.log("lapor pak")
+      const data = await http().post('/auth/register', {
         firstName,
         lastName,
         email,
@@ -26,8 +27,8 @@ export const registerAction = createAsyncThunk(
         phoneNumber,
       });
       cb();
-      console.log(data)
-      return data.result;
+      console.log("masuk boss")
+      return data.results;
     } catch (error) {
       return error.response.data.message;
     }

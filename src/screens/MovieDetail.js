@@ -14,13 +14,13 @@ import {Calendar, MapPin} from 'react-native-feather';
 import Spiderman from '../images/imgSpiderman.png';
 import DatePicker from 'react-native-date-picker';
 import ebv from '../images/imgEbv.png';
-import {useNavigate} from '@react-navigation/native'
+import {useNavigation} from '@react-navigation/native'
 
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 const MovieDetail = () => {
-  const navigation = useNavigate()
+  const navigation = useNavigation()
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   return (

@@ -175,7 +175,7 @@ const ResetPassword = () => {
           fontSize="3xl"
           title="Submit"
           disable={!isDirty}
-          onPress={handleSubmit(ResetPasswordSubmit)}>
+          onPress={() => navigation.navigate('Home')}>
           Submit
         </Button>
       </VStack>

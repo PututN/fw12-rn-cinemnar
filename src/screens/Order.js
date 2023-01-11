@@ -14,11 +14,11 @@ import Navbar from '../components/Navbar';
 import {ArrowDown, ArrowRight} from 'react-native-feather';
 import CinemaOne from '../images/imgCineOne.png';
 import Footer from '../components/Footer';
-import {useNavigate} from '@react-navigation/native'
+import {useNavigation} from '@react-navigation/native'
 
 
 const Order = () => {
-  const navigation = useNavigate()
+  const navigation = useNavigation()
   return (
     <ScrollView>
       <Navbar />

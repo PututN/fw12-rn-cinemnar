@@ -104,16 +104,18 @@ const Home = () => {
   //fetch now showing
   const [nowShowing, setNowShowing] = useState([]);
   useEffect(() => {
-    fetchNowShowing().then(data => {
-      setNowShowing(data?.results);
-    });
+    const fetchNowShowing = async () => {
+      try{
+        const response = await http().get('/movies/nowShowing');
+        setNowShowing(response?.data?.results)
+      } catch (error) {
+        console.log(error)
+      }
+    };
+    fetchNowShowing()
   }, []);
 
-  const fetchNowShowing = async () => {
-    const {data} = await http().get('/movies/nowShowing');
-    return data;
-  };
-  console.log(nowShowing)
+  console.log(nowShowing);
   //fetch up coming
   const [upComing, setUpComing] = useState([]);
   useEffect(() => {

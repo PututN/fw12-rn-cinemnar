@@ -18,7 +18,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import BlackWidow from '../images/imgBlackWidow.png';
 import Witches from '../images/imgWitches.png';
-import {useNavigate} from '@react-navigation/native'
+import {useNavigation} from '@react-navigation/native';
 
 const month = [
   {
@@ -98,7 +98,7 @@ const data = [
 ];
 
 const ViewAll = () => {
-  const navigation = useNavigate()
+  const navigation = useNavigation()
   return (
     <ScrollView>
       <Navbar />

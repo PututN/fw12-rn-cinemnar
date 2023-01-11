@@ -8,10 +8,11 @@ import {
   Button,
   Input,
   Pressable,
-  ScrollView
+  ScrollView,
 } from 'native-base';
 import React, {Component} from 'react';
 import {Eye, EyeOff} from 'react-native-feather';
+import {useNavigation} from '@react-navigation/native';
 
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -19,6 +20,7 @@ import Footer from '../components/Footer';
 import lion from '../images/imgLionKing.png';
 
 const Profile = () => {
+  const navigation = useNavigation();
   const [showPassword, setShowPassword] = React.useState(false);
   const [showPassword2, setShowPassword2] = React.useState(false);
   return (
@@ -30,18 +32,22 @@ const Profile = () => {
           bg="darkBlue.500"
           p="5"
           borderBottomRadius="20">
-          <Text
-            color="white"
-            fontWeight="bold"
-            fontSize="lg"
-            pb="2"
-            borderBottomColor="white"
-            borderBottomWidth="3">
-            Details Account
-          </Text>
-          <Text color="#AAAAAA" fontWeight="bold" fontSize="lg">
-            Order History
-          </Text>
+          <Pressable onPress={() => navigation.navigate('Profile')} bgColor="darkBlue.500">
+            <Text
+              color="white"
+              fontWeight="bold"
+              fontSize="lg"
+              pb="2"
+              borderBottomColor="white"
+              borderBottomWidth="3">
+              Details Account
+            </Text>
+          </Pressable>
+          <Pressable onPress={() => navigation.navigate('History')} bgColor="darkBlue.500">
+            <Text color="#AAAAAA" fontWeight="bold" fontSize="lg">
+              Order History
+            </Text>
+          </Pressable>
         </HStack>
       </VStack>
       <VStack bg="#E5E5E5" px="3" py="5" space="5">
@@ -174,7 +180,6 @@ const Profile = () => {
                 )}
               </Pressable>
             </Box>
-
           </VStack>
         </VStack>
 
