@@ -59,7 +59,7 @@ const History = () => {
           <Box borderWidth="1" borderColor="#DEDEDE" my="3"></Box>
           <Box px="6">
             <Button
-            onPress={()=> navigation.navigate('TicketResult')}
+              onPress={() => navigation.navigate('TicketResult')}
               backgroundColor="blue.500"
               borderRadius="10"
               fontWeight="bold">
