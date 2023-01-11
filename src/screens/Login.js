@@ -8,6 +8,7 @@ import {
   HStack,
   Pressable,
   Box,
+  ScrollView,
 } from 'native-base';
 import Logo from '../images/logo.png';
 import {Eye, EyeOff} from 'react-native-feather';
@@ -16,11 +17,15 @@ import {useForm, Controller} from 'react-hook-form';
 import * as Yup from 'yup';
 import YupPassword from 'yup-password';
 import {yupResolver} from '@hookform/resolvers/yup';
-import {ScrollView} from 'native-base';
+import http from '../helpers/http';
+import {useDispatch} from 'react-redux';
+import {login as loginAction} from '../redux/reducers/auth';
 import {useNavigation} from '@react-navigation/native';
+import {loginAction as testLogin} from '../redux/actions/authActions';
 
 YupPassword(Yup);
 
+//VALIDATOR LOGIN
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Email is required'),
   password: Yup.string()
@@ -34,8 +39,13 @@ const LoginSchema = Yup.object().shape({
 });
 
 const Login = () => {
+  //NAVIGATION
   const navigation = useNavigation();
+
+  //SHOWPASSWORD
   const [showPassword, setShowPassword] = React.useState(false);
+
+  //CONTROL VALIDATOR
   const {
     control,
     handleSubmit,
@@ -48,8 +58,24 @@ const Login = () => {
       password: '',
     },
   });
-  const loginSubmit = data => {
-    Alert.alert('data', JSON.stringify(data));
+
+  //INTEGRASI POST LOGIN
+
+  const dispatch = useDispatch();
+  const loginSubmit = async form => {
+    try {
+      const {email, password} = form;
+      // console.log(email, password);
+      // const response = await http().post('/auth/login', {email, password});
+      // const token = response.data.result.token;
+      dispatch(
+        testLogin({email, password, cb: () => navigation.navigate('Home')}),
+      );
+      // console.log('masuk');
+      // navigation.navigate('Home');
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <ScrollView>

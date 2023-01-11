@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Navbar from '../components/Navbar';
 import imgHomepage from '../images/imgHomepage.png';
 import Spiderman from '../images/imgSpiderman.png';
@@ -21,6 +21,8 @@ import {
 import Footer from '../components/Footer';
 import NavbarAdmin from '../components/NavbarAdmin';
 import NavbarBeforeLogin from '../components/NavbarBeforeLogin';
+import {useNavigation} from '@react-navigation/native';
+import http from '../helpers/http';
 
 const data = [
   {
@@ -99,8 +101,35 @@ const month = [
   },
 ];
 const Home = () => {
-  const [focus, setFocus] = React.useState(null);
+  //fetch now showing
+  const [nowShowing, setNowShowing] = useState([]);
+  useEffect(() => {
+    fetchNowShowing().then(data => {
+      setNowShowing(data?.results);
+    });
+  }, []);
 
+  const fetchNowShowing = async () => {
+    const {data} = await http().get('/movies/nowShowing');
+    return data;
+  };
+  console.log(nowShowing)
+  //fetch up coming
+  const [upComing, setUpComing] = useState([]);
+  useEffect(() => {
+    fetchUpComing().then(data => {
+      setUpComing(data?.results);
+    });
+  }, []);
+
+  const fetchUpComing = async () => {
+    const {data} = await http().get('/movies/upComingMovies');
+    return data;
+  };
+
+  //dropdown image now showing
+  const [focus, setFocus] = React.useState(null);
+  const navigation = useNavigation();
   const toggleFocus = id => {
     if (focus === id) {
       setFocus(null);
@@ -110,9 +139,9 @@ const Home = () => {
   };
   return (
     <ScrollView>
-      {/* <Navbar /> */}
+      <Navbar />
       {/* <NavbarAdmin /> */}
-      <NavbarBeforeLogin />
+      {/* <NavbarBeforeLogin /> */}
       {/* TOP SECTION */}
       <VStack my="30" justifyContent="center" space="5" px="5">
         <Text fontSize="lg">Nearest Cinema, Newest Movie,</Text>
@@ -136,14 +165,19 @@ const Home = () => {
           <Text fontSize="2xl" fontWeight="bold" color="#752EEA">
             Now Showing
           </Text>
-          <Text fontSize="lg" color="blue">
-            View All
-          </Text>
+          <Pressable
+            onPress={() => navigation.navigate('ViewAll')}
+            fontSize="lg"
+            color="blue">
+            <Text fontSize="lg" color="blue">
+              View All
+            </Text>
+          </Pressable>
         </HStack>
         <HStack px="5" py="5">
           <ScrollView horizontal height={focus ? '380px' : 'auto'}>
             <HStack space="3">
-              {data.map(data => (
+              {nowShowing.map(data => (
                 <Pressable key={data.id} onPress={() => toggleFocus(data.id)}>
                   <Box
                     p="2"
@@ -152,7 +186,7 @@ const Home = () => {
                     borderColor={focus === data.id ? '#dedede' : 'white'}
                     borderRadius="2">
                     <Image
-                      source={data.picture}
+                      source={{uri: data.picture}}
                       alt={data.title}
                       width="160px"
                       height="250px"
@@ -172,7 +206,11 @@ const Home = () => {
                             {data.title}
                           </Text>
                           <Text>{data.genre}</Text>
-                          <Button width="50%">Details</Button>
+                          <Button
+                            width="50%"
+                            onPress={() => navigation.navigate('MovieDetail')}>
+                            Details
+                          </Button>
                         </VStack>
                       )}
                     </Box>
@@ -188,9 +226,11 @@ const Home = () => {
         <Text fontSize="2xl" fontWeight="bold">
           Upcoming Movies
         </Text>
-        <Text fontSize="lg" color="blue">
-          View All
-        </Text>
+        <Pressable onPress={() => navigation.navigate('ViewAll')}>
+          <Text fontSize="lg" color="blue">
+            View All
+          </Text>
+        </Pressable>
       </HStack>
       {/* MONTH */}
       <HStack px="5">
@@ -211,7 +251,7 @@ const Home = () => {
       {/* MOVIE UPCOMING */}
       <HStack p="5">
         <ScrollView horizontal>
-          {data.map(data => (
+          {upComing.map(data => (
             <View
               key={data.id}
               style={{
@@ -232,7 +272,12 @@ const Home = () => {
                   paddingHorizontal: 20,
                   paddingVertical: 10,
                 }}>
-                <Image source={data.picture} alt="picture" />
+                <Image
+                  source={{uri: data.picture}}
+                  alt={data.title}
+                  width="160px"
+                  height="250px"
+                />
                 <View
                   style={{
                     alignContent: 'center',

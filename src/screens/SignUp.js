@@ -8,7 +8,7 @@ import {
   VStack,
   Box,
   Pressable,
-  ScrollView
+  ScrollView,
 } from 'native-base';
 import Logo from '../images/logo.png';
 import {Eye, EyeOff} from 'react-native-feather';
@@ -18,6 +18,7 @@ import * as Yup from 'yup';
 import YupPassword from 'yup-password';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
 
 YupPassword(Yup);
 
@@ -41,6 +42,7 @@ const SignUpSchema = Yup.object().shape({
 });
 
 const SignUp = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const [showPassword, setShowPassword] = React.useState(false);
   const {
@@ -58,8 +60,27 @@ const SignUp = () => {
       phoneNumber: '',
     },
   });
-  const SignUpSubmit = data => {
-    Alert.alert('data', JSON.stringify(data));
+  // const SignUpSubmit = data => {
+  //   Alert.alert('data', JSON.stringify(data));
+  // };
+
+  const SignUpSubmit = async value => {
+    try {
+      const {firstName, lastName, email, password, phoneNumber} = value;
+      dispatch(
+        registerAction({
+          firstName,
+          lastName,
+          email,
+          password,
+          phoneNumber,
+          cb: () => navigation.navigate('Home'),
+        }),
+      );
+      cb();
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <ScrollView>
