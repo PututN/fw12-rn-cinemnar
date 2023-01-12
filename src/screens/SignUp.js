@@ -12,7 +12,7 @@ import {
 } from 'native-base';
 import Logo from '../images/logo.png';
 import {Eye, EyeOff} from 'react-native-feather';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useForm, Controller} from 'react-hook-form';
 import * as Yup from 'yup';
 import YupPassword from 'yup-password';
@@ -20,6 +20,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {registerAction} from '../redux/actions/authActions';
+import {logout} from '../redux/reducers/auth';
 
 YupPassword(Yup);
 
@@ -45,7 +46,11 @@ const SignUpSchema = Yup.object().shape({
 const SignUp = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  // const err = useSelector((state) => state.error)
+  const err = useSelector(state => state.auth.error);
+  //err gone while refresh
+  useEffect(() => {
+    dispatch(logout());
+  }, []);
   // console.log(err)
   const [showPassword, setShowPassword] = React.useState(false);
   const {
@@ -264,6 +269,16 @@ const SignUp = () => {
             Sign Up
           </Text>
         </Button>
+        {err && (
+          <Text
+            textAlign="center"
+            color="red.500"
+            fontSize="lg"
+            fontWeight="bold"
+            mt="3">
+            {err}
+          </Text>
+        )}
         <HStack
           alignItems="center"
           mt="5"

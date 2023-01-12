@@ -3,7 +3,7 @@ import {loginAction, registerAction} from '../actions/authActions';
 
 const initialState = {
   token: null,
-  // error: "",
+  error: "",
   // loading: false,
 };
 
@@ -16,7 +16,7 @@ const authReducer = createSlice({
     //   state.token = action.payload.token;
     // },
     logout: (state, action) => {
-      state.token = null;
+      return initialState
     },
   },
   extraReducers: build => {
