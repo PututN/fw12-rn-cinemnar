@@ -27,12 +27,16 @@ const History = () => {
           bg="#C539B4"
           p="5"
           borderBottomRadius="20">
-          <Button onPress={() => navigation.navigate('Profile')} bgColor="#C539B4">
+          <Button
+            onPress={() => navigation.navigate('Profile')}
+            bgColor="#C539B4">
             <Text color="#AAAAAA" fontWeight="bold" fontSize="lg">
               Details Account
             </Text>
           </Button>
-          <Button onPress={() => navigation.navigate('History')} bgColor="#C539B4">
+          <Button
+            onPress={() => navigation.navigate('History')}
+            bgColor="#C539B4">
             <Text
               color="white"
               fontWeight="bold"
@@ -60,7 +64,7 @@ const History = () => {
           <Box px="6">
             <Button
               onPress={() => navigation.navigate('TicketResult')}
-              backgroundColor="blue.500"
+              bgColor="#C539B4"
               borderRadius="10"
               fontWeight="bold">
               Ticket in active

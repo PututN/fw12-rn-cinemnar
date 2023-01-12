@@ -80,11 +80,11 @@ const Main = () => {
                 component={Payment}
                 options={{headerShown: false}}
               /> */}
-              <Stack.Screen
+              {/* <Stack.Screen
                 name="Profile"
                 component={Profile}
                 options={{headerShown: false}}
-              />
+              /> */}
               <Stack.Screen
                 name="History"
                 component={History}
