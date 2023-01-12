@@ -7,20 +7,20 @@ import {
   Button,
   Select,
   CheckIcon,
-  ScrollView
+  ScrollView,
 } from 'native-base';
 import React, {Component, useState} from 'react';
 import {Calendar, MapPin} from 'react-native-feather';
 import Spiderman from '../images/imgSpiderman.png';
 import DatePicker from 'react-native-date-picker';
 import ebv from '../images/imgEbv.png';
-import {useNavigation} from '@react-navigation/native'
+import {useNavigation} from '@react-navigation/native';
 
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 const MovieDetail = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   return (
@@ -92,7 +92,9 @@ const MovieDetail = () => {
         </HStack>
         <Box borderBottomWidth="1" borderColor="#D6D8E7"></Box>
         <VStack space="3" py="8">
-          <Text fontWeight="bold" fontSize="lg">Synopsis</Text>
+          <Text fontWeight="bold" fontSize="lg">
+            Synopsis
+          </Text>
           <Text color="#4E4B66">
             Thrilled by his experience with the Avengers, Peter returns home,
             where he lives with his Aunt May, under the watchful eye of his new
@@ -192,7 +194,15 @@ const MovieDetail = () => {
                 $10.00/seat
               </Text>
             </HStack>
-            <Button onPress={() => navigation.navigate('Order')}>Book now</Button>
+            <Button
+              onPress={() => navigation.navigate('Order')}
+              bgColor="#C539B4"
+              alignItems="center"
+              justifyContent="center">
+              <Text fontSize="lg" fontWeight="bold" color="white">
+                Book now
+              </Text>
+            </Button>
           </VStack>
         </VStack>
         <VStack bg="white" width="100%" py="7">
@@ -227,7 +237,15 @@ const MovieDetail = () => {
                 $10.00/seat
               </Text>
             </HStack>
-            <Button onPress={() => navigation.navigate('Order')}>Book now</Button>
+            <Button
+              onPress={() => navigation.navigate('Order')}
+              bgColor="#C539B4"
+              alignItems="center"
+              justifyContent="center">
+              <Text fontSize="lg" fontWeight="bold" color="white">
+                Book now
+              </Text>
+            </Button>
           </VStack>
         </VStack>
         <HStack position="relative">

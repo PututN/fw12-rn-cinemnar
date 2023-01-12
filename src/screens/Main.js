@@ -60,11 +60,11 @@ const Main = () => {
                 component={Home}
                 options={{headerShown: false}}
               /> */}
-              <Stack.Screen
+              {/* <Stack.Screen
                 name="ViewAll"
                 component={ViewAll}
                 options={{headerShown: false}}
-              />
+              /> */}
               <Stack.Screen
                 name="MovieDetail"
                 component={MovieDetail}
