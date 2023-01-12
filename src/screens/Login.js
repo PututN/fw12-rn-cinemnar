@@ -65,14 +65,7 @@ const Login = () => {
   const loginSubmit = async form => {
     try {
       const {email, password} = form;
-      // console.log(email, password);
-      // const response = await http().post('/auth/login', {email, password});
-      // const token = response.data.result.token;
-      dispatch(
-        testLogin({email, password, cb: () => navigation.navigate('Home')}),
-      );
-      // console.log('masuk');
-      // navigation.navigate('Home');
+      dispatch(testLogin({email, password}));
     } catch (error) {
       console.log(error);
     }

@@ -8,7 +8,7 @@ const http = token => {
   const instance = axios.create({
     // baseURL: 'http://localhost:8888',
     // baseURL: 'http://192.168.1.37:8888',
-    baseURL: 'http://dull-kilt-crab.cyclic.app',
+    baseURL: 'https://dull-kilt-crab.cyclic.app',
     headers,
   });
   return instance;

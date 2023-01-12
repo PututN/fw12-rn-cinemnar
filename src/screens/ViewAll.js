@@ -11,7 +11,7 @@ import {
   HStack,
   ScrollView,
   VStack,
-  Pressable
+  Pressable,
 } from 'native-base';
 import React, {Component} from 'react';
 import Navbar from '../components/Navbar';
@@ -98,7 +98,7 @@ const data = [
 ];
 
 const ViewAll = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   return (
     <ScrollView>
       <Navbar />
@@ -132,8 +132,8 @@ const ViewAll = () => {
             </View>
           </View>
           {/* MONTH */}
-          <View style={{flexDirection: 'row'}}>
-            <ScrollView horizontal>
+          <ScrollView horizontal>
+            <View style={{flexDirection: 'row'}}>
               {month.map(month => (
                 <View
                   key={month.id}
@@ -149,8 +149,8 @@ const ViewAll = () => {
                   <Text style={{fontWeight: '800'}}>{month.time}</Text>
                 </View>
               ))}
-            </ScrollView>
-          </View>
+            </View>
+          </ScrollView>
           {/* MOVIE VIEW ALL */}
           <FlatList
             numColumns="2"
@@ -158,27 +158,29 @@ const ViewAll = () => {
             renderItem={({item}) => {
               return (
                 <HStack>
-                  <ScrollView horizontal>
-                    <VStack
-                      mt="5"
-                      mr="2"
-                      borderWidth="1"
-                      borderColor="black"
-                      borderStyle="solid"
-                      borderRadius="10"
-                      width="180">
-                      <VStack alignItems="center" p="2" space="3">
-                        <Image source={item.picture} alt={item.title} />
-                        <VStack alignItems="center" space="3">
-                          <Text fontSize="lg" fontWeight="bold">
-                            {item.title}
-                          </Text>
-                          <Text>{item.genre}</Text>
-                          <Button size="md" onPress={() => navigation.navigate('MovieDetail')}>Details</Button>
-                        </VStack>
+                  <VStack
+                    mt="5"
+                    mr="2"
+                    borderWidth="1"
+                    borderColor="black"
+                    borderStyle="solid"
+                    borderRadius="10"
+                    width="180">
+                    <VStack alignItems="center" p="2" space="3">
+                      <Image source={item.picture} alt={item.title} />
+                      <VStack alignItems="center" space="3">
+                        <Text fontSize="lg" fontWeight="bold">
+                          {item.title}
+                        </Text>
+                        <Text>{item.genre}</Text>
+                        <Button
+                          size="md"
+                          onPress={() => navigation.navigate('MovieDetail')}>
+                          Details
+                        </Button>
                       </VStack>
                     </VStack>
-                  </ScrollView>
+                  </VStack>
                 </HStack>
               );
             }}

@@ -3,10 +3,9 @@ import http from '../../helpers/http';
 
 export const loginAction = createAsyncThunk(
   'auth/loginAction',
-  async ({email, password, cb}) => {
+  async ({email, password}) => {
     try {
       const {data} = await http().post('/auth/login', {email, password});
-      cb();
       return data.result;
     } catch (error) {
       return error.response.data.message;
@@ -16,7 +15,7 @@ export const loginAction = createAsyncThunk(
 
 export const registerAction = createAsyncThunk(
   'auth/registerAction',
-  async ({firstName, lastName, email, password, phoneNumber, cb}) => {
+  async ({firstName, lastName, email, password, phoneNumber}) => {
     try {
       console.log("lapor pak")
       const data = await http().post('/auth/register', {
@@ -26,7 +25,6 @@ export const registerAction = createAsyncThunk(
         password,
         phoneNumber,
       });
-      cb();
       console.log("masuk boss")
       return data.results;
     } catch (error) {

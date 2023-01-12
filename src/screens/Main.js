@@ -23,8 +23,8 @@ const Main = () => {
     <NavigationContainer>
       <NativeBaseProvider>
         <Stack.Navigator>
-          {/* {!token && (
-            <> */}
+          {!token && (
+            <>
               <Stack.Screen
                 name="SignUp"
                 component={SignUp}
@@ -45,10 +45,10 @@ const Main = () => {
                 component={ResetPassword}
                 options={{headerShown: false}}
               />
-            {/* </>
+            </>
           )}
           {token && (
-            <> */}
+            <>
               <Stack.Screen
                 name="Home"
                 component={Home}
@@ -89,8 +89,8 @@ const Main = () => {
                 component={TicketResult}
                 options={{headerShown: false}}
               />
-            {/* </>
-          )} */}
+            </>
+          )}
         </Stack.Navigator>
         {/* <Login /> */}
         {/* <SignUp /> */}

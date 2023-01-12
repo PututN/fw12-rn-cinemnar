@@ -75,7 +75,6 @@ const SignUp = () => {
           email,
           password,
           phoneNumber,
-          cb: () => navigation.navigate('Home'),
         }),
       );
     } catch (error) {

@@ -56,19 +56,19 @@ const Navbar = () => {
             </Box>
           </HStack>
           <Box borderColor="#DEDEDE" borderWidth="1" />
-          <Pressable onPress={() => navigation('Home')}>
+          <Pressable onPress={() => navigation.navigate('Home')}>
             <Text fontWeight="bold" fontSize="lg" textAlign="center">
               Home
             </Text>
           </Pressable>
           <Box borderColor="#DEDEDE" borderWidth="1" />
-          <Pressable onPress={() => navigation('ViewAll')}>
+          <Pressable onPress={() => navigation.navigate('ViewAll')}>
             <Text fontWeight="bold" fontSize="lg" textAlign="center">
               List Movie
             </Text>
           </Pressable>
           <Box borderColor="#DEDEDE" borderWidth="1" />
-          <Pressable onPress={() => navigation('Profile')}>
+          <Pressable onPress={() => navigation.navigate('Profile')}>
             <Text fontWeight="bold" fontSize="lg" textAlign="center">
               Profile
             </Text>

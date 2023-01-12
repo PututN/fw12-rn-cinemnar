@@ -105,14 +105,14 @@ const Home = () => {
   const [nowShowing, setNowShowing] = useState([]);
   useEffect(() => {
     const fetchNowShowing = async () => {
-      try{
+      try {
         const response = await http().get('/movies/nowShowing');
-        setNowShowing(response?.data?.results)
+        setNowShowing(response?.data?.results);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     };
-    fetchNowShowing()
+    fetchNowShowing();
   }, []);
 
   console.log(nowShowing);
@@ -186,7 +186,9 @@ const Home = () => {
                     borderWidth="1"
                     bg={focus === data.id ? 'white' : 'transparent'}
                     borderColor={focus === data.id ? '#dedede' : 'white'}
-                    borderRadius="2">
+                    borderRadius="10"
+                    width="200"
+                    alignItems="center">
                     <Image
                       source={{uri: data.picture}}
                       alt={data.title}
@@ -268,7 +270,8 @@ const Home = () => {
                 marginRight: 20,
                 paddingVertical: 15,
               }}>
-              <View
+              <VStack justifyContent="center"
+                width="200"
                 style={{
                   alignItems: 'center',
                   paddingHorizontal: 20,
@@ -298,7 +301,7 @@ const Home = () => {
                     <Text>{data.genre}</Text>
                   </View>
                 </View>
-              </View>
+              </VStack>
               <View style={{alignItems: 'center'}}>
                 <NativeBaseProvider>
                   <Button ize="md">Details</Button>
