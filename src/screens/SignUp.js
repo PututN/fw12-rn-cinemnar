@@ -18,7 +18,7 @@ import * as Yup from 'yup';
 import YupPassword from 'yup-password';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useNavigation} from '@react-navigation/native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {registerAction} from '../redux/actions/authActions';
 
 YupPassword(Yup);
@@ -45,6 +45,8 @@ const SignUpSchema = Yup.object().shape({
 const SignUp = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  // const err = useSelector((state) => state.error)
+  // console.log(err)
   const [showPassword, setShowPassword] = React.useState(false);
   const {
     control,
@@ -250,6 +252,7 @@ const SignUp = () => {
           </VStack>
         </VStack>
         <Button
+          bgColor="#C539B4"
           mt="10"
           borderRadius="10"
           fontWeight="bold"
@@ -257,7 +260,9 @@ const SignUp = () => {
           title="Sign Up"
           disable={!isDirty}
           onPress={handleSubmit(SignUpSubmit)}>
-          Sign Up
+          <Text fontSize="lg" fontWeight="bold" color="white">
+            Sign Up
+          </Text>
         </Button>
         <HStack
           alignItems="center"
@@ -271,7 +276,7 @@ const SignUp = () => {
             <Text
               fontSize="lg"
               fontWeight="bold"
-              color="blue"
+              color="#852999"
               textDecorationLine="underline">
               Sign In
             </Text>

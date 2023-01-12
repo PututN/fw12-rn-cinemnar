@@ -31,7 +31,6 @@ const Profile = () => {
   //FETCHING PROFILE
   const [profile, setProfile] = React.useState({});
   const token = useSelector(state => state.auth.token);
-  // const decode = jwt_decode(token);
   const fetchProfile = async () => {
     try {
       // console.log('coba lagi pak')

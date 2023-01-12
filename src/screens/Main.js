@@ -55,36 +55,36 @@ const Main = () => {
           )}
           {token && (
             <>
-              {/* <Stack.Screen
+              <Stack.Screen
                 name="Home"
                 component={Home}
                 options={{headerShown: false}}
-              /> */}
-              {/* <Stack.Screen
+              />
+              <Stack.Screen
                 name="ViewAll"
                 component={ViewAll}
                 options={{headerShown: false}}
-              /> */}
-              {/* <Stack.Screen
+              />
+              <Stack.Screen
                 name="MovieDetail"
                 component={MovieDetail}
                 options={{headerShown: false}}
-              /> */}
-              {/* <Stack.Screen
+              />
+              <Stack.Screen
                 name="Order"
                 component={Order}
                 options={{headerShown: false}}
-              /> */}
-              {/* <Stack.Screen
+              />
+              <Stack.Screen
                 name="Payment"
                 component={Payment}
                 options={{headerShown: false}}
-              /> */}
-              {/* <Stack.Screen
+              />
+              <Stack.Screen
                 name="Profile"
                 component={Profile}
                 options={{headerShown: false}}
-              /> */}
+              />
               <Stack.Screen
                 name="History"
                 component={History}

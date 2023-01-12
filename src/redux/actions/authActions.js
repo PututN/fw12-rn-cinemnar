@@ -5,9 +5,9 @@ export const loginAction = createAsyncThunk(
   'auth/loginAction',
   async ({email, password}) => {
     try {
-      console.log("lapor pak")
+      console.log('lapor pak');
       const {data} = await http().post('/auth/login', {email, password});
-      console.log('masuk pak')
+      console.log('masuk pak');
       return data.result;
     } catch (error) {
       return error.response.data.message;
@@ -17,7 +17,10 @@ export const loginAction = createAsyncThunk(
 
 export const registerAction = createAsyncThunk(
   'auth/registerAction',
-  async ({firstName, lastName, email, password, phoneNumber}) => {
+  async (
+    {firstName, lastName, email, password, phoneNumber},
+    {rejectWithValue},
+  ) => {
     try {
       // console.log("lapor pak")
       const {data} = await http().post('/auth/register', {
@@ -30,7 +33,11 @@ export const registerAction = createAsyncThunk(
       // console.log("masuk boss")
       return data.results;
     } catch (error) {
-      return error.response.data.message;
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
     }
   },
 );

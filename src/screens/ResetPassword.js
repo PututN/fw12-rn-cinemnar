@@ -171,12 +171,15 @@ const ResetPassword = () => {
         <Button
           mt="10"
           borderRadius="10"
+          bgColor="#C539B4"
           fontWeight="bold"
           fontSize="3xl"
           title="Submit"
           disable={!isDirty}
           onPress={() => navigation.navigate('Home')}>
-          Submit
+          <Text fontSize="lg" fontWeight="bold" color="white">
+            Submit
+          </Text>
         </Button>
       </VStack>
     </ScrollView>

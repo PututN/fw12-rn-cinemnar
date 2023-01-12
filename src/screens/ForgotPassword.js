@@ -88,6 +88,7 @@ const ForgotPassword = () => {
         </VStack>
         <Button
           mt="10"
+          bgColor="#C539B4"
           borderRadius="10"
           fontWeight="bold"
           fontSize="3xl"
@@ -96,7 +97,9 @@ const ForgotPassword = () => {
           onPress={() => navigation.navigate('ResetPassword')}
           // onPress={handleSubmit(ForgotPasswordSubmit)}
         >
-          Send
+          <Text fontSize="lg" fontWeight="bold" color="white">
+            Send
+          </Text>
         </Button>
       </VStack>
     </ScrollView>

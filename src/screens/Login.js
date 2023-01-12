@@ -164,13 +164,16 @@ const Login = () => {
         </VStack>
         <Button
           mt="10"
+          bgColor="#C539B4"
           borderRadius="10"
           fontWeight="bold"
           fontSize="3xl"
           title="Sign In"
           disable={!isDirty}
           onPress={handleSubmit(loginSubmit)}>
-          Sign In
+          <Text fontSize="lg" fontWeight="bold" color="white">
+            Sign In
+          </Text>
         </Button>
         <VStack alignItems="center" mt="5" space="3">
           <HStack
@@ -187,7 +190,7 @@ const Login = () => {
             <Pressable onPress={() => navigation.navigate('ForgotPassword')}>
               <Text
                 fontSize="lg"
-                color="blue"
+                color="#852999"
                 fontWeight="bold"
                 textDecorationLine="underline">
                 Reset now
@@ -204,7 +207,7 @@ const Login = () => {
             <Pressable onPress={() => navigation.navigate('SignUp')}>
               <Text
                 fontSize="lg"
-                color="blue"
+                color="#852999"
                 fontWeight="bold"
                 textDecorationLine="underline">
                 {' '}
