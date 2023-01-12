@@ -104,10 +104,13 @@ const ViewAll = () => {
   // fetching all movie
   const [ViewAll, setViewAll] = useState([]);
   const [page, setPage] = useState(1);
+  const [sort, setSort] = useState('');
   useEffect(() => {
     const fetchViewAll = async () => {
       try {
-        const response = await http().get(`/movies?page=${page}&limit=4`);
+        const response = await http().get(
+          `/movies?page=${page}&limit=4&sort=${sort}&sortBy=title`,
+        );
         // console.log(response.data.pageInfo);
         setViewAll(response?.data?.results);
       } catch (error) {
@@ -115,7 +118,7 @@ const ViewAll = () => {
       }
     };
     fetchViewAll();
-  }, [page]);
+  }, [page, sort]);
   //handle page
   const pagePrev = () => {
     setPage(page - 1);
@@ -139,6 +142,8 @@ const ViewAll = () => {
             <View style={{marginVertical: 20, flexDirection: 'row'}}>
               <View style={{width: '30%', marginRight: 10}}>
                 <Select
+                  selectedValue={sort}
+                  onValueChange={value => setSort(value)}
                   variant="rounded"
                   accessibilityLabel="Sort"
                   placeholder="Sort"
@@ -147,8 +152,8 @@ const ViewAll = () => {
                     endIcon: <CheckIcon size={5} />,
                   }}
                   mt="1">
-                  <Select.Item label="A-Z" value="DESC" />
-                  <Select.Item label="Z-A" value="ASC" />
+                  <Select.Item label="A-Z" value="ASC" />
+                  <Select.Item label="Z-A" value="DESC" />
                 </Select>
               </View>
               <View style={{width: '60%'}}>
@@ -164,17 +169,16 @@ const ViewAll = () => {
               <View style={{flexDirection: 'row'}}>
                 {month.map(month => (
                   <View
-                    key={month.id}
-                    style={{
-                      paddingHorizontal: 20,
-                      paddingVertical: 15,
-                      borderStyle: 'solid',
-                      borderColor: 'black',
-                      borderWidth: 1,
-                      borderRadius: 10,
-                      marginRight: 10,
-                    }}>
-                    <Text style={{fontWeight: '800'}}>{month.time}</Text>
+                    p="3"
+                    mr="3"
+                    borderWidth="1"
+                    borderRadius="5"
+                    space="2"
+                    alignItems="center"
+                    justifyContent="center"
+                    width="100"
+                    key={month.id}>
+                    <Text fontWeight="bold" fontSize="lg">{month.time}</Text>
                   </View>
                 ))}
               </View>
@@ -205,7 +209,10 @@ const ViewAll = () => {
                           borderRadius="10"
                         />
                         <VStack alignItems="center" space="3">
-                          <Text fontSize="lg" fontWeight="bold" textAlign="center">
+                          <Text
+                            fontSize="lg"
+                            fontWeight="bold"
+                            textAlign="center">
                             {item.title}
                           </Text>
                           <Text textAlign="center">{item.genre}</Text>
