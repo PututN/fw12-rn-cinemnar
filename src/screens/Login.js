@@ -18,8 +18,8 @@ import * as Yup from 'yup';
 import YupPassword from 'yup-password';
 import {yupResolver} from '@hookform/resolvers/yup';
 import http from '../helpers/http';
-import {useDispatch} from 'react-redux';
-import {login as loginAction} from '../redux/reducers/auth';
+import {useDispatch, useSelector} from 'react-redux';
+import {logout} from '../redux/reducers/auth';
 import {useNavigation} from '@react-navigation/native';
 import {loginAction as testLogin} from '../redux/actions/authActions';
 
@@ -41,6 +41,13 @@ const LoginSchema = Yup.object().shape({
 const Login = () => {
   //NAVIGATION
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const err = useSelector(state => state.auth.error);
+  //err gone while refresh
+  React.useEffect(() => {
+    dispatch(logout());
+  }, []);
 
   //SHOWPASSWORD
   const [showPassword, setShowPassword] = React.useState(false);
@@ -61,7 +68,6 @@ const Login = () => {
 
   //INTEGRASI POST LOGIN
 
-  const dispatch = useDispatch();
   const loginSubmit = async form => {
     try {
       const {email, password} = form;
@@ -175,6 +181,17 @@ const Login = () => {
             Sign In
           </Text>
         </Button>
+        {err && (
+          <Text
+            textAlign="center"
+            color="red.500"
+            fontSize="lg"
+            fontWeight="bold"
+            mt="3">
+            {err}
+          </Text>
+        )}
+
         <VStack alignItems="center" mt="5" space="3">
           <HStack
             alignItems="center"

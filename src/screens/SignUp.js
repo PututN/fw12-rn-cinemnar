@@ -68,9 +68,6 @@ const SignUp = () => {
       phoneNumber: '',
     },
   });
-  // const SignUpSubmit = data => {
-  //   Alert.alert('data', JSON.stringify(data));
-  // };
 
   const SignUpSubmit = async value => {
     try {

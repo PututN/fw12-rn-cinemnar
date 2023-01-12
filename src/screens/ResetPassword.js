@@ -17,11 +17,15 @@ import * as Yup from 'yup';
 import YupPassword from 'yup-password';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import {ResetPasswordAction} from '../redux/actions/authActions';
 
 YupPassword(Yup);
 
 const ResetPasswordSchema = Yup.object().shape({
-  email: Yup.string().email('Invalid email').required('Email is required'),
+  code: Yup.string()
+    .required('Code is required')
+    .matches(/^[0-9]+$/, 'Code must be only number'),
   password: Yup.string()
     .password()
     .min(6, 'Password must be at least 6 characters')
@@ -37,6 +41,7 @@ const ResetPasswordSchema = Yup.object().shape({
 });
 
 const ResetPassword = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const [showPassword1, setShowPassword1] = React.useState(false);
   const [showPassword2, setShowPassword2] = React.useState(false);
@@ -50,11 +55,23 @@ const ResetPassword = () => {
     defaultValues: {
       email: '',
       password: '',
+      code: '',
+      confirmPassword: '',
     },
   });
-  const ResetPasswordSubmit = data => {
-    Alert.alert('data', JSON.stringify(data));
+
+  //integrate with BE
+  const email = useSelector(state => state.auth.email.email);
+  const ResetPasswordSubmit = async form => {
+    try {
+      const {code, password, confirmPassword} = form;
+      dispatch(ResetPasswordAction({email, code, password, confirmPassword}));
+      // navigation.navigate('Login');
+    } catch (error) {
+      console.log(error);
+    }
   };
+
   return (
     <ScrollView>
       <VStack p="8">
@@ -76,6 +93,32 @@ const ResetPassword = () => {
           </Text>
         </VStack>
         <VStack space="5">
+          <VStack space="2">
+            <Controller
+              control={control}
+              render={({field: {onChange, onBlur, value}}) => (
+                <VStack space="2">
+                  <Text fontSize="lg">Code</Text>
+                  <Input
+                    borderColor="black"
+                    borderRadius="10"
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                    placeholder="Write your code"
+                  />
+                </VStack>
+              )}
+              name="code"
+            />
+            {errors.code && (
+              <Text
+                style={{color: 'red', fontWeight: 'bold', marginBottom: 10}}>
+                {errors.code.message}
+              </Text>
+            )}
+          </VStack>
+
           <VStack space="2">
             <Controller
               control={control}
@@ -176,7 +219,8 @@ const ResetPassword = () => {
           fontSize="3xl"
           title="Submit"
           disable={!isDirty}
-          onPress={() => navigation.navigate('Home')}>
+          // onPress={() => navigation.navigate('Home')}
+          onPress={handleSubmit(ResetPasswordSubmit)}>
           <Text fontSize="lg" fontWeight="bold" color="white">
             Submit
           </Text>

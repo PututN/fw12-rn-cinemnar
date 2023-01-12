@@ -178,7 +178,9 @@ const ViewAll = () => {
                     justifyContent="center"
                     width="100"
                     key={month.id}>
-                    <Text fontWeight="bold" fontSize="lg">{month.time}</Text>
+                    <Text fontWeight="bold" fontSize="lg">
+                      {month.time}
+                    </Text>
                   </View>
                 ))}
               </View>
@@ -218,7 +220,9 @@ const ViewAll = () => {
                           <Text textAlign="center">{item.genre}</Text>
                           <Button
                             bgColor="#C539B4"
-                            onPress={() => navigation.navigate('MovieDetail')}>
+                            onPress={() =>
+                              navigation.navigate('MovieDetail', {id: item.id})
+                            }>
                             <Text fontSize="lg" fontWeight="bold" color="white">
                               Details
                             </Text>

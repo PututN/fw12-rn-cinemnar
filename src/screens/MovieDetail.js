@@ -19,10 +19,25 @@ import {useNavigation} from '@react-navigation/native';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
-const MovieDetail = () => {
+const MovieDetail = ({id}) => {
   const navigation = useNavigation();
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
+
+  //FETCHING MOVIE ID
+  const [movieId, setMovieId] = React.useState({});
+  const fetchMovieId = async () => {
+    try {
+      const response = await http().get(`/movie/${id}`);
+      setMovieId(response?.data?.results);
+    } catch (error) {
+      if (error) console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchMovieId();
+  }, []);
+  console.log(movieId);
   return (
     <ScrollView>
       <Navbar />
@@ -59,7 +74,7 @@ const MovieDetail = () => {
                 Relase date
               </Text>
               <Text fontWeight="600" flexWrap="wrap" fontSize="lg">
-                June 28, 2017
+                {movieId?.releaseDate}
               </Text>
             </VStack>
             <VStack space="2">
@@ -67,7 +82,7 @@ const MovieDetail = () => {
                 Duration
               </Text>
               <Text fontWeight="600" fontSize="lg" flexWrap="wrap">
-                2 hrs 13 min
+                {movieId?.duration}
               </Text>
             </VStack>
           </VStack>
@@ -77,7 +92,7 @@ const MovieDetail = () => {
                 Directed by
               </Text>
               <Text fontWeight="600" fontSize="lg" flexWrap="wrap">
-                Jon Watss
+                {movieId?.director}
               </Text>
             </VStack>
             <VStack space="2">
@@ -85,7 +100,7 @@ const MovieDetail = () => {
                 Casts
               </Text>
               <Text fontWeight="600" fontSize="lg" flexWrap="wrap">
-                Tom Holland, Robert Downey Jr..etc.
+               {movieId?.casts}
               </Text>
             </VStack>
           </VStack>
@@ -96,13 +111,7 @@ const MovieDetail = () => {
             Synopsis
           </Text>
           <Text color="#4E4B66">
-            Thrilled by his experience with the Avengers, Peter returns home,
-            where he lives with his Aunt May, under the watchful eye of his new
-            mentor Tony Stark, Peter tries to fall back into his normal daily
-            routine - distracted by thoughts of proving himself to be more than
-            just your friendly neighborhood Spider-Man - but when the Vulture
-            emerges as a new villain, everything that Peter holds most important
-            will be threatened.{' '}
+            {movieId?.synopsis}
           </Text>
         </VStack>
       </VStack>

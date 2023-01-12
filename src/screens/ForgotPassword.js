@@ -16,6 +16,9 @@ import * as Yup from 'yup';
 import YupPassword from 'yup-password';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {forgotPassword} from '../redux/reducers/auth';
+import {forgotPasswordAction} from '../redux/actions/authActions';
 
 YupPassword(Yup);
 
@@ -24,6 +27,7 @@ const ForgotPasswordSchema = Yup.object().shape({
 });
 
 const ForgotPassword = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const {
     control,
@@ -36,9 +40,18 @@ const ForgotPassword = () => {
       email: '',
     },
   });
-  const ForgotPasswordSubmit = data => {
-    Alert.alert('data', JSON.stringify(data));
+  //redux email
+  const ForgotPasswordSubmit = async form => {
+    try {
+      const {email} = form;
+      dispatch(forgotPassword({email}));
+      dispatch(forgotPasswordAction({email}));
+      navigation.navigate('ResetPassword');
+    } catch (error) {
+      console.log(error);
+    }
   };
+
   return (
     <ScrollView>
       <VStack p="8">
@@ -94,9 +107,8 @@ const ForgotPassword = () => {
           fontSize="3xl"
           title="Send"
           disable={!isDirty}
-          onPress={() => navigation.navigate('ResetPassword')}
-          // onPress={handleSubmit(ForgotPasswordSubmit)}
-        >
+          // onPress={() => navigation.navigate('ResetPassword')}
+          onPress={handleSubmit(ForgotPasswordSubmit)}>
           <Text fontSize="lg" fontWeight="bold" color="white">
             Send
           </Text>
