@@ -14,11 +14,10 @@ import Navbar from '../components/Navbar';
 import {ArrowDown, ArrowRight} from 'react-native-feather';
 import CinemaOne from '../images/imgCineOne.png';
 import Footer from '../components/Footer';
-import {useNavigation} from '@react-navigation/native'
-
+import {useNavigation} from '@react-navigation/native';
 
 const Order = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   return (
     <ScrollView>
       <Navbar />
@@ -600,7 +599,7 @@ const Order = () => {
                 <Text fontSize="lg">1 - 14</Text>
               </HStack>
               <HStack space="3" alignItems="center">
-                <Box w="5" h="5" borderRadius="5" bgColor="#5F2EEA" />
+                <Box w="5" h="5" borderRadius="5" bgColor="#C539B4" />
                 <Text fontSize="lg" color="#4E4B66">
                   Selected
                 </Text>
@@ -661,13 +660,21 @@ const Order = () => {
             <Text fontSize="2xl" fontWeight="bold">
               Total Payment
             </Text>
-            <Text fontSize="3xl" fontWeight="bold" color="#5F2EEA">
+            <Text fontSize="3xl" fontWeight="bold" color="#C539B4">
               $30
             </Text>
           </HStack>
         </VStack>
-        <Button mt="10" borderRadius="10" fontWeight="bold" fontSize="3xl" onPress={()=>navigation.navigate('Payment')}>
-          Checkout Now
+        <Button
+          mt="10"
+          bgColor="#C539B4"
+          borderRadius="10"
+          fontWeight="bold"
+          fontSize="3xl"
+          onPress={() => navigation.navigate('Payment')}>
+          <Text fontSize="lg" fontWeight="bold" color="white">
+            Checkout Now
+          </Text>
         </Button>
       </VStack>
       <Footer />
