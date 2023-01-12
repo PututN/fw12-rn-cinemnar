@@ -61,10 +61,10 @@ const Payment = () => {
   return (
     <ScrollView>
       <Navbar />
-      <VStack bg="#C539B4">
+      <VStack bg="#E5E5E5">
         <HStack
           justifyContent="space-between"
-          bg="darkBlue.500"
+          bg="#C539B4"
           p="5"
           borderBottomRadius="20">
           <Text color="white" fontWeight="bold" fontSize="lg">
@@ -229,11 +229,14 @@ const Payment = () => {
         </VStack>
         <Button
           mb="10"
+          bgColor="#C539B4"
           borderRadius="10"
           fontWeight="bold"
           fontSize="3xl"
           onPress={() => navigation.navigate('History')}>
-          Pay your order
+          <Text fontSize="lg" fontWeight="bold" color="white">
+            Pay your order
+          </Text>
         </Button>
       </VStack>
       <Footer />

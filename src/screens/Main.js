@@ -70,11 +70,11 @@ const Main = () => {
                 component={MovieDetail}
                 options={{headerShown: false}}
               /> */}
-              <Stack.Screen
+              {/* <Stack.Screen
                 name="Order"
                 component={Order}
                 options={{headerShown: false}}
-              />
+              /> */}
               <Stack.Screen
                 name="Payment"
                 component={Payment}
