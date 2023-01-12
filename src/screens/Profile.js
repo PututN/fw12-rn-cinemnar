@@ -10,19 +10,47 @@ import {
   Pressable,
   ScrollView,
 } from 'native-base';
-import React, {Component} from 'react';
+import React, {useEffect} from 'react';
 import {Eye, EyeOff} from 'react-native-feather';
 import {useNavigation} from '@react-navigation/native';
-
+import {useDispatch, useSelector} from 'react-redux';
+import {logout} from '../redux/reducers/auth';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import http from '../helpers/http';
 
 import lion from '../images/imgLionKing.png';
+import user from '../images/user.png';
 
 const Profile = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const [showPassword, setShowPassword] = React.useState(false);
   const [showPassword2, setShowPassword2] = React.useState(false);
+
+  //FETCHING PROFILE
+  const [profile, setProfile] = React.useState({});
+  const token = useSelector(state => state.auth.token);
+  // const decode = jwt_decode(token);
+  const fetchProfile = async () => {
+    try {
+      // console.log('coba lagi pak')
+      const response = await http(token).get('/profile');
+      // console.log('masuk ga')
+      // console.log(response.data)
+      setProfile(response?.data?.results);
+    } catch (error) {
+      if (error) console.log(error);
+    }
+  };
+
+  // console.log(token)
+  useEffect(() => {
+    if (token) {
+      fetchProfile();
+    }
+  }, [token]);
+  // console.log(profile)
   return (
     <ScrollView>
       <Navbar />
@@ -32,7 +60,9 @@ const Profile = () => {
           bg="#C539B4"
           p="5"
           borderBottomRadius="20">
-          <Pressable onPress={() => navigation.navigate('Profile')} bgColor="#C539B4">
+          <Pressable
+            onPress={() => navigation.navigate('Profile')}
+            bgColor="#C539B4">
             <Text
               color="white"
               fontWeight="bold"
@@ -43,7 +73,9 @@ const Profile = () => {
               Details Account
             </Text>
           </Pressable>
-          <Pressable onPress={() => navigation.navigate('History')} bgColor="#C539B4">
+          <Pressable
+            onPress={() => navigation.navigate('History')}
+            bgColor="#C539B4">
             <Text color="#AAAAAA" fontWeight="bold" fontSize="lg">
               Order History
             </Text>
@@ -57,24 +89,41 @@ const Profile = () => {
           </Text>
           <VStack alignItems="center" space="3">
             <Box shadow="9">
-              <Image
-                source={lion}
-                alt="profile"
-                width="100"
-                height="100"
-                borderRadius="full"
-                shadow="9"
-              />
+              {profile?.picture ? (
+                <Image
+                  source={{uri: profile?.picture}}
+                  alt={profile?.firstName}
+                  width="100"
+                  height="100"
+                  borderRadius="full"
+                  shadow="9"
+                />
+              ) : (
+                <Image
+                  source={user}
+                  alt={profile?.firstName}
+                  width="100"
+                  height="100"
+                  borderRadius="full"
+                  shadow="9"
+                />
+              )}
             </Box>
             <Text fontSize="xl" fontWeight="bold">
-              Jonas El Rodrigues
+              {profile?.firstName}  {profile?.lastName}
             </Text>
             <Text color="#4E4B66">Moviegoers</Text>
           </VStack>
           <Box borderWidth="1" borderColor="#DEDEDE"></Box>
           <Box alignItems="center" p="5">
-            <Button width="50%" borderRadius="10">
-              Log out
+            <Button
+              width="50%"
+              borderRadius="10"
+              bgColor="#C539B4"
+              onPress={() => dispatch(logout())}>
+              <Text fontSize="lg" fontWeight="bold" color="white">
+                Log out
+              </Text>
             </Button>
           </Box>
         </VStack>
@@ -124,8 +173,15 @@ const Profile = () => {
             </HStack>
           </VStack>
         </VStack>
-        <Button mb="10" borderRadius="10" fontWeight="bold" fontSize="3xl">
-          Update Changes
+        <Button
+          mb="10"
+          borderRadius="10"
+          fontWeight="bold"
+          fontSize="3xl"
+          bgColor="#C539B4">
+          <Text fontSize="lg" fontWeight="bold" color="white">
+            Update Changes
+          </Text>
         </Button>
 
         <VStack bg="white" p="5" borderRadius="10" space="5">
@@ -183,8 +239,15 @@ const Profile = () => {
           </VStack>
         </VStack>
 
-        <Button mb="10" borderRadius="10" fontWeight="bold" fontSize="3xl">
-          Update Changes
+        <Button
+          mb="10"
+          borderRadius="10"
+          fontWeight="bold"
+          fontSize="3xl"
+          bgColor="#C539B4">
+          <Text fontSize="lg" fontWeight="bold" color="white">
+            Update Changes
+          </Text>
         </Button>
       </VStack>
       <Footer />

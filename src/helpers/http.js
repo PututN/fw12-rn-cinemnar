@@ -3,7 +3,9 @@ import axios from 'axios';
 const http = token => {
   const headers = {};
   if (token) {
-    headers.authorization = 'Bearer' + token;
+    // console.log(token)
+    // console.log('masuk pak')
+    headers.authorization = 'Bearer ' + token;
   }
   const instance = axios.create({
     // baseURL: 'http://localhost:8888',

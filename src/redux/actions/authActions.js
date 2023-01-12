@@ -5,7 +5,9 @@ export const loginAction = createAsyncThunk(
   'auth/loginAction',
   async ({email, password}) => {
     try {
+      console.log("lapor pak")
       const {data} = await http().post('/auth/login', {email, password});
+      console.log('masuk pak')
       return data.result;
     } catch (error) {
       return error.response.data.message;
