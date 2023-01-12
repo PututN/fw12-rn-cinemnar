@@ -29,10 +29,10 @@ const Profile = () => {
       <VStack bg="#E5E5E5">
         <HStack
           justifyContent="space-around"
-          bg="darkBlue.500"
+          bg="#C539B4"
           p="5"
           borderBottomRadius="20">
-          <Pressable onPress={() => navigation.navigate('Profile')} bgColor="darkBlue.500">
+          <Pressable onPress={() => navigation.navigate('Profile')} bgColor="#C539B4">
             <Text
               color="white"
               fontWeight="bold"
@@ -43,7 +43,7 @@ const Profile = () => {
               Details Account
             </Text>
           </Pressable>
-          <Pressable onPress={() => navigation.navigate('History')} bgColor="darkBlue.500">
+          <Pressable onPress={() => navigation.navigate('History')} bgColor="#C539B4">
             <Text color="#AAAAAA" fontWeight="bold" fontSize="lg">
               Order History
             </Text>

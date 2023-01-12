@@ -21,18 +21,18 @@ const History = () => {
   return (
     <ScrollView>
       <Navbar />
-      <VStack bg="#E5E5E5">
+      <VStack bg="#C539B4">
         <HStack
           justifyContent="space-around"
-          bg="darkBlue.500"
+          bg="#C539B4"
           p="5"
           borderBottomRadius="20">
-          <Button onPress={() => navigation.navigate('Profile')} bgColor="darkBlue.500">
+          <Button onPress={() => navigation.navigate('Profile')} bgColor="#C539B4">
             <Text color="#AAAAAA" fontWeight="bold" fontSize="lg">
               Details Account
             </Text>
           </Button>
-          <Button onPress={() => navigation.navigate('History')} bgColor="darkBlue.500">
+          <Button onPress={() => navigation.navigate('History')} bgColor="#C539B4">
             <Text
               color="white"
               fontWeight="bold"

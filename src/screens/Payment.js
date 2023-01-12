@@ -61,7 +61,7 @@ const Payment = () => {
   return (
     <ScrollView>
       <Navbar />
-      <VStack bg="#E5E5E5">
+      <VStack bg="#C539B4">
         <HStack
           justifyContent="space-between"
           bg="darkBlue.500"

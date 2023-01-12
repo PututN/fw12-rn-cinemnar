@@ -23,7 +23,7 @@ const Navbar = () => {
     <>
       <HStack
         justifyContent="space-between"
-        bg="darkBlue.500"
+        bg="#C539B4"
         alignItems="center"
         px="5"
         py="5">

@@ -115,7 +115,7 @@ const Home = () => {
     fetchNowShowing();
   }, []);
 
-  console.log(nowShowing);
+  // console.log(nowShowing);
   //fetch up coming
   const [upComing, setUpComing] = useState([]);
   useEffect(() => {
@@ -189,6 +189,7 @@ const Home = () => {
                     borderColor={focus === data.id ? '#dedede' : 'white'}
                     borderRadius="10"
                     width="200"
+                    height="300"
                     alignItems="center">
                     <Image
                       source={{uri: data.picture}}
@@ -210,10 +211,13 @@ const Home = () => {
                           space="1"
                           mb="5"
                           alignItems="center">
-                          <Text fontSize="lg" fontWeight="bold">
+                          <Text
+                            fontSize="lg"
+                            fontWeight="bold"
+                            textAlign="center">
                             {data.title}
                           </Text>
-                          <Text>{data.genre}</Text>
+                          <Text textAlign="center">{data.genre}</Text>
                           <Button
                             bgColor="#C539B4"
                             width="50%"
@@ -253,8 +257,13 @@ const Home = () => {
               borderWidth="1"
               borderRadius="5"
               space="2"
+              alignItems="center"
+              justifyContent="center"
+              width="100"
               key={month.id}>
-              <Text fontWeight="bold">{month.time}</Text>
+              <Text fontWeight="bold" fontSize="lg">
+                {month.time}
+              </Text>
             </HStack>
           ))}
         </ScrollView>
@@ -278,6 +287,7 @@ const Home = () => {
                 paddingVertical: 15,
               }}>
               <VStack
+                space="5"
                 justifyContent="center"
                 width="200"
                 style={{
@@ -292,32 +302,30 @@ const Home = () => {
                   height="250px"
                   borderRadius="10"
                 />
-                <View
+                <VStack space="3"
                   style={{
                     alignContent: 'center',
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}>
                   <Text
+                    textAlign="center"
                     style={{
                       fontSize: 20,
                       fontWeight: 'bold',
-                      marginVertical: 10,
                     }}>
                     {data.title}
                   </Text>
                   <View>
-                    <Text>{data.genre}</Text>
+                    <Text textAlign="center">{data.genre}</Text>
                   </View>
-                </View>
-              </VStack>
-              <View style={{alignItems: 'center'}}>
+                </VStack>
                 <Button bgColor="#C539B4">
                   <Text fontSize="lg" fontWeight="bold" color="white">
                     Details
                   </Text>
                 </Button>
-              </View>
+              </VStack>
             </View>
           ))}
         </ScrollView>
