@@ -18,7 +18,7 @@ export const registerAction = createAsyncThunk(
   async ({firstName, lastName, email, password, phoneNumber}) => {
     try {
       console.log("lapor pak")
-      const data = await http().post('/auth/register', {
+      const {data} = await http().post('/auth/register', {
         firstName,
         lastName,
         email,

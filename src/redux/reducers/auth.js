@@ -34,6 +34,21 @@ const authReducer = createSlice({
       state.loading = false;
       
     });
+    build.addCase(registerAction.pending, (state, action) => {
+      state.loading = true;
+    });
+    build.addCase(registerAction.fulfilled, (state, action) => {
+      // console.log(action)
+      state.token = action.payload.token;
+      state.loading = false;
+      state.error = null;
+    });
+    build.addCase(registerAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+      
+    });
+
   },
 });
 

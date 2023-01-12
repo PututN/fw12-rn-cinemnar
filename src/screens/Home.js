@@ -119,15 +119,16 @@ const Home = () => {
   //fetch up coming
   const [upComing, setUpComing] = useState([]);
   useEffect(() => {
-    fetchUpComing().then(data => {
-      setUpComing(data?.results);
-    });
+    const fetchUpComing = async () => {
+      try {
+        const response = await http().get('/movies/upComingMovies');
+        setUpComing(response?.data?.results);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchUpComing();
   }, []);
-
-  const fetchUpComing = async () => {
-    const {data} = await http().get('/movies/upComingMovies');
-    return data;
-  };
 
   //dropdown image now showing
   const [focus, setFocus] = React.useState(null);
@@ -147,7 +148,7 @@ const Home = () => {
       {/* TOP SECTION */}
       <VStack my="30" justifyContent="center" space="5" px="5">
         <Text fontSize="lg">Nearest Cinema, Newest Movie,</Text>
-        <Text fontSize="5xl" color="#5F2EEA">
+        <Text fontSize="5xl" color="#EF9A53">
           Find out now!
         </Text>
         <Image
@@ -158,20 +159,20 @@ const Home = () => {
         />
       </VStack>
       {/* NOW SHOWING */}
-      <VStack bg="#D6D8E7">
+      <VStack bg="#EF9A53">
         <HStack
           px="5"
           py="10"
           justifyContent="space-between"
           alignItems="center">
-          <Text fontSize="2xl" fontWeight="bold" color="#752EEA">
+          <Text fontSize="2xl" fontWeight="bold" color="black">
             Now Showing
           </Text>
           <Pressable
             onPress={() => navigation.navigate('ViewAll')}
             fontSize="lg"
-            color="blue">
-            <Text fontSize="lg" color="blue">
+            color="white">
+            <Text fontSize="lg" color="black" textDecorationLine="underline">
               View All
             </Text>
           </Pressable>
@@ -194,8 +195,9 @@ const Home = () => {
                       alt={data.title}
                       width="160px"
                       height="250px"
+                      borderRadius="10"
                     />
-                    <Box position="relative">
+                    <Box position="relative" mb="5">
                       {' '}
                       {focus === data.id && (
                         <VStack
@@ -204,16 +206,21 @@ const Home = () => {
                           position="absolute"
                           ml="-2"
                           p="4"
+                          right="-98"
                           space="1"
+                          mb="5"
                           alignItems="center">
                           <Text fontSize="lg" fontWeight="bold">
                             {data.title}
                           </Text>
                           <Text>{data.genre}</Text>
                           <Button
+                            bgColor="#C539B4"
                             width="50%"
                             onPress={() => navigation.navigate('MovieDetail')}>
-                            Details
+                            <Text fontSize="lg" fontWeight="bold" color="white">
+                              Details
+                            </Text>
                           </Button>
                         </VStack>
                       )}
@@ -231,7 +238,7 @@ const Home = () => {
           Upcoming Movies
         </Text>
         <Pressable onPress={() => navigation.navigate('ViewAll')}>
-          <Text fontSize="lg" color="blue">
+          <Text fontSize="lg" color="blue" textDecorationLine="underline">
             View All
           </Text>
         </Pressable>
@@ -270,7 +277,8 @@ const Home = () => {
                 marginRight: 20,
                 paddingVertical: 15,
               }}>
-              <VStack justifyContent="center"
+              <VStack
+                justifyContent="center"
                 width="200"
                 style={{
                   alignItems: 'center',
@@ -282,6 +290,7 @@ const Home = () => {
                   alt={data.title}
                   width="160px"
                   height="250px"
+                  borderRadius="10"
                 />
                 <View
                   style={{
@@ -303,9 +312,11 @@ const Home = () => {
                 </View>
               </VStack>
               <View style={{alignItems: 'center'}}>
-                <NativeBaseProvider>
-                  <Button ize="md">Details</Button>
-                </NativeBaseProvider>
+                <Button bgColor="#C539B4">
+                  <Text fontSize="lg" fontWeight="bold" color="white">
+                    Details
+                  </Text>
+                </Button>
               </View>
             </View>
           ))}
@@ -326,15 +337,18 @@ const Home = () => {
             paddingVertical: 50,
           }}>
           <Text fontSize="lg">Be the vanguard of the</Text>
-          <Text fontSize="5xl" style={{color: '#5F2EEA', marginBottom: 30}}>
+          <Text fontSize="5xl" style={{color: '#EF9A53', marginBottom: 30}}>
             Moviegoers
           </Text>
           <Input variant="outline" placeholder="Enter Your Email" />
           <Button
+            bgColor="#C539B4"
             size="md"
             variant="solid"
             style={{width: '100%', marginTop: 20, marginBottom: 30}}>
-            Join now
+            <Text fontSize="lg" fontWeight="bold" color="white">
+              Join now
+            </Text>
           </Button>
           <Text style={{color: '#6E7191', textAlign: 'center'}}>
             By joining you as a Tickitz member, we will always send you the

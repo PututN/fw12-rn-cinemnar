@@ -15,6 +15,7 @@ import Payment from './Payment';
 import Profile from './Profile';
 import History from './History';
 import TicketResult from './TicketResult';
+import TestingImage from './TestingImage';
 
 const Stack = createNativeStackNavigator();
 const Main = () => {
@@ -25,6 +26,11 @@ const Main = () => {
         <Stack.Navigator>
           {!token && (
             <>
+              {/* <Stack.Screen
+                name="TestingImage"
+                component={TestingImage}
+                options={{headerShown: false}}
+              /> */}
               <Stack.Screen
                 name="SignUp"
                 component={SignUp}
