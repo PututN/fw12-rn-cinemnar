@@ -65,7 +65,7 @@ export const forgotPasswordAction = createAsyncThunk(
 );
 
 export const ResetPasswordAction = createAsyncThunk(
-  'auth/forgotPassword',
+  'auth/resetPassword',
   async ({code, password, email, confirmPassword}, {rejectWithValue}) => {
     try {
       // console.log('lapor pak');

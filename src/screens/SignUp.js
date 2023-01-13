@@ -47,6 +47,7 @@ const SignUp = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const err = useSelector(state => state.auth.error);
+  const loading = useSelector(state => state.auth.loading)
   //err gone while refresh
   useEffect(() => {
     dispatch(logout());
@@ -276,6 +277,17 @@ const SignUp = () => {
             {err}
           </Text>
         )}
+        {loading === true && (
+          <Text
+            textAlign="center"
+            color="blue.500"
+            fontSize="lg"
+            fontWeight="bold"
+            mt="3">
+            Loading...
+          </Text>
+        )}
+
         <HStack
           alignItems="center"
           mt="5"

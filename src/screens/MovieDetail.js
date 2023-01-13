@@ -138,6 +138,7 @@ const MovieDetail = ({id}) => {
         </Button>
         <DatePicker
           modal
+          mode="date"
           open={open}
           date={date}
           onConfirm={date => {

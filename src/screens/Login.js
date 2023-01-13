@@ -44,6 +44,8 @@ const Login = () => {
   const dispatch = useDispatch();
 
   const err = useSelector(state => state.auth.error);
+  const loading = useSelector(state => state.auth.loading);
+
   //err gone while refresh
   React.useEffect(() => {
     dispatch(logout());
@@ -189,6 +191,16 @@ const Login = () => {
             fontWeight="bold"
             mt="3">
             {err}
+          </Text>
+        )}
+        {loading === true && (
+          <Text
+            textAlign="center"
+            color="blue.500"
+            fontSize="lg"
+            fontWeight="bold"
+            mt="3">
+            Loading...
           </Text>
         )}
 

@@ -16,8 +16,8 @@ import * as Yup from 'yup';
 import YupPassword from 'yup-password';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useNavigation} from '@react-navigation/native';
-import {useDispatch} from 'react-redux';
-import {forgotPassword} from '../redux/reducers/auth';
+import {useDispatch, useSelector} from 'react-redux';
+import {setEmail} from '../redux/reducers/auth';
 import {forgotPasswordAction} from '../redux/actions/authActions';
 
 YupPassword(Yup);
@@ -41,12 +41,17 @@ const ForgotPassword = () => {
     },
   });
   //redux email
+  const err = useSelector(state => state.auth.error);
+  const loading = useSelector(state => state.auth.loading);
   const ForgotPasswordSubmit = async form => {
     try {
       const {email} = form;
-      dispatch(forgotPassword({email}));
+      dispatch(setEmail({email}));
       dispatch(forgotPasswordAction({email}));
-      navigation.navigate('ResetPassword');
+      if (!err) {
+        navigation.navigate('ResetPassword');
+      }
+      navigation.navigate('ForgotPassword');
     } catch (error) {
       console.log(error);
     }
@@ -113,6 +118,26 @@ const ForgotPassword = () => {
             Send
           </Text>
         </Button>
+        {err && (
+          <Text
+            textAlign="center"
+            color="red.500"
+            fontSize="lg"
+            fontWeight="bold"
+            mt="3">
+            {err}
+          </Text>
+        )}
+        {loading === true && (
+          <Text
+            textAlign="center"
+            color="blue.500"
+            fontSize="lg"
+            fontWeight="bold"
+            mt="3">
+            Loading...
+          </Text>
+        )}
       </VStack>
     </ScrollView>
   );

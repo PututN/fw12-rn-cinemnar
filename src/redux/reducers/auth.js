@@ -11,14 +11,14 @@ const initialState = {
   error: '',
   email: '',
   message: '',
-  // loading: false,
+  loading: false,
 };
 
 const authReducer = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    forgotPassword: (state, action) => {
+    setEmail: (state, action) => {
       state.email = action.payload;
     },
     logout: (state, action) => {
@@ -88,6 +88,6 @@ const authReducer = createSlice({
   },
 });
 
-export const {logout, login, forgotPassword} = authReducer.actions;
+export const {logout, login, setEmail} = authReducer.actions;
 
 export default authReducer.reducer;
