@@ -115,7 +115,6 @@ const Home = () => {
     fetchNowShowing();
   }, []);
 
-  // console.log(nowShowing);
   //fetch up coming
   const [upComing, setUpComing] = useState([]);
   useEffect(() => {
@@ -221,7 +220,9 @@ const Home = () => {
                           <Button
                             bgColor="#C539B4"
                             width="50%"
-                            onPress={() => navigation.navigate('MovieDetail')}>
+                            onPress={() =>
+                              navigation.navigate('MovieDetail', {idMovie: data.id})
+                            }>
                             <Text fontSize="lg" fontWeight="bold" color="white">
                               Details
                             </Text>
@@ -302,7 +303,8 @@ const Home = () => {
                   height="250px"
                   borderRadius="10"
                 />
-                <VStack space="3"
+                <VStack
+                  space="3"
                   style={{
                     alignContent: 'center',
                     alignItems: 'center',
@@ -320,7 +322,11 @@ const Home = () => {
                     <Text textAlign="center">{data.genre}</Text>
                   </View>
                 </VStack>
-                <Button bgColor="#C539B4">
+                <Button
+                  bgColor="#C539B4"
+                  onPress={() =>
+                    navigation.navigate('MovieDetail', {idMovie: data.id})
+                  }>
                   <Text fontSize="lg" fontWeight="bold" color="white">
                     Details
                   </Text>

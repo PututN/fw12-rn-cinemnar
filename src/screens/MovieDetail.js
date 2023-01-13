@@ -14,12 +14,16 @@ import {Calendar, MapPin} from 'react-native-feather';
 import Spiderman from '../images/imgSpiderman.png';
 import DatePicker from 'react-native-date-picker';
 import ebv from '../images/imgEbv.png';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import http from '../helpers/http';
 
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
-const MovieDetail = ({id}) => {
+const MovieDetail = ({idMovie}) => {
+  const route = useRoute();
+
+  const getId = route.params.idMovie;
   const navigation = useNavigation();
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
@@ -28,16 +32,27 @@ const MovieDetail = ({id}) => {
   const [movieId, setMovieId] = React.useState({});
   const fetchMovieId = async () => {
     try {
-      const response = await http().get(`/movie/${id}`);
+      console.log('masuk pak');
+      const response = await http().get(`/movies/${getId}`);
       setMovieId(response?.data?.results);
     } catch (error) {
       if (error) console.log(error);
     }
   };
-  useEffect(() => {
+  React.useEffect(() => {
     fetchMovieId();
   }, []);
-  console.log(movieId);
+  //setting release date
+  let NewDate = new Date(movieId?.releaseDate).toDateString();
+  let month = NewDate.split(' ')[1];
+  let newDate = NewDate.split(' ')[2];
+  let year = NewDate.split(' ')[3];
+
+  //Setting duration
+  let duration = movieId?.duration;
+  let Hour = String(duration).split(':').slice(0, 1).join(':');
+  let Minute = String(duration).split(':')[1];
+
   return (
     <ScrollView>
       <Navbar />
@@ -49,20 +64,21 @@ const MovieDetail = ({id}) => {
           borderColor="#DEDEDE"
           marginY="5">
           <Image
-            source={Spiderman}
-            alt="Spiderman"
+            source={{uri: movieId?.picture}}
+            alt="picture"
             width="200"
             height="300"
             resizeMode="cover"
+            borderRadius="10"
           />
         </Box>
         {/* DETAILS MOVIE */}
         <VStack space="2">
           <Text fontSize="2xl" fontWeight="bold" textAlign="center">
-            Spider-Man: Homecoming
+            {movieId?.title}
           </Text>
           <Text fontWeight="normal" color="#4E4B66" textAlign="center">
-            Adventure, Action, Sci-Fi
+            {movieId?.genre}
           </Text>
         </VStack>
       </VStack>
@@ -74,7 +90,7 @@ const MovieDetail = ({id}) => {
                 Relase date
               </Text>
               <Text fontWeight="600" flexWrap="wrap" fontSize="lg">
-                {movieId?.releaseDate}
+                {month} {newDate}, {year}
               </Text>
             </VStack>
             <VStack space="2">
@@ -82,7 +98,7 @@ const MovieDetail = ({id}) => {
                 Duration
               </Text>
               <Text fontWeight="600" fontSize="lg" flexWrap="wrap">
-                {movieId?.duration}
+                {Hour} Hours {Minute} Minutes
               </Text>
             </VStack>
           </VStack>
@@ -100,7 +116,7 @@ const MovieDetail = ({id}) => {
                 Casts
               </Text>
               <Text fontWeight="600" fontSize="lg" flexWrap="wrap">
-               {movieId?.casts}
+                {movieId?.casts}
               </Text>
             </VStack>
           </VStack>
@@ -110,9 +126,7 @@ const MovieDetail = ({id}) => {
           <Text fontWeight="bold" fontSize="lg">
             Synopsis
           </Text>
-          <Text color="#4E4B66">
-            {movieId?.synopsis}
-          </Text>
+          <Text color="#4E4B66">{movieId?.synopsis}</Text>
         </VStack>
       </VStack>
       {/* Showtimes and Tickets */}

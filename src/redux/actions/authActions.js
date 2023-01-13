@@ -5,7 +5,7 @@ export const loginAction = createAsyncThunk(
   'auth/loginAction',
   async ({email, password}, {rejectWithValue}) => {
     try {
-      // console.log('lapor pak');
+      console.log('lapor pak');
       const {data} = await http().post('/auth/login', {email, password});
       console.log('masuk pak');
       return data.result;

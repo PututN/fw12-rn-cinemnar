@@ -221,7 +221,7 @@ const ViewAll = () => {
                           <Button
                             bgColor="#C539B4"
                             onPress={() =>
-                              navigation.navigate('MovieDetail', {id: item.id})
+                              navigation.navigate('MovieDetail', {idMovie: data.id})
                             }>
                             <Text fontSize="lg" fontWeight="bold" color="white">
                               Details
