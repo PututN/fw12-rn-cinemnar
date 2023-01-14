@@ -55,7 +55,7 @@ const Main = () => {
           )}
           {token && (
             <>
-              <Stack.Screen
+              {/* <Stack.Screen
                 name="Home"
                 component={Home}
                 options={{headerShown: false}}
@@ -79,7 +79,7 @@ const Main = () => {
                 name="Payment"
                 component={Payment}
                 options={{headerShown: false}}
-              />
+              /> */}
               <Stack.Screen
                 name="Profile"
                 component={Profile}

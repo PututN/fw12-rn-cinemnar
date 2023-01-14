@@ -9,8 +9,9 @@ import {
   Input,
   Pressable,
   ScrollView,
+  useToken,
 } from 'native-base';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Eye, EyeOff} from 'react-native-feather';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -18,7 +19,12 @@ import {logout} from '../redux/reducers/auth';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import http from '../helpers/http';
-
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import jwt_decode from 'jwt-decode';
+import {Formik} from 'formik';
+import * as Yup from 'yup';
+import YupPassword from 'yup-password';
+YupPassword(Yup);
 import lion from '../images/imgLionKing.png';
 import user from '../images/user.png';
 
@@ -28,28 +34,89 @@ const Profile = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const [showPassword2, setShowPassword2] = React.useState(false);
 
-  //FETCHING PROFILE
+  //FETCHING PROFILE ID
   const [profile, setProfile] = React.useState({});
   const token = useSelector(state => state.auth.token);
+  const decode = jwt_decode(token);
   const fetchProfile = async () => {
     try {
-      // console.log('coba lagi pak')
       const response = await http(token).get('/profile');
-      // console.log('masuk ga')
-      // console.log(response.data)
       setProfile(response?.data?.results);
     } catch (error) {
       if (error) console.log(error);
     }
   };
-
-  // console.log(token)
   useEffect(() => {
     if (token) {
       fetchProfile();
     }
   }, [token]);
-  // console.log(profile)
+
+  //schema change password
+  const changePasswordSchema = Yup.object().shape({
+    password: Yup.string()
+      .password()
+      .min(6, 'Password must be at least 6 characters')
+      .minLowercase(1, 'Password must have at least one lowercase letter')
+      .minUppercase(1, 'Password must have at least one uppercase letter')
+      .minNumbers(1, 'Password must have at least one number')
+      .minSymbols(1, 'Password must have at least one symbol')
+      .required('Password is required'),
+    confirmPassword: Yup.string().oneOf(
+      [Yup.ref('password'), null],
+      'Passwords must match',
+    ),
+  });
+  //GET DATA FOR UPDATE PROFILE
+  const [fullName, setFullName] = useState('');
+  const firstName = String(fullName).split(' ')[0];
+  const lastName = String(fullName).split(' ').slice(1).join(' ');
+  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+
+  // const withoutZero = String(profile.phoneNumber);
+  // const phoneNumber = String(`0${newPhoneNumber}`);
+  // React.useEffect(() => {
+  //   if (withoutZero) {
+  //     setPhoneNumber(withoutZero.slice(1));
+  //   }
+  // }, [withoutZero]);
+  // console.log(withoutZero);
+
+  //PATCH UPDATE DATA
+  const [successMessage, setSuccessMessage] = React.useState('');
+
+  const updateDataUser = async () => {
+    try {
+      const response = await http(token).patch('/profile/updated', {
+        firstName,
+        lastName,
+        email,
+        phoneNumber,
+      });
+      setSuccessMessage('Data updated');
+      setTimeout(() => {}, 3000);
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //PATCH NEW PASSWORD
+  const [passwordSuccess, setPasswordSuccess] = useState('');
+  const handleUpdatePassword = async values => {
+    try {
+      const {password, confirmPassword} = values;
+      const response = await http(token).patch('/profile/updated', {
+        password,
+      });
+      setPasswordSuccess('Password updated');
+      setTimeout(() => {}, 3000);
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <ScrollView>
       <Navbar />
@@ -91,7 +158,7 @@ const Profile = () => {
               {profile?.picture ? (
                 <Image
                   source={{uri: profile?.picture}}
-                  alt={profile?.firstName}
+                  alt="profile"
                   width="100"
                   height="100"
                   borderRadius="full"
@@ -100,7 +167,7 @@ const Profile = () => {
               ) : (
                 <Image
                   source={user}
-                  alt={profile?.firstName}
+                  alt="profile"
                   width="100"
                   height="100"
                   borderRadius="full"
@@ -109,7 +176,7 @@ const Profile = () => {
               )}
             </Box>
             <Text fontSize="xl" fontWeight="bold">
-              {profile?.firstName}  {profile?.lastName}
+              {profile?.firstName} {profile?.lastName}
             </Text>
             <Text color="#4E4B66">Moviegoers</Text>
           </VStack>
@@ -137,43 +204,40 @@ const Profile = () => {
           <VStack space="2">
             <Text fontSize="lg">Full Name</Text>
             <Input
-              placeholder="Jonas El Rodriguez"
+              onChangeText={value => setFullName(value)}
+              onFocus={() => setSuccessMessage('')}
+              defaultValue={`${profile?.firstName} ${profile?.lastName}`}
               borderColor="black"
               borderRadius="10"></Input>
           </VStack>
           <VStack space="2">
             <Text fontSize="lg">E-mail</Text>
             <Input
-              placeholder="jonasrodrigu123@gmail.com"
+              onChangeText={value => setEmail(value)}
+              onFocus={() => setSuccessMessage('')}
+              defaultValue={profile?.email}
               borderColor="black"
               borderRadius="10"></Input>
           </VStack>
           <VStack space="2">
             <Text fontSize="lg">Phone Number</Text>
-            <HStack
-              alignItems="center"
-              justifyContent="center"
-              px="5"
-              borderWidth="1"
+
+            <Input
+              defaultValue={profile.phoneNumber}
+              onChangeText={value => setPhoneNumber(value)}
+              onFocus={() => setSuccessMessage('')}
               borderColor="black"
-              borderRadius="10">
-              <Input
-                width="20%"
-                placeholder="+62"
-                borderTopWidth="0"
-                borderBottomWidth="0"
-                borderLeftWidth="0"
-                pt="2"
-                borderRightColor="black"></Input>
-              <Input
-                width="80%"
-                placeholder="81445687121"
-                borderWidth="0"></Input>
-            </HStack>
+              borderRadius="10"></Input>
           </VStack>
         </VStack>
+        {successMessage && (
+          <Text color="green.500" textAlign="center" fontSize="lg">
+            {successMessage}
+          </Text>
+        )}
         <Button
           mb="10"
+          onPress={updateDataUser}
           borderRadius="10"
           fontWeight="bold"
           fontSize="3xl"
@@ -182,72 +246,109 @@ const Profile = () => {
             Update Changes
           </Text>
         </Button>
+        <Formik
+          initialValues={{password: '', confirmPassword: ''}}
+          validationSchema={changePasswordSchema}
+          onSubmit={values => handleUpdatePassword(values)}>
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            errors,
+            touched,
+          }) => (
+            <VStack space="5">
+              <VStack bg="white" p="5" borderRadius="10" space="5">
+                <VStack space="2">
+                  <Text fontSize="lg">Account and Privacy</Text>
+                  <Box borderWidth="1" borderColor="#DEDEDE"></Box>
+                </VStack>
+                <VStack space="2">
+                  <Text fontSize="lg">New Password</Text>
+                  <Box position="relative">
+                    <Input
+                      onFocus={() => setPasswordSuccess('')}
+                      name="password"
+                      onChangeText={handleChange('password')}
+                      onBlur={handleBlur('password')}
+                      value={values.password}
+                      type={showPassword ? 'text' : 'password'}
+                      borderColor="black"
+                      placeholder="Write your new password"
+                      borderRadius="10"></Input>
+                    <Pressable onPress={() => setShowPassword(!showPassword)}>
+                      {showPassword ? (
+                        <Eye
+                          color="black"
+                          position="absolute"
+                          style={{bottom: 10, right: 20}}
+                        />
+                      ) : (
+                        <EyeOff
+                          color="black"
+                          position="absolute"
+                          style={{bottom: 10, right: 20}}
+                        />
+                      )}
+                    </Pressable>
+                    {errors.password && touched.password ? (
+                      <Text color="red.500">{errors.password}</Text>
+                    ) : null}
+                  </Box>
+                  <Text fontSize="lg">Confirm Password</Text>
+                  <Box position="relative">
+                    <Input
+                      name="confirmPassword"
+                      onChangeText={handleChange('confirmPassword')}
+                      onBlur={handleBlur('confirmPassword')}
+                      value={values.confirmPassword}
+                      type={showPassword2 ? 'text' : 'password'}
+                      borderColor="black"
+                      onFocus={() => setPasswordSuccess('')}
+                      placeholder="Write your confirm password"
+                      borderRadius="10"></Input>
+                    <Pressable onPress={() => setShowPassword2(!showPassword2)}>
+                      {showPassword2 ? (
+                        <Eye
+                          color="black"
+                          position="absolute"
+                          style={{bottom: 10, right: 20}}
+                        />
+                      ) : (
+                        <EyeOff
+                          color="black"
+                          position="absolute"
+                          style={{bottom: 10, right: 20}}
+                        />
+                      )}
+                    </Pressable>
+                  </Box>
+                  {errors.confirmPassword && touched.confirmPassword ? (
+                    <Text color="red.500">{errors.confirmPassword}</Text>
+                  ) : null}
+                </VStack>
+              </VStack>
+              {passwordSuccess && (
+                <Text color="green.500" textAlign="center" fontSize="lg">
+                  {passwordSuccess}
+                </Text>
+              )}
 
-        <VStack bg="white" p="5" borderRadius="10" space="5">
-          <VStack space="2">
-            <Text fontSize="lg">Account and Privacy</Text>
-            <Box borderWidth="1" borderColor="#DEDEDE"></Box>
-          </VStack>
-          <VStack space="2">
-            <Text fontSize="lg">New Password</Text>
-            <Box position="relative">
-              <Input
-                type={showPassword ? 'text' : 'password'}
-                borderColor="black"
-                placeholder="Write your new password"
-                borderRadius="10"></Input>
-              <Pressable onPress={() => setShowPassword(!showPassword)}>
-                {showPassword ? (
-                  <Eye
-                    color="black"
-                    position="absolute"
-                    style={{bottom: 10, right: 20}}
-                  />
-                ) : (
-                  <EyeOff
-                    color="black"
-                    position="absolute"
-                    style={{bottom: 10, right: 20}}
-                  />
-                )}
-              </Pressable>
-            </Box>
-            <Text fontSize="lg">Confirm Password</Text>
-            <Box position="relative">
-              <Input
-                type={showPassword2 ? 'text' : 'password'}
-                borderColor="black"
-                placeholder="Write your confirm password"
-                borderRadius="10"></Input>
-              <Pressable onPress={() => setShowPassword2(!showPassword2)}>
-                {showPassword2 ? (
-                  <Eye
-                    color="black"
-                    position="absolute"
-                    style={{bottom: 10, right: 20}}
-                  />
-                ) : (
-                  <EyeOff
-                    color="black"
-                    position="absolute"
-                    style={{bottom: 10, right: 20}}
-                  />
-                )}
-              </Pressable>
-            </Box>
-          </VStack>
-        </VStack>
-
-        <Button
-          mb="10"
-          borderRadius="10"
-          fontWeight="bold"
-          fontSize="3xl"
-          bgColor="#C539B4">
-          <Text fontSize="lg" fontWeight="bold" color="white">
-            Update Changes
-          </Text>
-        </Button>
+              <Button
+                onPress={handleSubmit}
+                mb="10"
+                borderRadius="10"
+                fontWeight="bold"
+                fontSize="3xl"
+                bgColor="#C539B4">
+                <Text fontSize="lg" fontWeight="bold" color="white">
+                  Update Changes
+                </Text>
+              </Button>
+            </VStack>
+          )}
+        </Formik>
       </VStack>
       <Footer />
     </ScrollView>
