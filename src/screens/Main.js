@@ -26,11 +26,6 @@ const Main = () => {
         <Stack.Navigator>
           {!token && (
             <>
-              {/* <Stack.Screen
-                name="TestingImage"
-                component={TestingImage}
-                options={{headerShown: false}}
-              /> */}
               <Stack.Screen
                 name="SignUp"
                 component={SignUp}
@@ -56,10 +51,16 @@ const Main = () => {
           {token && (
             <>
               {/* <Stack.Screen
+                name="TestingImage"
+                component={TestingImage}
+                options={{headerShown: false}}
+              /> */}
+
+              {/* <Stack.Screen
                 name="Home"
                 component={Home}
                 options={{headerShown: false}}
-              />
+              /> */}
               <Stack.Screen
                 name="ViewAll"
                 component={ViewAll}
@@ -79,7 +80,7 @@ const Main = () => {
                 name="Payment"
                 component={Payment}
                 options={{headerShown: false}}
-              /> */}
+              />
               <Stack.Screen
                 name="Profile"
                 component={Profile}

@@ -12,6 +12,7 @@ import {
   ScrollView,
   VStack,
   Pressable,
+  Box,
 } from 'native-base';
 import React, {Component, useState, useEffect} from 'react';
 import Navbar from '../components/Navbar';
@@ -105,20 +106,20 @@ const ViewAll = () => {
   const [ViewAll, setViewAll] = useState([]);
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState('');
+  const [search, setSearch] = useState('');
   useEffect(() => {
     const fetchViewAll = async () => {
       try {
         const response = await http().get(
-          `/movies?page=${page}&limit=4&sort=${sort}&sortBy=title`,
+          `/movies?page=${page}&limit=4&sort=${sort}&sortBy=title&search=${search}`,
         );
-        // console.log(response.data.pageInfo);
         setViewAll(response?.data?.results);
       } catch (error) {
         console.log(error);
       }
     };
     fetchViewAll();
-  }, [page, sort]);
+  }, [page, sort, search]);
   //handle page
   const pagePrev = () => {
     setPage(page - 1);
@@ -158,6 +159,7 @@ const ViewAll = () => {
               </View>
               <View style={{width: '60%'}}>
                 <Input
+                  onChangeText={value => setSearch(value)}
                   variant="rounded"
                   placeholder="Search Movie Name..."
                   style={{width: '90%'}}
@@ -186,7 +188,55 @@ const ViewAll = () => {
               </View>
             </ScrollView>
             {/* MOVIE VIEW ALL */}
-            <FlatList
+            {ViewAll?.map(movie => {
+              return (
+                <Box
+                  key={String(movie?.id)}
+                  // width="160"
+                  borderWidth="1"
+                  borderColor="#DEDEDE"
+                  backgroundColor="white"
+                  p="5"
+                  mx="20"
+                  my="5"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  borderRadius="10">
+                  <Image
+                    source={{uri: movie?.picture}}
+                    alt="Movie"
+                    width="150"
+                    height="200"
+                    mb="3"
+                    borderRadius={8}
+                    resizeMode="contain"
+                  />
+                  <VStack alignItems="center" space="3">
+                    <Text fontSize="lg" fontWeight="bold" textAlign="center">
+                      {movie?.title}
+                    </Text>
+                    <Text textAlign="center">{movie?.genre}</Text>
+                    <Pressable
+                      onPress={() =>
+                        navigation.navigate('MovieDetail', {idMovie: movie.id})
+                      }
+                      bgColor="#C539B4"
+                      borderRadius="4"
+                      justifyContent="center"
+                      alignItems="center"
+                      width="125"
+                      height="30px"
+                      mb="1">
+                      <Text fontSize="lg" fontWeight="bold" color="white">
+                        Details
+                      </Text>
+                    </Pressable>
+                  </VStack>
+                </Box>
+              );
+            })}
+            {/* <FlatList
               // ListHeaderComponent={ <Text>hai</Text>}
               // ListFooterComponent={ <Text>hello</Text>}
               numColumns="2"
@@ -233,7 +283,7 @@ const ViewAll = () => {
                   </HStack>
                 );
               }}
-            />
+            />  */}
           </View>
           {/* PAGE */}
           <HStack justifyContent="space-around" mb="10">

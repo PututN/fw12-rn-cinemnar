@@ -14,6 +14,7 @@ import {Calendar, MapPin} from 'react-native-feather';
 import Spiderman from '../images/imgSpiderman.png';
 import DatePicker from 'react-native-date-picker';
 import ebv from '../images/imgEbv.png';
+import {useSelector} from 'react-redux';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import http from '../helpers/http';
 
@@ -21,9 +22,11 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 const MovieDetail = ({idMovie}) => {
+  console.log(idMovie);
   const route = useRoute();
 
   const getId = route.params.idMovie;
+  console.log(getId);
   const navigation = useNavigation();
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
@@ -32,7 +35,6 @@ const MovieDetail = ({idMovie}) => {
   const [movieId, setMovieId] = React.useState({});
   const fetchMovieId = async () => {
     try {
-      console.log('masuk pak');
       const response = await http().get(`/movies/${getId}`);
       setMovieId(response?.data?.results);
     } catch (error) {
@@ -52,6 +54,23 @@ const MovieDetail = ({idMovie}) => {
   let duration = movieId?.duration;
   let Hour = String(duration).split(':').slice(0, 1).join(':');
   let Minute = String(duration).split(':')[1];
+
+  //FETCHING CINEMA
+  const token = useSelector(state => state.auth.token);
+  const [cinema, setCinema] = React.useState([]);
+  const fetchCinema = async () => {
+    try {
+      const response = await http(token).get(`/cinemas?limit=2`);
+      console.log(response.data);
+      setCinema(response?.data?.results);
+    } catch (error) {
+      if (error) console.log(error);
+    }
+  };
+  React.useEffect(() => {
+    fetchCinema();
+  }, []);
+  // console.log(cinema);
 
   return (
     <ScrollView>
@@ -186,92 +205,51 @@ const MovieDetail = ({idMovie}) => {
           />
         </Box>
         {/* TICKET */}
-        <VStack bg="white" width="100%" py="7">
-          <VStack alignItems="center" space="3">
-            <Image
-              alt="ticket"
-              source={ebv}
-              width="200"
-              height="50"
-              resizeMode="contain"
-            />
-            <Text color="#AAAAAA">Whatever street No.12, South Purwokerto</Text>
-          </VStack>
-          <VStack px="5" space="5">
-            <Box mt="5" borderColor="#DEDEDE" borderBottomWidth="2"></Box>
-            <HStack space="8" alignItems="center" justifyContent="center">
-              <Text flex="1">08.30am</Text>
-              <Text flex="1">08.30am</Text>
-              <Text flex="1">08.30am</Text>
-              <Text flex="1">08.30am</Text>
-            </HStack>
-            <HStack space="8" alignItems="center" justifyContent="center">
-              <Text flex="1">08.30am</Text>
-              <Text flex="1">08.30am</Text>
-              <Text flex="1">08.30am</Text>
-              <Text flex="1">08.30am</Text>
-            </HStack>
+        {cinema?.map(cinema => (
+          <VStack bg="white" width="100%" py="7" key={cinema.id}>
+            <VStack alignItems="center" space="3">
+              <Image
+                alt="ticket"
+                source={{uri : cinema?.picture}}
+                width="200"
+                height="50"
+                resizeMode="contain"
+              />
+              <Text color="#AAAAAA" textAlign='center'>{cinema?.address}</Text>
+            </VStack>
+            <VStack px="5" space="5">
+              <Box mt="5" borderColor="#DEDEDE" borderBottomWidth="2"></Box>
+              <HStack space="8" alignItems="center" justifyContent="center">
+                <Text flex="1">08.30am</Text>
+                <Text flex="1">08.30am</Text>
+                <Text flex="1">08.30am</Text>
+                <Text flex="1">08.30am</Text>
+              </HStack>
+              <HStack space="8" alignItems="center" justifyContent="center">
+                <Text flex="1">08.30am</Text>
+                <Text flex="1">08.30am</Text>
+                <Text flex="1">08.30am</Text>
+                <Text flex="1">08.30am</Text>
+              </HStack>
 
-            <HStack justifyContent="space-between">
-              <Text fontSize="lg">Price</Text>
-              <Text fontSize="xl" fontWeight="bold">
-                $10.00/seat
-              </Text>
-            </HStack>
-            <Button
-              onPress={() => navigation.navigate('Order')}
-              bgColor="#C539B4"
-              alignItems="center"
-              justifyContent="center">
-              <Text fontSize="lg" fontWeight="bold" color="white">
-                Book now
-              </Text>
-            </Button>
+              <HStack justifyContent="space-between">
+                <Text fontSize="lg">Price</Text>
+                <Text fontSize="xl" fontWeight="bold">
+                  $10.00/seat
+                </Text>
+              </HStack>
+              <Button
+                onPress={() => navigation.navigate('Order')}
+                bgColor="#C539B4"
+                alignItems="center"
+                justifyContent="center">
+                <Text fontSize="lg" fontWeight="bold" color="white">
+                  Book now
+                </Text>
+              </Button>
+            </VStack>
           </VStack>
-        </VStack>
-        <VStack bg="white" width="100%" py="7">
-          <VStack alignItems="center" space="3">
-            <Image
-              alt="ticket"
-              source={ebv}
-              width="200"
-              height="50"
-              resizeMode="contain"
-            />
-            <Text color="#AAAAAA">Whatever street No.12, South Purwokerto</Text>
-          </VStack>
-          <VStack px="5" space="5">
-            <Box mt="5" borderColor="#DEDEDE" borderBottomWidth="2"></Box>
-            <HStack space="8" alignItems="center" justifyContent="center">
-              <Text flex="1">08.30am</Text>
-              <Text flex="1">08.30am</Text>
-              <Text flex="1">08.30am</Text>
-              <Text flex="1">08.30am</Text>
-            </HStack>
-            <HStack space="8" alignItems="center" justifyContent="center">
-              <Text flex="1">08.30am</Text>
-              <Text flex="1">08.30am</Text>
-              <Text flex="1">08.30am</Text>
-              <Text flex="1">08.30am</Text>
-            </HStack>
-
-            <HStack justifyContent="space-between">
-              <Text fontSize="lg">Price</Text>
-              <Text fontSize="xl" fontWeight="bold">
-                $10.00/seat
-              </Text>
-            </HStack>
-            <Button
-              onPress={() => navigation.navigate('Order')}
-              bgColor="#C539B4"
-              alignItems="center"
-              justifyContent="center">
-              <Text fontSize="lg" fontWeight="bold" color="white">
-                Book now
-              </Text>
-            </Button>
-          </VStack>
-        </VStack>
+        ))}
         <HStack position="relative">
           <Box
             borderBottomColor="#DEDEDE"

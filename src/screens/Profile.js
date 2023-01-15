@@ -11,6 +11,7 @@ import {
   ScrollView,
   useToken,
 } from 'native-base';
+import {Edit2} from 'react-native-feather';
 import React, {useEffect, useState} from 'react';
 import {Eye, EyeOff} from 'react-native-feather';
 import {useNavigation} from '@react-navigation/native';
@@ -37,7 +38,6 @@ const Profile = () => {
   //FETCHING PROFILE ID
   const [profile, setProfile] = React.useState({});
   const token = useSelector(state => state.auth.token);
-  const decode = jwt_decode(token);
   const fetchProfile = async () => {
     try {
       const response = await http(token).get('/profile');
@@ -74,15 +74,6 @@ const Profile = () => {
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
 
-  // const withoutZero = String(profile.phoneNumber);
-  // const phoneNumber = String(`0${newPhoneNumber}`);
-  // React.useEffect(() => {
-  //   if (withoutZero) {
-  //     setPhoneNumber(withoutZero.slice(1));
-  //   }
-  // }, [withoutZero]);
-  // console.log(withoutZero);
-
   //PATCH UPDATE DATA
   const [successMessage, setSuccessMessage] = React.useState('');
 
@@ -117,6 +108,56 @@ const Profile = () => {
       console.log(error);
     }
   };
+
+  //OPEN MODAL
+  // const [showModal, setShowModal]=React.useState(false)
+  // const [image, setImage] = React.useState(null)
+  // const openModal = () => {
+  //   setShowModal(true)
+  // }
+
+  //OPEN GALERY
+  const [toggle, setToggle] = React.useState(false);
+  const [preview, setPreview] = React.useState({});
+  const openGallery = async () => {
+    const result = await launchImageLibrary();
+    const ObjImage = result.assets[0];
+    setPreview(ObjImage);
+  };
+  //OPEN CAMERA
+  const openCamera = async () => {
+    const result = await launchCamera();
+    const ObjImage = result.assets[0];
+    setPreview(ObjImage);
+  };
+//HANDLE UPLOAD
+  const uploadImage = async () => {
+    try {
+      if (preview?.fileName) {
+        const obj = {
+          name: preview.fileName,
+          type: preview.type,
+          uri: preview.uri,
+        };
+        const form = new FormData();
+        form.append('picture', obj);
+        console.log('masuk pak');
+        const {data} = await http(token).patch('/profile/updated', form, {
+          headers: {
+            'Content-type': 'multipart/form-data',
+          },
+        });
+        console.log('lapor pak');
+
+        alert(data.message);
+      } else {
+        alert('Please choose image first');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <ScrollView>
       <Navbar />
@@ -153,7 +194,7 @@ const Profile = () => {
           <Text fontSize="lg" p="5">
             INFO
           </Text>
-          <VStack alignItems="center" space="3">
+          <VStack alignItems="center" space="3" position="relative">
             <Box shadow="9">
               {profile?.picture ? (
                 <Image
@@ -174,7 +215,54 @@ const Profile = () => {
                   shadow="9"
                 />
               )}
+              <Pressable
+                onPress={() => setToggle(!toggle)}
+                left="90"
+                position="absolute"
+                bottom="0">
+                <Edit2 color="black" />
+              </Pressable>
             </Box>
+            {preview.uri && (
+              <Image
+                source={{uri: preview.uri}}
+                alt="profile"
+                width="100"
+                height="100"
+                borderRadius="full"
+              />
+            )}
+
+            {toggle && (
+              <VStack space="3">
+                <HStack space="3">
+                  <Button
+                    onPress={openGallery}
+                    borderRadius="10"
+                    bgColor="#C539B4">
+                    <Text fontSize="md" fontWeight="bold" color="white">
+                      Open Gallery
+                    </Text>
+                  </Button>
+                  <Button
+                    onPress={openCamera}
+                    borderRadius="10"
+                    bgColor="#C539B4">
+                    <Text fontSize="md" fontWeight="bold" color="white">
+                      Open Camera
+                    </Text>
+                  </Button>
+                </HStack>
+                <Button
+                  onPress={uploadImage}
+                  borderRadius="10"
+                  bgColor="#C539B4">
+                  <Text fontSize="md" fontWeight="bold" color="white">
+                    Upload
+                  </Text>
+                </Button>
+              </VStack>
+            )}
             <Text fontSize="xl" fontWeight="bold">
               {profile?.firstName} {profile?.lastName}
             </Text>
