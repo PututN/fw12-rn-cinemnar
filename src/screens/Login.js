@@ -74,6 +74,7 @@ const Login = () => {
     try {
       const {email, password} = form;
       dispatch(testLogin({email, password}));
+      setTimeout(() => {}, 3000);
     } catch (error) {
       console.log(error);
     }

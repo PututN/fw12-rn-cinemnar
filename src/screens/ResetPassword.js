@@ -19,6 +19,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {ResetPasswordAction} from '../redux/actions/authActions';
+import http from '../helpers/http';
 
 YupPassword(Yup);
 
@@ -41,7 +42,6 @@ const ResetPasswordSchema = Yup.object().shape({
 });
 
 const ResetPassword = () => {
-  const dispatch = useDispatch();
   const navigation = useNavigation();
   const [showPassword1, setShowPassword1] = React.useState(false);
   const [showPassword2, setShowPassword2] = React.useState(false);
@@ -61,14 +61,29 @@ const ResetPassword = () => {
   });
 
   //integrate with BE
+  const [failed, setFailed] = React.useState('');
+  const [success, setSuccess] = React.useState('');
   const email = useSelector(state => state.auth.email.email);
   const ResetPasswordSubmit = async form => {
     try {
       const {code, password, confirmPassword} = form;
-      dispatch(ResetPasswordAction({email, code, password, confirmPassword}));
-      // navigation.navigate('Login');
+      const data = await http().post('/auth/resetPassword', {
+        email,
+        confirmPassword,
+        code,
+        password,
+      });
+      setSuccess('Password updated, please relogin');
+      setTimeout(() => {
+        setSuccess(false);
+        navigation.navigate('Login')
+      }, 3000);
+      return data.result;
     } catch (error) {
-      console.log(error);
+      setFailed(error.response.data.message);
+      setTimeout(() => {
+        setFailed(false);
+      }, 3000);
     }
   };
 
@@ -225,6 +240,26 @@ const ResetPassword = () => {
             Submit
           </Text>
         </Button>
+        {failed && (
+          <Text
+            textAlign="center"
+            color="red.500"
+            fontSize="lg"
+            fontWeight="bold"
+            mt="3">
+            {failed}
+          </Text>
+        )}
+        {success && (
+          <Text
+            textAlign="center"
+            color="green.500"
+            fontSize="lg"
+            fontWeight="bold"
+            mt="3">
+            {success}
+          </Text>
+        )}
       </VStack>
     </ScrollView>
   );

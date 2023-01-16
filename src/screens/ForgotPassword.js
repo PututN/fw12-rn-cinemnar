@@ -19,6 +19,8 @@ import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {setEmail} from '../redux/reducers/auth';
 import {forgotPasswordAction} from '../redux/actions/authActions';
+import React from 'react';
+import http from '../helpers/http';
 
 YupPassword(Yup);
 
@@ -41,19 +43,25 @@ const ForgotPassword = () => {
     },
   });
   //redux email
-  const err = useSelector(state => state.auth.error);
-  const loading = useSelector(state => state.auth.loading);
+  const [failed, setFailed] = React.useState('');
+  const [success, setSuccess] = React.useState('');
   const ForgotPasswordSubmit = async form => {
     try {
       const {email} = form;
+      const data = await http().post('/auth/forgotPassword', {email});
       dispatch(setEmail({email}));
-      dispatch(forgotPasswordAction({email}));
-      if (!err) {
+      setSuccess('Success! Please check your code in email');
+      setTimeout(() => {
+        setSuccess(false);
         navigation.navigate('ResetPassword');
-      }
-      navigation.navigate('ForgotPassword');
+      }, 3000);
+      console.log(data);
+      return data.result;
     } catch (error) {
-      console.log(error);
+      setFailed(error.response.data.message);
+      setTimeout(() => {
+        setFailed(false);
+      }, 3000);
     }
   };
 
@@ -118,24 +126,24 @@ const ForgotPassword = () => {
             Send
           </Text>
         </Button>
-        {err && (
+        {failed && (
           <Text
             textAlign="center"
             color="red.500"
             fontSize="lg"
             fontWeight="bold"
             mt="3">
-            {err}
+            {failed}
           </Text>
         )}
-        {loading === true && (
+        {success && (
           <Text
             textAlign="center"
-            color="blue.500"
+            color="green.500"
             fontSize="lg"
             fontWeight="bold"
             mt="3">
-            Loading...
+            {success}
           </Text>
         )}
       </VStack>

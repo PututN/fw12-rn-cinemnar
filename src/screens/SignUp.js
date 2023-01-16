@@ -82,6 +82,7 @@ const SignUp = () => {
           phoneNumber,
         }),
       );
+      setTimeout(() => {}, 3000);
     } catch (error) {
       console.log(error);
     }
