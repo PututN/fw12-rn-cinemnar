@@ -13,25 +13,33 @@ const initialState = {
   paymentId: null,
   seatNum: null,
   time:null,
+  cinemaName:null,
+  price:null,
+  cinemaPicture:null,
+  movieTitle:null,
 };
 
 const transactionReducer = createSlice({
   name: 'transaction',
   initialState,
   reducers: {
-    transaction: (state, {payload}) => {
-      state.bookingDate = payload.bookingDate;
-      state.movieId = payload.movieId;
-      state.userId = payload.userId;
-      state.cinemaId = payload.cinemaId;
-      state.movieScheduleId = payload.movieScheduleId;
-      state.fullName = payload.fullName;
-      state.email = payload.email;
-      state.phoneNumber = payload.phoneNumber;
-      state.statusId = payload.statusId;
-      state.paymentId = payload.paymentId;
-      state.seatNum = payload.seatNum;
-      state.time = payload.time;
+    transaction: (state, action) => {
+      state.bookingDate = action.payload.bookingDate;
+      state.movieId = action.payload.movieId;
+      state.userId = action.payload.userId;
+      state.cinemaId = action.payload.cinemaId;
+      state.movieScheduleId = action.payload.movieScheduleId;
+      state.fullName = action.payload.fullName;
+      state.email = action.payload.email;
+      state.phoneNumber = action.payload.phoneNumber;
+      state.statusId = action.payload.statusId;
+      state.paymentId = action.payload.paymentId;
+      state.seatNum = action.payload.seatNum;
+      state.time = action.payload.time;
+      state.cinemaName = action.payload.cinemaName;
+      state.price = action.payload.price;
+      state.cinemaPicture = action.payload.cinemaPicture;
+      state.movieTitle = action.payload.movieTitle;
     },
     cancelTransaction: (state, {payload}) => {
       return initialState;

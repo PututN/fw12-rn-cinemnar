@@ -15,9 +15,22 @@ import {ArrowDown, ArrowRight} from 'react-native-feather';
 import CinemaOne from '../images/imgCineOne.png';
 import Footer from '../components/Footer';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import {transaction} from '../redux/reducers/transaction';
+import moment from 'moment';
 
 const Order = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const {bookingDate, cinemaName, cinemaPicture, movieTitle, time, price} =
+    useSelector(state => state?.transaction);
+//set date
+const date = moment(bookingDate).format('LLLL').split(' ')
+const day = date[0]
+const month = date[1]
+const newDate = date[2]
+const year = date[3]
+const fixDate = `${day} ${month} ${newDate} ${year}`
   return (
     <ScrollView>
       <Navbar />
@@ -619,18 +632,18 @@ const Order = () => {
           space="3">
           <Image source={CinemaOne} alt="ticket" />
           <Text fontWeight="bold" fontSize="3xl">
-            CineOne21 Cinema
+            {cinemaName} Cinema
           </Text>
           <Text fontWeight="bold" fontSize="xl">
-            Spider-Man: Homecoming
+            {movieTitle}
           </Text>
           <VStack w="100%" mt="3" space="3">
             <HStack justifyContent="space-between">
               <Text fontSize="lg" color="#6B6B6B">
-                Tuesday, 07 July 2020
+                {fixDate}
               </Text>
               <Text fontSize="lg" fontWeight="bold" color="#14142B">
-                02:00pm
+              {time.split(':')[0] + ':' + time.split(':')[1] + ' WIB'}
               </Text>
             </HStack>
             <HStack justifyContent="space-between">
@@ -638,7 +651,7 @@ const Order = () => {
                 One ticket price
               </Text>
               <Text fontSize="lg" fontWeight="bold" color="#14142B">
-                $10
+                Rp {Number(price).toLocaleString('id')}
               </Text>
             </HStack>
             <HStack justifyContent="space-between">

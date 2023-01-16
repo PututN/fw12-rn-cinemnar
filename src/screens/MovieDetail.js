@@ -32,7 +32,7 @@ const MovieDetail = ({idMovie}) => {
 
   const getId = route.params.idMovie;
   const navigation = useNavigation();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   //FETCHING MOVIE ID
   const [movieId, setMovieId] = React.useState({});
@@ -62,6 +62,7 @@ const MovieDetail = ({idMovie}) => {
   const maxDate = new Date(2023, 6, 3);
   const token = useSelector(state => state.auth.token);
   const {id} = jwt_decode(token);
+  const movieTitle = movieId?.title
   const [cinema, setCinema] = React.useState([]);
   const [selectCity, setSelectCity] = React.useState('');
   const [selectDate, setSelectDate] = React.useState('');
@@ -90,7 +91,12 @@ const MovieDetail = ({idMovie}) => {
   }, [selectCity, selectDate]);
 
   //handlesubmit book now
-  const handleSubmitBookNow = async () => {
+  const handleSubmitBookNow = async (
+    cinemaName,
+    price,
+    movieScheduleId,
+    cinemaPicture,
+  ) => {
     try {
       dispatch(
         transaction({
@@ -99,9 +105,14 @@ const MovieDetail = ({idMovie}) => {
           movieId: getId,
           cinemaId: selectedCinema,
           time: selectedTime,
+          cinemaName,
+          price,
+          movieScheduleId,
+          cinemaPicture,
+          movieTitle,
         }),
       );
-      navigation.navigate('Order')
+      navigation.navigate('Order');
     } catch (err) {
       console.log(err);
     }
@@ -309,7 +320,14 @@ const MovieDetail = ({idMovie}) => {
                 </Text>
               </HStack>
               <Button
-                onPress={handleSubmitBookNow}
+                onPress={() =>
+                  handleSubmitBookNow(
+                    cinema?.name,
+                    cinema?.price,
+                    cinema?.moviescheduleid,
+                    cinema?.picture,
+                  )
+                }
                 bgColor="#C539B4"
                 alignItems="center"
                 justifyContent="center">
