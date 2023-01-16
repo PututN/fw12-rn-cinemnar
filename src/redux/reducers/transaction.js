@@ -12,6 +12,7 @@ const initialState = {
   statusId: null,
   paymentId: null,
   seatNum: null,
+  time:null,
 };
 
 const transactionReducer = createSlice({
@@ -30,6 +31,7 @@ const transactionReducer = createSlice({
       state.statusId = payload.statusId;
       state.paymentId = payload.paymentId;
       state.seatNum = payload.seatNum;
+      state.time = payload.time;
     },
     cancelTransaction: (state, {payload}) => {
       return initialState;

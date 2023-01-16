@@ -8,28 +8,31 @@ import {
   Select,
   CheckIcon,
   ScrollView,
+  Modal,
+  Pressable,
 } from 'native-base';
 import React, {Component, useState} from 'react';
-import {Calendar, MapPin} from 'react-native-feather';
+import {Calendar, ChevronDown, MapPin} from 'react-native-feather';
 import Spiderman from '../images/imgSpiderman.png';
 import DatePicker from 'react-native-date-picker';
 import ebv from '../images/imgEbv.png';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import http from '../helpers/http';
+import moment from 'moment/moment';
+import CalendarPicker from 'react-native-calendar-picker';
+import {transaction} from '../redux/reducers/transaction';
+import jwt_decode from 'jwt-decode';
 
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 const MovieDetail = ({idMovie}) => {
-  console.log(idMovie);
   const route = useRoute();
 
   const getId = route.params.idMovie;
-  console.log(getId);
   const navigation = useNavigation();
-  const [date, setDate] = useState(new Date());
-  const [open, setOpen] = useState(false);
+  const dispatch = useDispatch()
 
   //FETCHING MOVIE ID
   const [movieId, setMovieId] = React.useState({});
@@ -55,13 +58,28 @@ const MovieDetail = ({idMovie}) => {
   let Hour = String(duration).split(':').slice(0, 1).join(':');
   let Minute = String(duration).split(':')[1];
 
-  //FETCHING CINEMA
+  const minDate = new Date(); // Today
+  const maxDate = new Date(2023, 6, 3);
   const token = useSelector(state => state.auth.token);
+  const {id} = jwt_decode(token);
   const [cinema, setCinema] = React.useState([]);
+  const [selectCity, setSelectCity] = React.useState('');
+  const [selectDate, setSelectDate] = React.useState('');
+  const [showModal, setShowModal] = React.useState(false);
+  const [selectedTime, setSelectedTime] = React.useState(null);
+  const [selectedCinema, setSelectedCinema] = React.useState(null);
+  //handle select time
+  const handleSelectTime = (item, cinemaId) => {
+    setSelectedTime(item);
+    setSelectedCinema(cinemaId);
+  };
+
+  //FETCHING CINEMA
   const fetchCinema = async () => {
     try {
-      const response = await http(token).get(`/cinemas?limit=2`);
-      console.log(response.data);
+      const response = await http(token).get(
+        `/movieDetail/${getId}/schedules?city=${selectCity}&date=${selectDate}`,
+      );
       setCinema(response?.data?.results);
     } catch (error) {
       if (error) console.log(error);
@@ -69,9 +87,25 @@ const MovieDetail = ({idMovie}) => {
   };
   React.useEffect(() => {
     fetchCinema();
-  }, []);
-  // console.log(cinema);
+  }, [selectCity, selectDate]);
 
+  //handlesubmit book now
+  const handleSubmitBookNow = async () => {
+    try {
+      dispatch(
+        transaction({
+          bookingDate: selectDate,
+          userId: id,
+          movieId: getId,
+          cinemaId: selectedCinema,
+          time: selectedTime,
+        }),
+      );
+      navigation.navigate('Order')
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <ScrollView>
       <Navbar />
@@ -154,34 +188,46 @@ const MovieDetail = ({idMovie}) => {
           Showtimes and Tickets
         </Text>
         {/* DATE */}
-        <Button
-          title="Open"
-          position="relative"
-          onPress={() => setOpen(true)}
+        <Pressable
+          onPress={() => setShowModal(true)}
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="center"
+          borderWidth="1"
+          borderRadius={4}
+          borderColor="#EFF0F6"
           bg="#EFF0F6"
-          width="50%">
-          <Text color="black" textAlign="left">
-            Set a date
+          px="3"
+          width={180}
+          height={35}>
+          <Calendar color="black" size={18} />
+          <Text ml="3" flex={1}>
+            {selectDate ? selectDate : 'Set a date'}
           </Text>
-          <Calendar
-            size={50}
-            color="black"
-            style={{position: 'absolute', left: -50, top: -5}}
-          />
-        </Button>
-        <DatePicker
-          modal
-          mode="date"
-          open={open}
-          date={date}
-          onConfirm={date => {
-            setOpen(false);
-            setDate(date);
-          }}
-          onCancel={() => {
-            setOpen(false);
-          }}
-        />
+          <ChevronDown color="black" size={18} />
+        </Pressable>
+        <Modal
+          size="full"
+          isOpen={showModal}
+          onClose={() => setShowModal(false)}>
+          <Modal.Content>
+            <Modal.CloseButton />
+            <Modal.Body backgroundColor="white">
+              <Box backgroundColor="white" pt="12">
+                <CalendarPicker
+                  minDate={minDate}
+                  maxDate={maxDate}
+                  todayBackgroundColor="#f2e6ff"
+                  selectedDayColor="#C539B4"
+                  selectedDayTextColor="#FFFFFF"
+                  onDateChange={value =>
+                    setSelectDate(String(moment(value).format()).split('T')[0])
+                  }
+                />
+              </Box>
+            </Modal.Body>
+          </Modal.Content>
+        </Modal>
         {/* CITY */}
         <Box width="50%" position="relative">
           <Select
@@ -190,13 +236,13 @@ const MovieDetail = ({idMovie}) => {
             accessibilityLabel="Sort"
             placeholder="Set a city"
             bg="#EFF0F6"
+            onValueChange={e => setSelectCity(e)}
             _selectedItem={{
               bg: 'teal.600',
-              //   endIcon: <CheckIcon size={5}  />,
             }}
             mt="1">
-            <Select.Item label="Yogyakarta" value="yogyakarta" />
-            <Select.Item label="Purwokerto" value="purwokerto" />
+            <Select.Item label="yogyakarta" value="yogyakarta" />
+            <Select.Item label="purwokerto" value="purwokerto" />
           </Select>
           <MapPin
             size={50}
@@ -210,36 +256,60 @@ const MovieDetail = ({idMovie}) => {
             <VStack alignItems="center" space="3">
               <Image
                 alt="ticket"
-                source={{uri : cinema?.picture}}
+                source={{uri: cinema?.picture}}
                 width="200"
                 height="50"
                 resizeMode="contain"
               />
-              <Text color="#AAAAAA" textAlign='center'>{cinema?.address}</Text>
+              <Text color="#AAAAAA" textAlign="center">
+                {cinema?.address}
+              </Text>
             </VStack>
             <VStack px="5" space="5">
               <Box mt="5" borderColor="#DEDEDE" borderBottomWidth="2"></Box>
-              <HStack space="8" alignItems="center" justifyContent="center">
-                <Text flex="1">08.30am</Text>
-                <Text flex="1">08.30am</Text>
-                <Text flex="1">08.30am</Text>
-                <Text flex="1">08.30am</Text>
-              </HStack>
-              <HStack space="8" alignItems="center" justifyContent="center">
-                <Text flex="1">08.30am</Text>
-                <Text flex="1">08.30am</Text>
-                <Text flex="1">08.30am</Text>
-                <Text flex="1">08.30am</Text>
-              </HStack>
+              <Box
+                flexDirection="row"
+                flexWrap="wrap"
+                alignItems="center"
+                justifyContent="center">
+                {cinema?.time.map((item, index) => {
+                  return (
+                    <Pressable
+                      width={75}
+                      py="1.5"
+                      key={String(index)}
+                      onPress={() => handleSelectTime(item, cinema.id)}>
+                      <Text
+                        color={
+                          selectedTime === item && selectedCinema === cinema.id
+                            ? '#C539B4'
+                            : 'black'
+                        }
+                        fontWeight={
+                          selectedTime === item && selectedCinema === cinema.id
+                            ? 'bold'
+                            : ''
+                        }
+                        fontSize={
+                          selectedTime === item && selectedCinema === cinema.id
+                            ? 'lg'
+                            : 'md'
+                        }>
+                        {item.split(':')[0] + ':' + item.split(':')[1] + ' WIB'}
+                      </Text>
+                    </Pressable>
+                  );
+                })}
+              </Box>
 
               <HStack justifyContent="space-between">
                 <Text fontSize="lg">Price</Text>
                 <Text fontSize="xl" fontWeight="bold">
-                  $10.00/seat
+                  Rp {Number(cinema.price).toLocaleString('id')}/seat
                 </Text>
               </HStack>
               <Button
-                onPress={() => navigation.navigate('Order')}
+                onPress={handleSubmitBookNow}
                 bgColor="#C539B4"
                 alignItems="center"
                 justifyContent="center">

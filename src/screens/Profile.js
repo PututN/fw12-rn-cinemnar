@@ -50,7 +50,7 @@ const Profile = () => {
     if (token) {
       fetchProfile();
     }
-  }, [token]);
+  }, [token, uploadImage]);
 
   //schema change password
   const changePasswordSchema = Yup.object().shape({
