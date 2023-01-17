@@ -14,7 +14,6 @@ import {
 import React, {Component, useState} from 'react';
 import {Calendar, ChevronDown, MapPin} from 'react-native-feather';
 import Spiderman from '../images/imgSpiderman.png';
-import DatePicker from 'react-native-date-picker';
 import ebv from '../images/imgEbv.png';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation, useRoute} from '@react-navigation/native';

@@ -12,16 +12,36 @@ import React, {Component} from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import {useNavigation} from '@react-navigation/native';
-
+import {useSelector, useDispatch} from 'react-redux';
+import http from '../helpers/http';
 import CineOne from '../images/imgCineOne.png';
 import Ebv from '../images/imgEbv.png';
 
 const History = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  //FETCHING PROFILE ID
+  const [history, setHistory] = React.useState([]);
+  const token = useSelector(state => state.auth.token);
+  const fetchHistory = async () => {
+    try {
+      const response = await http(token).get('/transaction/history');
+      setHistory(response?.data?.results);
+    } catch (error) {
+      if (error) console.log(error);
+    }
+  };
+  React.useEffect(() => {
+    if (token) {
+      fetchHistory();
+    }
+  }, [token]);
+ console.log(history)
   return (
     <ScrollView>
       <Navbar />
-      <VStack bg="#C539B4">
+      <VStack bg="#E5E5E5">
         <HStack
           justifyContent="space-around"
           bg="#C539B4"

@@ -152,7 +152,6 @@ const Payment = () => {
       console.log(error);
     }
   };
-  console.log(totalPrice);
 
   return (
     <ScrollView>

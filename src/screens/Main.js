@@ -76,11 +76,11 @@ const Main = () => {
                 component={Order}
                 options={{headerShown: false}}
               /> */}
-              <Stack.Screen
+              {/* <Stack.Screen
                 name="Payment"
                 component={Payment}
                 options={{headerShown: false}}
-              />
+              /> */}
               <Stack.Screen
                 name="Profile"
                 component={Profile}

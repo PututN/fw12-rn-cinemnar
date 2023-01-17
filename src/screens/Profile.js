@@ -50,7 +50,7 @@ const Profile = () => {
     if (token) {
       fetchProfile();
     }
-  }, [token, uploadImage]);
+  }, [token, messageUpload]);
 
   //schema change password
   const changePasswordSchema = Yup.object().shape({
@@ -109,13 +109,6 @@ const Profile = () => {
     }
   };
 
-  //OPEN MODAL
-  // const [showModal, setShowModal]=React.useState(false)
-  // const [image, setImage] = React.useState(null)
-  // const openModal = () => {
-  //   setShowModal(true)
-  // }
-
   //OPEN GALERY
   const [toggle, setToggle] = React.useState(false);
   const [preview, setPreview] = React.useState({});
@@ -130,7 +123,8 @@ const Profile = () => {
     const ObjImage = result.assets[0];
     setPreview(ObjImage);
   };
-//HANDLE UPLOAD
+  //HANDLE UPLOAD
+  const [messageUpload, setMessageUpload] = React.useState(false);
   const uploadImage = async () => {
     try {
       if (preview?.fileName) {
@@ -141,15 +135,17 @@ const Profile = () => {
         };
         const form = new FormData();
         form.append('picture', obj);
-        console.log('masuk pak');
         const {data} = await http(token).patch('/profile/updated', form, {
           headers: {
             'Content-type': 'multipart/form-data',
           },
         });
-        console.log('lapor pak');
-
-        alert(data.message);
+        setMessageUpload(data.message);
+        setTimeout(() => {
+          setMessageUpload(false);
+          fetchProfile();
+          setPreview({})
+        }, 3000);
       } else {
         alert('Please choose image first');
       }
@@ -262,6 +258,11 @@ const Profile = () => {
                   </Text>
                 </Button>
               </VStack>
+            )}
+            {messageUpload && (
+              <Text fontSize="lg" fontWeight="bold" color="green.500">
+                {messageUpload}
+              </Text>
             )}
             <Text fontSize="xl" fontWeight="bold">
               {profile?.firstName} {profile?.lastName}
