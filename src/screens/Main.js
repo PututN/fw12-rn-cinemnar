@@ -61,7 +61,7 @@ const Main = () => {
                 component={Home}
                 options={{headerShown: false}}
               /> */}
-              <Stack.Screen
+              {/* <Stack.Screen
                 name="ViewAll"
                 component={ViewAll}
                 options={{headerShown: false}}
@@ -75,7 +75,7 @@ const Main = () => {
                 name="Order"
                 component={Order}
                 options={{headerShown: false}}
-              />
+              /> */}
               <Stack.Screen
                 name="Payment"
                 component={Payment}

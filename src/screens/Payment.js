@@ -9,55 +9,151 @@ import {
   VStack,
   Button,
   ScrollView,
+  Pressable,
 } from 'native-base';
 import React, {Component} from 'react';
 import {AlertTriangle} from 'react-native-feather';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 
-import OVO from '../images/paymentOVO.png';
-import Dana from '../images/paymentDana.png';
-import Gopay from '../images/paymentGopay.png';
-import Gpay from '../images/paymentGpay.png';
-import Paypal from '../images/paymentPaypal.png';
-import Visa from '../images/paymentVisa.png';
 import {useNavigation} from '@react-navigation/native';
+import {useSelector, useDispatch} from 'react-redux';
+import http from '../helpers/http';
+import {transaction} from '../redux/reducers/transaction';
 
 const Payment = () => {
-  //   const payment = [
-  //     {
-  //       id: 1,
-  //       name: 'OVO',
-  //       picture: OVO,
-  //     },
-  //     {
-  //       id: 2,
-  //       name: 'Dana',
-  //       picture: Dana,
-  //     },
-  //     {
-  //       id: 3,
-  //       name: 'Gopay',
-  //       picture: Gopay,
-  //     },
-  //     {
-  //       id: 4,
-  //       name: 'Gpay',
-  //       picture: Gpay,
-  //     },
-
-  //     {
-  //       id: 5,
-  //       name: 'Paypal',
-  //       picture: Paypal,
-  //     },
-  //     {
-  //       id: 6,
-  //       name: 'Visa',
-  //       picture: Visa,
-  //     },
-  //   ];
+  const {
+    movieTitle,
+    price,
+    cinemaPicture,
+    bookingDate,
+    time,
+    userId,
+    movieId,
+    cinemaId,
+    movieScheduleId,
+    seatNum,
+    cinemaName,
+    totalPrice,
+  } = useSelector(state => state?.transaction);
+  const dispatch = useDispatch();
   const navigation = useNavigation();
+  const token = useSelector(state => state.auth.token);
+
+  //FETCHING PAYMENT METHOD
+  const [paymentMethod, setPaymentMethod] = React.useState([]);
+  const fetchPaymentMethod = async () => {
+    try {
+      const response = await http(token).get('/paymentMethod?limit=6');
+      setPaymentMethod(response?.data?.results);
+    } catch (error) {
+      if (error) console.log(error);
+    }
+  };
+  React.useEffect(() => {
+    if (token) {
+      fetchPaymentMethod();
+    }
+  }, [token]);
+
+  //set selected payment method
+  const [selectPaymentMethod, setSelectPaymentMethod] = React.useState(null);
+  //FETCHING PROFILE ID
+  const [profile, setProfile] = React.useState({});
+  const fetchProfile = async () => {
+    try {
+      const response = await http(token).get('/profile');
+      setProfile(response?.data?.results);
+    } catch (error) {
+      if (error) console.log(error);
+    }
+  };
+  React.useEffect(() => {
+    if (token) {
+      fetchProfile();
+    }
+  }, [token]);
+  //set profile
+  const [fullName, setFullName] = React.useState('');
+  const [newEmail, setNewEmail] = React.useState('');
+  const [newPhoneNumber, setNewPhoneNumber] = React.useState('');
+
+  //alert success
+  const [successMessage, setSuccessMessage] = React.useState(false);
+
+  //alert error
+  const [errorPayment, setErrorPayment] = React.useState(false);
+
+  //handle payorder
+  const handlePayOrder = async () => {
+    if (!selectPaymentMethod) {
+      setErrorPayment('Please choose your payment');
+      setTimeout(() => {
+        setErrorPayment(false);
+      }, 3000);
+    } else {
+      dispatch(
+        transaction({
+          userId,
+          bookingDate,
+          movieId,
+          cinemaId,
+          movieScheduleId,
+          fullName: fullName
+            ? fullName
+            : `${profile?.firstName} ${profile?.lastName}`,
+          email: newEmail ? newEmail : `${profile?.email}`,
+          phoneNumber: newPhoneNumber
+            ? newPhoneNumber
+            : `${profile?.phoneNumber}`,
+          statusId: 1,
+          paymentId: selectPaymentMethod,
+          seatNum,
+          time,
+          cinemaName,
+          price,
+          cinemaPicture,
+          movieTitle,
+          totalPrice,
+        }),
+      );
+      createTransaction();
+    }
+  };
+
+  //create transaction
+  const createTransaction = async () => {
+    try {
+      const response = await http(token).post(`/transaction/order`, {
+        bookingDate,
+        fullName: fullName
+          ? fullName
+          : `${profile?.firstName} ${profile?.lastName}`,
+        email: newEmail ? newEmail : `${profile?.email}`,
+        movieId,
+        movieScheduleId,
+        paymentId: selectPaymentMethod,
+        statusId: 1,
+        cinemaId,
+        seatNum,
+        phoneNumber: newPhoneNumber
+          ? newPhoneNumber
+          : `${profile?.phoneNumber}`,
+        time,
+        totalPrice,
+      });
+      setSuccessMessage('Payment Success');
+      setTimeout(() => {
+        setSuccessMessage(false);
+        navigation.navigate('History');
+      }, 3000);
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  console.log(totalPrice);
+
   return (
     <ScrollView>
       <Navbar />
@@ -71,7 +167,7 @@ const Payment = () => {
             Total Payment
           </Text>
           <Text color="white" fontWeight="bold" fontSize="2xl">
-            $30
+            Rp {totalPrice}
           </Text>
         </HStack>
       </VStack>
@@ -80,70 +176,34 @@ const Payment = () => {
           Payment Method
         </Text>
         <VStack bg="white" p="5" borderRadius="10" space="5">
-          <HStack space="2" alignItems="center" justifyContent="center">
-            <VStack
-              borderWidth="1"
-              borderRadius="10"
-              px="3"
-              py="2"
-              space="2"
-              alignItems="center"
-              w="100">
-              <Image source={OVO} alt="OVO" resizeMode="contain" />
-            </VStack>
-            <VStack
-              borderWidth="1"
-              borderRadius="10"
-              px="3"
-              py="2"
-              space="2"
-              alignItems="center"
-              w="100">
-              <Image source={Dana} alt="Dana" resizeMode="contain" />
-            </VStack>
-            <VStack
-              borderWidth="1"
-              borderRadius="10"
-              px="3"
-              py="2"
-              space="2"
-              alignItems="center"
-              w="100">
-              <Image source={Gopay} alt="Gopay" resizeMode="contain" />
-            </VStack>
-          </HStack>
-          <HStack space="2" alignItems="center" justifyContent="center">
-            <VStack
-              borderWidth="1"
-              borderRadius="10"
-              px="3"
-              py="2"
-              space="2"
-              alignItems="center"
-              w="100">
-              <Image source={Gpay} alt="Gpay" resizeMode="contain" />
-            </VStack>
-            <VStack
-              borderWidth="1"
-              borderRadius="10"
-              px="3"
-              py="2"
-              space="2"
-              alignItems="center"
-              w="100">
-              <Image source={Visa} alt="Visa" resizeMode="contain" />
-            </VStack>
-            <VStack
-              borderWidth="1"
-              borderRadius="10"
-              px="3"
-              py="2"
-              space="2"
-              alignItems="center"
-              w="100">
-              <Image source={Paypal} alt="Paypal" resizeMode="contain" />
-            </VStack>
-          </HStack>
+          <Box space="10px" flexDirection="row" flexWrap="wrap">
+            {paymentMethod?.map(item => {
+              return (
+                <Pressable
+                  key={item.id}
+                  borderWidth="1"
+                  borderRadius="10"
+                  px="3"
+                  py="2"
+                  space="2"
+                  m="1"
+                  alignItems="center"
+                  w="100"
+                  onPress={() => setSelectPaymentMethod(item?.id)}
+                  backgroundColor={
+                    selectPaymentMethod === item?.id ? '#F5D5AE' : 'white'
+                  }>
+                  <Image
+                    source={{uri: item.picture}}
+                    alt={`${item.name}`}
+                    width="80px"
+                    height="50px"
+                    resizeMode="contain"
+                  />
+                </Pressable>
+              );
+            })}
+          </Box>
           <HStack position="relative" alignItems="center">
             <Box
               borderBottomColor="#DEDEDE"
@@ -180,39 +240,29 @@ const Payment = () => {
           <VStack space="2">
             <Text fontSize="lg">Full Name</Text>
             <Input
-              placeholder="Jonas El Rodrigues"
+              placeholder="Write your fullname"
+              onChangeText={value => setFullName(value)}
+              defaultValue={`${profile?.firstName} ${profile?.lastName}`}
               borderRadius="10"
               borderColor="black"></Input>
           </VStack>
           <VStack space="2">
             <Text fontSize="lg">Email</Text>
             <Input
-              placeholder="jonasrodri123@gmail.com"
+              placeholder="Write your email"
+              onChangeText={value => setNewEmail(value)}
+              defaultValue={profile?.email}
               borderColor="black"
               borderRadius="10"></Input>
           </VStack>
           <VStack space="2">
             <Text fontSize="lg">Phone Number</Text>
-            <HStack
-              alignItems="center"
-              justifyContent="center"
-              px="5"
-              borderWidth="1"
+            <Input
+              onChangeText={value => setNewPhoneNumber(value)}
+              defaultValue={profile.phoneNumber}
               borderColor="black"
-              borderRadius="10">
-              <Input
-                width="20%"
-                placeholder="+62"
-                borderTopWidth="0"
-                borderBottomWidth="0"
-                borderLeftWidth="0"
-                pt="2"
-                borderRightColor="black"></Input>
-              <Input
-                width="80%"
-                placeholder="81445687121"
-                borderWidth="0"></Input>
-            </HStack>
+              placeholder="Write your phone number"
+              borderRadius="10"></Input>
           </VStack>
           <HStack
             bg="#F4B7404D"
@@ -227,13 +277,32 @@ const Payment = () => {
             </Text>
           </HStack>
         </VStack>
+
+        {errorPayment && (
+          <Text
+            fontSize="lg"
+            fontWeight="bold"
+            color="red.500"
+            textAlign="center">
+            {errorPayment}
+          </Text>
+        )}
+        {successMessage && (
+          <Text
+            fontSize="lg"
+            fontWeight="bold"
+            color="green.500"
+            textAlign="center">
+            {successMessage}
+          </Text>
+        )}
         <Button
           mb="10"
           bgColor="#C539B4"
           borderRadius="10"
           fontWeight="bold"
           fontSize="3xl"
-          onPress={() => navigation.navigate('History')}>
+          onPress={handlePayOrder}>
           <Text fontSize="lg" fontWeight="bold" color="white">
             Pay your order
           </Text>

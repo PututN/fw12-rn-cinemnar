@@ -33,7 +33,6 @@ const Order = () => {
     movieId,
     movieScheduleId,
     userId,
-    price,
   } = useSelector(state => state?.transaction);
   //set date
   const date = moment(bookingDate).format('LLLL').split(' ');
@@ -84,9 +83,9 @@ const Order = () => {
         );
         navigation.navigate('Payment');
       } else {
-        setErrorMessage('Please choose your seat')
+        setErrorMessage('Please choose your seat');
         setTimeout(() => {
-          setErrorMessage(false)
+          setErrorMessage(false);
         }, 3000);
       }
     } catch (error) {
@@ -260,7 +259,14 @@ const Order = () => {
             Checkout Now
           </Text>
         </Button>
-        <Text fontSize="xl" color="red.500" textAlign='center' fontWeight='bold' mt='5'>{errorMessage}</Text>
+        <Text
+          fontSize="xl"
+          color="red.500"
+          textAlign="center"
+          fontWeight="bold"
+          mt="5">
+          {errorMessage}
+        </Text>
       </VStack>
       <Footer />
     </ScrollView>
