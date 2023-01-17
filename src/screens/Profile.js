@@ -125,27 +125,35 @@ const Profile = () => {
   };
   //HANDLE UPLOAD
   const [messageUpload, setMessageUpload] = React.useState(false);
+  const [messageErrorFileSize, setMessageErrorFileSize] = React.useState(false);
   const uploadImage = async () => {
     try {
       if (preview?.fileName) {
-        const obj = {
-          name: preview.fileName,
-          type: preview.type,
-          uri: preview.uri,
-        };
-        const form = new FormData();
-        form.append('picture', obj);
-        const {data} = await http(token).patch('/profile/updated', form, {
-          headers: {
-            'Content-type': 'multipart/form-data',
-          },
-        });
-        setMessageUpload(data.message);
-        setTimeout(() => {
-          setMessageUpload(false);
-          fetchProfile();
-          setPreview({})
-        }, 3000);
+        if (preview?.fileSize <= 5000000) {
+          const obj = {
+            name: preview.fileName,
+            type: preview.type,
+            uri: preview.uri,
+          };
+          const form = new FormData();
+          form.append('picture', obj);
+          const {data} = await http(token).patch('/profile/updated', form, {
+            headers: {
+              'Content-type': 'multipart/form-data',
+            },
+          });
+          setMessageUpload(data.message);
+          setTimeout(() => {
+            setMessageUpload(false);
+            fetchProfile();
+            setPreview({});
+          }, 3000);
+        } else {
+          setMessageErrorFileSize('Please choose photo less than 5 MB');
+          setTimeout(() => {
+            setMessageErrorFileSize(false);
+          }, 3000);
+        }
       } else {
         alert('Please choose image first');
       }
@@ -264,6 +272,12 @@ const Profile = () => {
                 {messageUpload}
               </Text>
             )}
+            {messageErrorFileSize && (
+              <Text fontSize="lg" fontWeight="bold" color="red.500">
+                {messageErrorFileSize}
+              </Text>
+            )}
+
             <Text fontSize="xl" fontWeight="bold">
               {profile?.firstName} {profile?.lastName}
             </Text>
