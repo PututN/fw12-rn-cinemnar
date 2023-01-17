@@ -17,6 +17,7 @@ const initialState = {
   price:null,
   cinemaPicture:null,
   movieTitle:null,
+  totalPrice:null
 };
 
 const transactionReducer = createSlice({
@@ -40,6 +41,7 @@ const transactionReducer = createSlice({
       state.price = action.payload.price;
       state.cinemaPicture = action.payload.cinemaPicture;
       state.movieTitle = action.payload.movieTitle;
+      state.totalPrice = action.payload.totalPrice;
     },
     cancelTransaction: (state, {payload}) => {
       return initialState;

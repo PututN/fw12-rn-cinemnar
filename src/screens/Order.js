@@ -22,15 +22,78 @@ import moment from 'moment';
 const Order = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const {bookingDate, cinemaName, cinemaPicture, movieTitle, time, price} =
-    useSelector(state => state?.transaction);
-//set date
-const date = moment(bookingDate).format('LLLL').split(' ')
-const day = date[0]
-const month = date[1]
-const newDate = date[2]
-const year = date[3]
-const fixDate = `${day} ${month} ${newDate} ${year}`
+  const {
+    bookingDate,
+    cinemaName,
+    cinemaPicture,
+    movieTitle,
+    time,
+    price,
+    cinemaId,
+    movieId,
+    movieScheduleId,
+    userId,
+    price,
+  } = useSelector(state => state?.transaction);
+  //set date
+  const date = moment(bookingDate).format('LLLL').split(' ');
+  const day = date[0];
+  const month = date[1];
+  const newDate = date[2];
+  const year = date[3];
+  const fixDate = `${day} ${month} ${newDate} ${year}`;
+  //set seatnum
+  const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+  const column1 = [1, 2, 3, 4, 5, 6, 7];
+  const column2 = [8, 9, 10, 11, 12, 13, 14];
+  const [selectSeat, setSelectSeat] = React.useState([]);
+  //handlechooseseat
+  const handleChooseSeat = seat => {
+    if (!selectSeat.includes(seat)) {
+      setSelectSeat([...selectSeat, seat].sort());
+    } else {
+      setSelectSeat(selectSeat.filter(e => e !== seat));
+    }
+  };
+
+  //validate choose seat
+  const [errorMessage, setErrorMessage] = React.useState(false);
+
+  //total price
+  const totalPrice = Number(selectSeat.length * price).toLocaleString('id');
+
+  //handlesubmit checkout
+  const handleCheckoutNow = async totalPrice => {
+    try {
+      if (selectSeat.length) {
+        dispatch(
+          transaction({
+            bookingDate,
+            time,
+            cinemaName,
+            cinemaId,
+            cinemaPicture,
+            movieId,
+            movieScheduleId,
+            movieTitle,
+            seatNum: selectSeat,
+            totalPrice,
+            userId,
+            price,
+          }),
+        );
+        navigation.navigate('Payment');
+      } else {
+        setErrorMessage('Please choose your seat')
+        setTimeout(() => {
+          setErrorMessage(false)
+        }, 3000);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <ScrollView>
       <Navbar />
@@ -46,543 +109,51 @@ const fixDate = `${day} ${month} ${newDate} ${year}`
             mb="5"></Box>
           <HStack space="5">
             {/* LEFT */}
-            <VStack
-              flex="1"
-              space="1"
-              borderLeftWidth="1"
-              pl="2"
-              borderLeftColor="#00BA88">
-              {/* LEFT */}
-              <HStack space="1">
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-              </HStack>
-              <HStack space="1">
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-              </HStack>
-              <HStack space="1">
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-              </HStack>
-              <HStack space="1">
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-              </HStack>
-              <HStack space="1">
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-              </HStack>
-              <HStack space="1">
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-              </HStack>
-              <HStack
-                space="1"
-                borderBottomColor="#ED2E7E"
-                borderBottomWidth="1"
-                pb="2">
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-              </HStack>
-            </VStack>
+            <Box>
+              {alphabet.map((alp, i) => {
+                return (
+                  <HStack key={String(i)} flexDirection="row">
+                    {column1.map((num, index) => {
+                      const seat = alp + num;
+                      return (
+                        <Pressable
+                          key={String(index)}
+                          borderRadius="5"
+                          m="0.5"
+                          h="5"
+                          w="5"
+                          bg={selectSeat.includes(seat) ? '#C539B4' : '#D6D8E7'}
+                          onPress={() => handleChooseSeat(seat)}
+                        />
+                      );
+                    })}
+                  </HStack>
+                );
+              })}
+            </Box>
             {/* RIGHT */}
-            <VStack flex="1" space="1">
-              <HStack space="1">
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-              </HStack>
-              <HStack space="1">
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-              </HStack>
-              <HStack space="1">
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-              </HStack>
-              <HStack space="1">
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-              </HStack>
-              <HStack space="1">
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-              </HStack>
-              <HStack space="1">
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-              </HStack>
-              <HStack
-                space="1"
-                borderBottomColor="#ED2E7E"
-                borderBottomWidth="1"
-                pb="2">
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-                <Pressable
-                  bg="#D6D8E7"
-                  w="5"
-                  h="5"
-                  borderRadius="5"></Pressable>
-              </HStack>
-            </VStack>
+            <Box>
+              {alphabet.map((alp, i) => {
+                return (
+                  <HStack key={String(i)} flexDirection="row">
+                    {column2.map((num, index) => {
+                      const seat = alp + num;
+                      return (
+                        <Pressable
+                          key={String(index)}
+                          borderRadius="5"
+                          m="0.5"
+                          h="5"
+                          w="5"
+                          bg={selectSeat.includes(seat) ? '#C539B4' : '#D6D8E7'}
+                          onPress={() => handleChooseSeat(seat)}
+                        />
+                      );
+                    })}
+                  </HStack>
+                );
+              })}
+            </Box>
           </HStack>
           <Text my="5" fontWeight="bold" fontSize="lg">
             Seating key
@@ -630,7 +201,7 @@ const fixDate = `${day} ${month} ${newDate} ${year}`
           px="3"
           alignItems="center"
           space="3">
-          <Image source={CinemaOne} alt="ticket" />
+          <Image source={cinemaPicture} alt="ticket" />
           <Text fontWeight="bold" fontSize="3xl">
             {cinemaName} Cinema
           </Text>
@@ -643,7 +214,7 @@ const fixDate = `${day} ${month} ${newDate} ${year}`
                 {fixDate}
               </Text>
               <Text fontSize="lg" fontWeight="bold" color="#14142B">
-              {time.split(':')[0] + ':' + time.split(':')[1] + ' WIB'}
+                {time.split(':')[0] + ':' + time.split(':')[1] + ' WIB'}
               </Text>
             </HStack>
             <HStack justifyContent="space-between">
@@ -659,7 +230,7 @@ const fixDate = `${day} ${month} ${newDate} ${year}`
                 Seat Choosed
               </Text>
               <Text fontSize="lg" fontWeight="bold" color="#14142B">
-                C4, C5, C6
+                {selectSeat.length ? selectSeat.join(', ') : '-'}
               </Text>
             </HStack>
           </VStack>
@@ -674,7 +245,7 @@ const fixDate = `${day} ${month} ${newDate} ${year}`
               Total Payment
             </Text>
             <Text fontSize="3xl" fontWeight="bold" color="#C539B4">
-              $30
+              Rp {totalPrice}
             </Text>
           </HStack>
         </VStack>
@@ -684,11 +255,12 @@ const fixDate = `${day} ${month} ${newDate} ${year}`
           borderRadius="10"
           fontWeight="bold"
           fontSize="3xl"
-          onPress={() => navigation.navigate('Payment')}>
+          onPress={() => handleCheckoutNow(totalPrice)}>
           <Text fontSize="lg" fontWeight="bold" color="white">
             Checkout Now
           </Text>
         </Button>
+        <Text fontSize="xl" color="red.500" textAlign='center' fontWeight='bold' mt='5'>{errorMessage}</Text>
       </VStack>
       <Footer />
     </ScrollView>
