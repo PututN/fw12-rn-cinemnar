@@ -12,6 +12,7 @@ import React, {Component} from 'react';
 import {useRoute} from '@react-navigation/native';
 import http from '../helpers/http';
 import {useSelector} from 'react-redux';
+import moment from 'moment';
 
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -21,7 +22,7 @@ import QR from '../images/QR.png';
 const TicketResult = ({idTicket}) => {
   const route = useRoute();
   const getIdTicket = route.params.idTicket;
-
+  console.log(getIdTicket);
   //FETCHING GET HISTORY ID
   //FETCHING PROFILE ID
   const [ticket, setTicket] = React.useState({});
@@ -41,8 +42,29 @@ const TicketResult = ({idTicket}) => {
       fetchTicket();
     }
   }, [token]);
-  console.log(ticket)
+  // console.log(ticket);
 
+  //set Date
+  const date = moment(ticket.bookingDate)
+    .format('lll')
+    .split(',')[0]
+    .split(' ');
+  const fixDate = `${date[1]} ${date[0]}`;
+
+  //set genre
+  // const genre = ticket?.genre.split(',')[0];
+
+  //set bookingdate
+  // const time = ticket?.time.slice(0, 5);
+
+  //set title
+  // const title = ;
+
+  //set seatn count
+  // const seat = ticket?.seatnum.split(',').length
+  // console.log(seat)
+
+  console.log(ticket);
   return (
     <ScrollView>
       <Navbar />
@@ -83,20 +105,21 @@ const TicketResult = ({idTicket}) => {
               <VStack space="2">
                 <Text color="#AAAAAA">Movie</Text>
                 <Text fontSize="lg" fontWeight="bold">
-                  Spider-Man: ..
+                  {ticket?.title ? `${ticket?.title.slice(0, 7)}...` : null}
                 </Text>
               </VStack>
               <VStack space="2">
                 <Text color="#AAAAAA">Date</Text>
                 <Text fontSize="lg" fontWeight="bold">
-                  07 Jul
+                  {fixDate}
                 </Text>
               </VStack>
 
               <VStack space="2">
                 <Text color="#AAAAAA">Count</Text>
                 <Text fontSize="lg" fontWeight="bold">
-                  3 pcs
+                  {ticket?.seatnum ? ticket?.seatnum.split(',').length : null}{' '}
+                  pcs
                 </Text>
               </VStack>
             </VStack>
@@ -104,20 +127,24 @@ const TicketResult = ({idTicket}) => {
               <VStack space="2">
                 <Text color="#AAAAAA">Category</Text>
                 <Text fontSize="lg" fontWeight="bold">
-                  Action
+                  {ticket?.genre ? ticket?.genre.split(',')[0] : null}
                 </Text>
               </VStack>
               <VStack space="2">
                 <Text color="#AAAAAA">Time</Text>
                 <Text fontSize="lg" fontWeight="bold">
-                  02:00pm
+                  {ticket?.time ? ticket?.time.slice(0, 5) : null} WIB
                 </Text>
               </VStack>
 
               <VStack space="2">
                 <Text color="#AAAAAA">Seats</Text>
                 <Text fontSize="lg" fontWeight="bold">
-                  C4, C5, C6
+                  {ticket?.seatnum
+                    ? ticket?.seatnum.length <= 10
+                      ? ticket?.seatnum
+                      : `${ticket?.seatnum.slice(0, 10)}...`
+                    : null}
                 </Text>
               </VStack>
             </VStack>
@@ -131,7 +158,7 @@ const TicketResult = ({idTicket}) => {
               Total
             </Text>
             <Text fontSize="xl" fontWeight="bold">
-              $30.00
+              Rp {ticket?.totalPrice ? ticket?.totalPrice : null}
             </Text>
           </HStack>
         </VStack>

@@ -200,9 +200,13 @@ const Order = () => {
           px="3"
           alignItems="center"
           space="3">
-          <Image source={cinemaPicture} alt="ticket" width="80px"
-                    height="50px"
-                    resizeMode="contain"/>
+          <Image
+            source={cinemaPicture}
+            alt="ticket"
+            width="80px"
+            height="50px"
+            resizeMode="contain"
+          />
           <Text fontWeight="bold" fontSize="3xl">
             {cinemaName} Cinema
           </Text>
@@ -261,14 +265,16 @@ const Order = () => {
             Checkout Now
           </Text>
         </Button>
-        <Text
-          fontSize="xl"
-          color="red.500"
-          textAlign="center"
-          fontWeight="bold"
-          mt="5">
-          {errorMessage}
-        </Text>
+        {errorMessage && (
+          <Text
+            fontSize="xl"
+            color="red.500"
+            textAlign="center"
+            fontWeight="bold"
+            mt="5">
+            {errorMessage}
+          </Text>
+        )}
       </VStack>
       <Footer />
     </ScrollView>

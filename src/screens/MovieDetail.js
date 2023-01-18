@@ -61,13 +61,18 @@ const MovieDetail = ({idMovie}) => {
   const maxDate = new Date(2023, 6, 3);
   const token = useSelector(state => state.auth.token);
   const {id} = jwt_decode(token);
-  const movieTitle = movieId?.title
+  const movieTitle = movieId?.title;
   const [cinema, setCinema] = React.useState([]);
   const [selectCity, setSelectCity] = React.useState('');
   const [selectDate, setSelectDate] = React.useState('');
   const [showModal, setShowModal] = React.useState(false);
   const [selectedTime, setSelectedTime] = React.useState(null);
   const [selectedCinema, setSelectedCinema] = React.useState(null);
+
+  //errorvalidate
+  const [errorSelectedTime, setErrorSelectedTime] = React.useState(false);
+  const [errorSelectedDate, setErrorSelectedDate] = React.useState(false);
+
   //handle select time
   const handleSelectTime = (item, cinemaId) => {
     setSelectedTime(item);
@@ -97,25 +102,38 @@ const MovieDetail = ({idMovie}) => {
     cinemaPicture,
   ) => {
     try {
-      dispatch(
-        transaction({
-          bookingDate: selectDate,
-          userId: id,
-          movieId: getId,
-          cinemaId: selectedCinema,
-          time: selectedTime,
-          cinemaName,
-          price,
-          movieScheduleId,
-          cinemaPicture,
-          movieTitle,
-        }),
-      );
-      navigation.navigate('Order');
+      if (!selectDate) {
+        setErrorSelectedDate('Please select date...');
+        setTimeout(() => {
+          setErrorSelectedDate(false);
+        }, 3000);
+      } else if (!selectedTime) {
+        setErrorSelectedTime('Please select time...');
+        setTimeout(() => {
+          setErrorSelectedTime(false);
+        }, 3000);
+      } else {
+        dispatch(
+          transaction({
+            bookingDate: selectDate,
+            userId: id,
+            movieId: getId,
+            cinemaId: selectedCinema,
+            time: selectedTime,
+            cinemaName,
+            price,
+            movieScheduleId,
+            cinemaPicture,
+            movieTitle,
+          }),
+        );
+        navigation.navigate('Order');
+      }
     } catch (err) {
       console.log(err);
     }
   };
+
   return (
     <ScrollView>
       <Navbar />
@@ -334,6 +352,24 @@ const MovieDetail = ({idMovie}) => {
                   Book now
                 </Text>
               </Button>
+              {errorSelectedTime && (
+                <Text
+                  fontSize="xl"
+                  color="red.500"
+                  textAlign="center"
+                  fontWeight="bold">
+                  {errorSelectedTime}
+                </Text>
+              )}
+              {errorSelectedDate && (
+                <Text
+                  fontSize="xl"
+                  color="red.500"
+                  textAlign="center"
+                  fontWeight="bold">
+                  {errorSelectedDate}
+                </Text>
+              )}
             </VStack>
           </VStack>
         ))}

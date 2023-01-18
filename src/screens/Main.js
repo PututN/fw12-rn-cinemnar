@@ -56,12 +56,12 @@ const Main = () => {
                 options={{headerShown: false}}
               /> */}
 
-              {/* <Stack.Screen
+              <Stack.Screen
                 name="Home"
                 component={Home}
                 options={{headerShown: false}}
-              /> */}
-              {/* <Stack.Screen
+              />
+              <Stack.Screen
                 name="ViewAll"
                 component={ViewAll}
                 options={{headerShown: false}}
@@ -75,12 +75,12 @@ const Main = () => {
                 name="Order"
                 component={Order}
                 options={{headerShown: false}}
-              /> */}
-              {/* <Stack.Screen
+              />
+              <Stack.Screen
                 name="Payment"
                 component={Payment}
                 options={{headerShown: false}}
-              /> */}
+              />
               <Stack.Screen
                 name="Profile"
                 component={Profile}

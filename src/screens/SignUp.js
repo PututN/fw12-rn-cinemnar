@@ -19,8 +19,9 @@ import YupPassword from 'yup-password';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
+import {cancelTransaction} from '../redux/reducers/transaction';
 import {registerAction} from '../redux/actions/authActions';
-import {logout} from '../redux/reducers/auth';
+import {logout, setErr} from '../redux/reducers/auth';
 
 YupPassword(Yup);
 
@@ -47,11 +48,16 @@ const SignUp = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const err = useSelector(state => state.auth.error);
-  const loading = useSelector(state => state.auth.loading)
+  const loading = useSelector(state => state.auth.loading);
   //err gone while refresh
   useEffect(() => {
-    dispatch(logout());
-  }, []);
+    dispatch(cancelTransaction());
+    if (err) {
+      setTimeout(() => {
+        dispatch(setErr());
+      }, 3000);
+    }
+  }, [err]);
   // console.log(err)
   const [showPassword, setShowPassword] = React.useState(false);
   const {

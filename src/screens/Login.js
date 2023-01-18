@@ -19,7 +19,8 @@ import YupPassword from 'yup-password';
 import {yupResolver} from '@hookform/resolvers/yup';
 import http from '../helpers/http';
 import {useDispatch, useSelector} from 'react-redux';
-import {logout} from '../redux/reducers/auth';
+import {logout, setErr} from '../redux/reducers/auth';
+import { cancelTransaction } from '../redux/reducers/transaction';
 import {useNavigation} from '@react-navigation/native';
 import {loginAction as testLogin} from '../redux/actions/authActions';
 
@@ -48,8 +49,13 @@ const Login = () => {
 
   //err gone while refresh
   React.useEffect(() => {
-    dispatch(logout());
-  }, []);
+    dispatch(cancelTransaction());
+    if (err) {
+      setTimeout(() => {
+        dispatch(setErr());
+      }, 3000);
+    }
+  }, [err]);
 
   //SHOWPASSWORD
   const [showPassword, setShowPassword] = React.useState(false);
@@ -74,7 +80,6 @@ const Login = () => {
     try {
       const {email, password} = form;
       dispatch(testLogin({email, password}));
-      setTimeout(() => {}, 3000);
     } catch (error) {
       console.log(error);
     }

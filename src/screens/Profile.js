@@ -86,7 +86,10 @@ const Profile = () => {
         phoneNumber,
       });
       setSuccessMessage('Data updated');
-      setTimeout(() => {}, 3000);
+      setTimeout(() => {
+        setSuccessMessage(false)
+        fetchProfile()
+      }, 3000);
       return response;
     } catch (error) {
       console.log(error);
@@ -102,7 +105,10 @@ const Profile = () => {
         password,
       });
       setPasswordSuccess('Password updated');
-      setTimeout(() => {}, 3000);
+      setTimeout(() => {
+        setPasswordSuccess(false)
+        fetchProfile()
+      }, 3000);
       return response;
     } catch (error) {
       console.log(error);

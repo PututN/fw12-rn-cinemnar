@@ -13,12 +13,13 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
+import {cancelTransaction} from '../redux/reducers/transaction';
 import http from '../helpers/http';
 import moment from 'moment';
 
 const History = () => {
   const navigation = useNavigation();
-
+  const dispatch = useDispatch();
   //FETCHING hisotry transacion ID
   const [history, setHistory] = React.useState([]);
   const token = useSelector(state => state.auth.token);
@@ -31,6 +32,7 @@ const History = () => {
     }
   };
   React.useEffect(() => {
+    dispatch(cancelTransaction());
     if (token) {
       fetchHistory();
     }
@@ -72,7 +74,12 @@ const History = () => {
       <VStack bg="#E5E5E5" px="3" py="5" space="5">
         {history?.map(item => {
           return (
-            <VStack bg="white" borderRadius="10" space="3" py="6" key={item.id}>
+            <VStack
+              key={String(item.id)}
+              bg="white"
+              borderRadius="10"
+              space="3"
+              py="6">
               <VStack px="6" space="3">
                 <Image
                   source={{uri: item?.picture}}
