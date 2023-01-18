@@ -14,14 +14,12 @@ import Footer from '../components/Footer';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import http from '../helpers/http';
-import CineOne from '../images/imgCineOne.png';
-import Ebv from '../images/imgEbv.png';
+import moment from 'moment';
 
 const History = () => {
   const navigation = useNavigation();
-  const dispatch = useDispatch();
 
-  //FETCHING PROFILE ID
+  //FETCHING hisotry transacion ID
   const [history, setHistory] = React.useState([]);
   const token = useSelector(state => state.auth.token);
   const fetchHistory = async () => {
@@ -37,7 +35,9 @@ const History = () => {
       fetchHistory();
     }
   }, [token]);
- console.log(history)
+
+  console.log(history);
+  //set booking date
   return (
     <ScrollView>
       <Navbar />
@@ -70,47 +70,43 @@ const History = () => {
         </HStack>
       </VStack>
       <VStack bg="#E5E5E5" px="3" py="5" space="5">
-        <VStack bg="white" borderRadius="10" space="3" py="6">
-          <VStack px="6" space="3">
-            <Image source={CineOne} alt="ticket" />
-            <Text fontSize="lg" color="#AAAAAA">
-              Tuesday, 07 July 2020 - 04:30pm
-            </Text>
-            <Text fontSize="2xl" fontWeight="bold">
-              Spider-Man: Homecoming
-            </Text>
-          </VStack>
-          <Box borderWidth="1" borderColor="#DEDEDE" my="3"></Box>
-          <Box px="6">
-            <Button
-              onPress={() => navigation.navigate('TicketResult')}
-              bgColor="#C539B4"
-              borderRadius="10"
-              fontWeight="bold">
-              Ticket in active
-            </Button>
-          </Box>
-        </VStack>
-        <VStack bg="white" borderRadius="10" space="3" py="6">
-          <VStack px="6" space="3">
-            <Image source={Ebv} alt="ticket" />
-            <Text fontSize="lg" color="#AAAAAA">
-              Monday, 14 June 2020 - 02:00pm
-            </Text>
-            <Text fontSize="2xl" fontWeight="bold">
-              Avengers: End Game
-            </Text>
-          </VStack>
-          <Box borderWidth="1" borderColor="#DEDEDE" my="3"></Box>
-          <Box px="6">
-            <Button
-              backgroundColor="#6E7191"
-              borderRadius="10"
-              fontWeight="bold">
-              Ticket in expired
-            </Button>
-          </Box>
-        </VStack>
+        {history?.map(item => {
+          return (
+            <VStack bg="white" borderRadius="10" space="3" py="6" key={item.id}>
+              <VStack px="6" space="3">
+                <Image
+                  source={{uri: item?.picture}}
+                  alt="ticket"
+                  width="200"
+                  height="50"
+                  resizeMode="contain"
+                />
+                <Text fontSize="lg" color="#AAAAAA">
+                  {moment(item?.bookingDate).format('LLLL').slice(0, 25)} -{' '}
+                  {item.time.split(':')[0] +
+                    ':' +
+                    item.time.split(':')[1] +
+                    ' WIB'}
+                </Text>
+                <Text fontSize="2xl" fontWeight="bold">
+                  {item?.title}
+                </Text>
+              </VStack>
+              <Box borderWidth="1" borderColor="#DEDEDE" my="3"></Box>
+              <Box px="6">
+                <Button
+                  onPress={() =>
+                    navigation.navigate('TicketResult', {idTicket: item.id})
+                  }
+                  bgColor="#C539B4"
+                  borderRadius="10"
+                  fontWeight="bold">
+                  Ticket in active
+                </Button>
+              </Box>
+            </VStack>
+          );
+        })}
       </VStack>
       <Footer />
     </ScrollView>

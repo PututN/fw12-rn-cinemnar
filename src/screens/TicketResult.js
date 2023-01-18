@@ -1,12 +1,48 @@
-import {Text, HStack, VStack, Image, Stack, View, Box, ScrollView} from 'native-base';
+import {
+  Text,
+  HStack,
+  VStack,
+  Image,
+  Stack,
+  View,
+  Box,
+  ScrollView,
+} from 'native-base';
 import React, {Component} from 'react';
+import {useRoute} from '@react-navigation/native';
+import http from '../helpers/http';
+import {useSelector} from 'react-redux';
 
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 import QR from '../images/QR.png';
 
-const TicketResult = () => {
+const TicketResult = ({idTicket}) => {
+  const route = useRoute();
+  const getIdTicket = route.params.idTicket;
+
+  //FETCHING GET HISTORY ID
+  //FETCHING PROFILE ID
+  const [ticket, setTicket] = React.useState({});
+  const token = useSelector(state => state.auth.token);
+  const fetchTicket = async () => {
+    try {
+      const response = await http(token).get(
+        `/transaction/history/${getIdTicket}`,
+      );
+      setTicket(response?.data?.results);
+    } catch (error) {
+      if (error) console.log(error);
+    }
+  };
+  React.useEffect(() => {
+    if (token) {
+      fetchTicket();
+    }
+  }, [token]);
+  console.log(ticket)
+
   return (
     <ScrollView>
       <Navbar />
@@ -86,9 +122,17 @@ const TicketResult = () => {
               </VStack>
             </VStack>
           </HStack>
-          <HStack justifyContent="space-between" borderWidth="1" p="4" borderColor="#DEDEDE">
-            <Text fontSize="xl" fontWeight="bold">Total</Text>
-            <Text fontSize="xl" fontWeight="bold">$30.00</Text>
+          <HStack
+            justifyContent="space-between"
+            borderWidth="1"
+            p="4"
+            borderColor="#DEDEDE">
+            <Text fontSize="xl" fontWeight="bold">
+              Total
+            </Text>
+            <Text fontSize="xl" fontWeight="bold">
+              $30.00
+            </Text>
           </HStack>
         </VStack>
       </VStack>
