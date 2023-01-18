@@ -145,7 +145,15 @@ const Payment = () => {
       setSuccessMessage('Payment Success');
       setTimeout(() => {
         setSuccessMessage(false);
-        navigation.navigate('History');
+        navigation.reset({
+          index: 0,
+          routes: [
+            {
+              name: 'History',
+              params: {someParam: 'Param1'},
+            },
+          ],
+        });
       }, 3000);
       return response;
     } catch (error) {
