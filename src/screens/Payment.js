@@ -149,6 +149,10 @@ const Payment = () => {
           index: 0,
           routes: [
             {
+              name: 'Home',
+              params: {someParam: 'Param1'},
+            },
+            {
               name: 'History',
               params: {someParam: 'Param1'},
             },
