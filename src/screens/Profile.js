@@ -76,19 +76,24 @@ const Profile = () => {
 
   //PATCH UPDATE DATA
   const [successMessage, setSuccessMessage] = React.useState('');
-
+  const [loadingData, setLoadingData] = React.useState(false);
+  const [messageUpdateData, setMessageUpdateData] = React.useState(false);
   const updateDataUser = async () => {
     try {
+      setLoadingData(true);
+      setMessageUpdateData('Submitting...');
       const response = await http(token).patch('/profile/updated', {
         firstName,
         lastName,
         email,
         phoneNumber,
       });
+      setLoadingData(false);
+      setMessageUpdateData(false);
       setSuccessMessage('Data updated');
       setTimeout(() => {
-        setSuccessMessage(false)
-        fetchProfile()
+        setSuccessMessage(false);
+        fetchProfile();
       }, 3000);
       return response;
     } catch (error) {
@@ -98,16 +103,23 @@ const Profile = () => {
 
   //PATCH NEW PASSWORD
   const [passwordSuccess, setPasswordSuccess] = useState('');
+  const [loadingPassword, setLoadingPassword] = useState(false);
+  const [messageLoadingPassword, setMessageLoadingPassword] = useState(false);
+
   const handleUpdatePassword = async values => {
     try {
+      setLoadingPassword(true);
+      setMessageLoadingPassword('Submitting...');
       const {password, confirmPassword} = values;
       const response = await http(token).patch('/profile/updated', {
         password,
       });
+      setLoadingPassword(false);
+      setMessageLoadingPassword(false);
       setPasswordSuccess('Password updated');
       setTimeout(() => {
-        setPasswordSuccess(false)
-        fetchProfile()
+        setPasswordSuccess(false);
+        fetchProfile();
       }, 3000);
       return response;
     } catch (error) {
@@ -132,10 +144,14 @@ const Profile = () => {
   //HANDLE UPLOAD
   const [messageUpload, setMessageUpload] = React.useState(false);
   const [messageErrorFileSize, setMessageErrorFileSize] = React.useState(false);
+  const [loadingUpload, setLoadingUpload] = React.useState(false);
+  const [spinnerLoadingUpload, setSpinnerLoadingUpload] = React.useState(false);
   const uploadImage = async () => {
     try {
       if (preview?.fileName) {
         if (preview?.fileSize <= 5000000) {
+          setLoadingUpload('Uploading...');
+          setSpinnerLoadingUpload(true);
           const obj = {
             name: preview.fileName,
             type: preview.type,
@@ -148,6 +164,8 @@ const Profile = () => {
               'Content-type': 'multipart/form-data',
             },
           });
+          setLoadingUpload(false);
+          setSpinnerLoadingUpload(false);
           setMessageUpload(data.message);
           setTimeout(() => {
             setMessageUpload(false);
@@ -249,7 +267,8 @@ const Profile = () => {
                   <Button
                     onPress={openGallery}
                     borderRadius="10"
-                    bgColor="#C539B4">
+                    bgColor="#C539B4"
+                    isDisabled={spinnerLoadingUpload}>
                     <Text fontSize="md" fontWeight="bold" color="white">
                       Open Gallery
                     </Text>
@@ -257,7 +276,8 @@ const Profile = () => {
                   <Button
                     onPress={openCamera}
                     borderRadius="10"
-                    bgColor="#C539B4">
+                    bgColor="#C539B4"
+                    isDisabled={spinnerLoadingUpload}>
                     <Text fontSize="md" fontWeight="bold" color="white">
                       Open Camera
                     </Text>
@@ -266,12 +286,18 @@ const Profile = () => {
                 <Button
                   onPress={uploadImage}
                   borderRadius="10"
-                  bgColor="#C539B4">
+                  bgColor="#C539B4"
+                  isLoading={spinnerLoadingUpload}>
                   <Text fontSize="md" fontWeight="bold" color="white">
                     Upload
                   </Text>
                 </Button>
               </VStack>
+            )}
+            {loadingUpload && (
+              <Text fontSize="lg" fontWeight="bold" color="blue.500">
+                {loadingUpload}
+              </Text>
             )}
             {messageUpload && (
               <Text fontSize="lg" fontWeight="bold" color="green.500">
@@ -344,13 +370,19 @@ const Profile = () => {
             {successMessage}
           </Text>
         )}
+        {messageUpdateData && (
+          <Text color="blue.500" textAlign="center" fontSize="lg">
+            {messageUpdateData}
+          </Text>
+        )}
         <Button
           mb="10"
           onPress={updateDataUser}
           borderRadius="10"
           fontWeight="bold"
           fontSize="3xl"
-          bgColor="#C539B4">
+          bgColor="#C539B4"
+          isLoading={loadingData}>
           <Text fontSize="lg" fontWeight="bold" color="white">
             Update Changes
           </Text>
@@ -443,14 +475,19 @@ const Profile = () => {
                   {passwordSuccess}
                 </Text>
               )}
-
+              {messageLoadingPassword && (
+                <Text color="blue.500" textAlign="center" fontSize="lg">
+                  {messageLoadingPassword}
+                </Text>
+              )}
               <Button
                 onPress={handleSubmit}
                 mb="10"
                 borderRadius="10"
                 fontWeight="bold"
                 fontSize="3xl"
-                bgColor="#C539B4">
+                bgColor="#C539B4"
+                isLoading={loadingPassword}>
                 <Text fontSize="lg" fontWeight="bold" color="white">
                   Update Changes
                 </Text>
