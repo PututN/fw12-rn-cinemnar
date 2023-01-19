@@ -24,32 +24,6 @@ import NavbarBeforeLogin from '../components/NavbarBeforeLogin';
 import {useNavigation} from '@react-navigation/native';
 import http from '../helpers/http';
 
-const data = [
-  {
-    id: 1,
-    picture: Spiderman,
-    title: 'Spider-Man: Homecoming',
-    genre: 'Action, Adventure, Sci-Fi',
-  },
-  {
-    id: 2,
-    picture: Tenet,
-    title: 'Tenet',
-    genre: 'Action, Adventure, Sci-Fi',
-  },
-  {
-    id: 3,
-    picture: LionKing,
-    title: 'Lion King',
-    genre: 'Animation, Adventure, Story',
-  },
-  {
-    id: 4,
-    picture: JohnWick,
-    title: 'John Wick',
-    genre: 'Action, Thriller, Sci-Fi',
-  },
-];
 const month = [
   {
     id: 1,
@@ -249,7 +223,7 @@ const Home = () => {
         </Pressable>
       </HStack>
       {/* MONTH */}
-      <HStack px="5">
+      {/* <HStack px="5">
         <ScrollView horizontal>
           {month.map(month => (
             <HStack
@@ -268,7 +242,7 @@ const Home = () => {
             </HStack>
           ))}
         </ScrollView>
-      </HStack>
+      </HStack> */}
       {/* MOVIE UPCOMING */}
       <HStack p="5">
         <ScrollView horizontal>

@@ -201,9 +201,9 @@ const Order = () => {
           alignItems="center"
           space="3">
           <Image
-            source={cinemaPicture}
+            source={{uri : cinemaPicture}}
             alt="ticket"
-            width="80px"
+            width="200px"
             height="50px"
             resizeMode="contain"
           />
