@@ -10,6 +10,7 @@ import {
   Button,
   ScrollView,
   Pressable,
+  Skeleton,
 } from 'native-base';
 import React, {Component} from 'react';
 import {AlertTriangle} from 'react-native-feather';
@@ -41,7 +42,7 @@ const Payment = () => {
   const token = useSelector(state => state.auth.token);
 
   //FETCHING PAYMENT METHOD
-  const [paymentMethod, setPaymentMethod] = React.useState([]);
+  const [paymentMethod, setPaymentMethod] = React.useState(null);
   const fetchPaymentMethod = async () => {
     try {
       const response = await http(token).get('/paymentMethod?limit=6');
@@ -146,12 +147,7 @@ const Payment = () => {
       setTimeout(() => {
         setSuccessMessage(false);
         navigation.reset({
-          index: 0,
           routes: [
-            {
-              name: 'Home',
-              params: {someParam: 'Param1'},
-            },
             {
               name: 'History',
               params: {someParam: 'Param1'},
@@ -187,34 +183,42 @@ const Payment = () => {
           Payment Method
         </Text>
         <VStack bg="white" p="5" borderRadius="10" space="5">
-          <Box space="10px" flexDirection="row" flexWrap="wrap">
-            {paymentMethod?.map(item => {
-              return (
-                <Pressable
-                  key={item.id}
-                  borderWidth="1"
-                  borderRadius="10"
-                  px="3"
-                  py="2"
-                  space="2"
-                  m="1"
-                  alignItems="center"
-                  w="100"
-                  onPress={() => setSelectPaymentMethod(item?.id)}
-                  backgroundColor={
-                    selectPaymentMethod === item?.id ? '#F5D5AE' : 'white'
-                  }>
-                  <Image
-                    source={{uri: item.picture}}
-                    alt={`${item.name}`}
-                    width="80px"
-                    height="50px"
-                    resizeMode="contain"
-                  />
-                </Pressable>
-              );
-            })}
-          </Box>
+          {paymentMethod ? (
+            <Box space="10px" flexDirection="row" flexWrap="wrap">
+              {paymentMethod?.map(item => {
+                return (
+                  <Pressable
+                    key={item.id}
+                    borderWidth="1"
+                    borderRadius="10"
+                    px="3"
+                    py="2"
+                    space="2"
+                    m="1"
+                    alignItems="center"
+                    w="100"
+                    onPress={() => setSelectPaymentMethod(item?.id)}
+                    backgroundColor={
+                      selectPaymentMethod === item?.id ? '#F5D5AE' : 'white'
+                    }>
+                    <Image
+                      source={{uri: item.picture}}
+                      alt={`${item.name}`}
+                      width="80px"
+                      height="50px"
+                      resizeMode="contain"
+                    />
+                  </Pressable>
+                );
+              })}
+            </Box>
+          ) : (
+            <>
+              <Skeleton h="100" startColor="#F5D5AE" />
+              <Skeleton.Text px="4" startColor="#F5D5AE" />
+              <Skeleton my="4" rounded="md" startColor="#F5D5AE" />
+            </>
+          )}
           <HStack position="relative" alignItems="center">
             <Box
               borderBottomColor="#DEDEDE"

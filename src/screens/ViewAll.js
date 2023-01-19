@@ -13,6 +13,7 @@ import {
   VStack,
   Pressable,
   Box,
+  Skeleton,
 } from 'native-base';
 import React, {Component, useState, useEffect} from 'react';
 import Navbar from '../components/Navbar';
@@ -71,32 +72,6 @@ const month = [
   {
     id: 12,
     time: 'December',
-  },
-];
-const data = [
-  {
-    id: 1,
-    picture: BlackWidow,
-    title: 'Black Widow',
-    genre: 'Action, Adventure, Sci-Fi',
-  },
-  {
-    id: 2,
-    picture: Witches,
-    title: 'The Witches',
-    genre: 'Adventure, Comedy, Family',
-  },
-  {
-    id: 3,
-    picture: BlackWidow,
-    title: 'Black Widow',
-    genre: 'Action, Adventure, Sci-Fi',
-  },
-  {
-    id: 4,
-    picture: Witches,
-    title: 'The Witches',
-    genre: 'Adventure, Comedy, Family',
   },
 ];
 
@@ -167,7 +142,7 @@ const ViewAll = () => {
               </View>
             </View>
             {/* MONTH */}
-            <ScrollView horizontal>
+            {/* <ScrollView horizontal>
               <View style={{flexDirection: 'row'}}>
                 {month.map(month => (
                   <View
@@ -186,56 +161,71 @@ const ViewAll = () => {
                   </View>
                 ))}
               </View>
-            </ScrollView>
+            </ScrollView> */}
             {/* MOVIE VIEW ALL */}
-            {ViewAll?.map(movie => {
-              return (
-                <Box
-                  key={String(movie?.id)}
-                  // width="160"
-                  borderWidth="1"
-                  borderColor="#DEDEDE"
-                  backgroundColor="white"
-                  p="5"
-                  mx="20"
-                  my="5"
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  borderRadius="10">
-                  <Image
-                    source={{uri: movie?.picture}}
-                    alt="Movie"
-                    width="150"
-                    height="200"
-                    mb="3"
-                    borderRadius={8}
-                    resizeMode="contain"
-                  />
-                  <VStack alignItems="center" space="3">
-                    <Text fontSize="lg" fontWeight="bold" textAlign="center">
-                      {movie?.title}
-                    </Text>
-                    <Text textAlign="center">{movie?.genre}</Text>
-                    <Pressable
-                      onPress={() =>
-                        navigation.navigate('MovieDetail', {idMovie: movie.id})
-                      }
-                      bgColor="#C539B4"
-                      borderRadius="4"
+            {ViewAll[0] ? (
+              <>
+                {ViewAll?.map(movie => {
+                  return (
+                    <Box
+                      key={String(movie?.id)}
+                      // width="160"
+                      borderWidth="1"
+                      borderColor="#DEDEDE"
+                      backgroundColor="white"
+                      p="5"
+                      mx="20"
+                      my="5"
+                      display="flex"
                       justifyContent="center"
                       alignItems="center"
-                      width="125"
-                      height="30px"
-                      mb="1">
-                      <Text fontSize="lg" fontWeight="bold" color="white">
-                        Details
-                      </Text>
-                    </Pressable>
-                  </VStack>
-                </Box>
-              );
-            })}
+                      borderRadius="10">
+                      <Image
+                        source={{uri: movie?.picture}}
+                        alt="Movie"
+                        width="150"
+                        height="200"
+                        mb="3"
+                        borderRadius={8}
+                        resizeMode="contain"
+                      />
+                      <VStack alignItems="center" space="3">
+                        <Text
+                          fontSize="lg"
+                          fontWeight="bold"
+                          textAlign="center">
+                          {movie?.title}
+                        </Text>
+                        <Text textAlign="center">{movie?.genre}</Text>
+                        <Pressable
+                          onPress={() =>
+                            navigation.navigate('MovieDetail', {
+                              idMovie: movie.id,
+                            })
+                          }
+                          bgColor="#C539B4"
+                          borderRadius="4"
+                          justifyContent="center"
+                          alignItems="center"
+                          width="125"
+                          height="30px"
+                          mb="1">
+                          <Text fontSize="lg" fontWeight="bold" color="white">
+                            Details
+                          </Text>
+                        </Pressable>
+                      </VStack>
+                    </Box>
+                  );
+                })}
+              </>
+            ) : (
+              <>
+                <Skeleton h="100" startColor="#F5D5AE" />
+                <Skeleton.Text px="4" startColor="#F5D5AE" />
+                <Skeleton my="4" rounded="md" startColor="#F5D5AE" />
+              </>
+            )}
             {/* <FlatList
               // ListHeaderComponent={ <Text>hai</Text>}
               // ListFooterComponent={ <Text>hello</Text>}

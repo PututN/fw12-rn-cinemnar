@@ -10,6 +10,7 @@ import {
   ScrollView,
   Modal,
   Pressable,
+  Skeleton,
 } from 'native-base';
 import React, {Component, useState} from 'react';
 import {Calendar, ChevronDown, MapPin} from 'react-native-feather';
@@ -34,7 +35,7 @@ const MovieDetail = ({idMovie}) => {
   const dispatch = useDispatch();
 
   //FETCHING MOVIE ID
-  const [movieId, setMovieId] = React.useState({});
+  const [movieId, setMovieId] = React.useState(null);
   const fetchMovieId = async () => {
     try {
       const response = await http().get(`/movies/${getId}`);
@@ -134,9 +135,11 @@ const MovieDetail = ({idMovie}) => {
     }
   };
 
+  console.log(movieId);
   return (
     <ScrollView>
       <Navbar />
+
       <VStack alignItems="center" justifyContent="center">
         <Box
           p="5"
@@ -144,72 +147,98 @@ const MovieDetail = ({idMovie}) => {
           borderRadius="10"
           borderColor="#DEDEDE"
           marginY="5">
-          <Image
-            source={{uri: movieId?.picture}}
-            alt="picture"
-            width="200"
-            height="300"
-            resizeMode="cover"
-            borderRadius="10"
-          />
+          {movieId ? (
+            <Image
+              source={{uri: movieId?.picture}}
+              alt="picture"
+              width="200"
+              height="300"
+              resizeMode="cover"
+              borderRadius="10"
+            />
+          ) : (
+            <>
+              <Skeleton h="100" startColor="#F5D5AE" />
+              <Skeleton.Text px="4" startColor="#F5D5AE" />
+              <Skeleton my="4" rounded="md" startColor="#F5D5AE" />
+            </>
+          )}
         </Box>
         {/* DETAILS MOVIE */}
         <VStack space="2">
-          <Text fontSize="2xl" fontWeight="bold" textAlign="center">
-            {movieId?.title}
-          </Text>
-          <Text fontWeight="normal" color="#4E4B66" textAlign="center">
-            {movieId?.genre}
-          </Text>
+          {movieId ? (
+            <Text fontSize="2xl" fontWeight="bold" textAlign="center">
+              {movieId?.title}
+            </Text>
+          ) : (
+            <>
+              <Skeleton.Text px="4" startColor="#F5D5AE" />
+            </>
+          )}
+          {movieId ? (
+            <Text fontWeight="normal" color="#4E4B66" textAlign="center">
+              {movieId?.genre}
+            </Text>
+          ) : (
+            <Skeleton.Text px="4" startColor="#F5D5AE" />
+          )}
         </VStack>
       </VStack>
-      <VStack px="3">
-        <HStack justifyContent="space-between" py="8">
-          <VStack space="5">
-            <VStack space="2">
-              <Text fontWeight="normal" color="#4E4B66">
-                Relase date
-              </Text>
-              <Text fontWeight="600" flexWrap="wrap" fontSize="lg">
-                {month} {newDate}, {year}
-              </Text>
+      {movieId ? (
+        <VStack px="3">
+          <HStack justifyContent="space-between" py="8">
+            <VStack space="5">
+              <VStack space="2">
+                <Text fontWeight="normal" color="#4E4B66">
+                  Relase date
+                </Text>
+                <Text fontWeight="600" flexWrap="wrap" fontSize="lg">
+                  {month} {newDate}, {year}
+                </Text>
+              </VStack>
+              <VStack space="2">
+                <Text fontWeight="normal" color="#4E4B66">
+                  Duration
+                </Text>
+                <Text fontWeight="600" fontSize="lg" flexWrap="wrap">
+                  {Hour} Hours {Minute} Minutes
+                </Text>
+              </VStack>
             </VStack>
-            <VStack space="2">
-              <Text fontWeight="normal" color="#4E4B66">
-                Duration
-              </Text>
-              <Text fontWeight="600" fontSize="lg" flexWrap="wrap">
-                {Hour} Hours {Minute} Minutes
-              </Text>
+            <VStack space="5" width="50%">
+              <VStack space="2">
+                <Text fontWeight="normal" color="#4E4B66">
+                  Directed by
+                </Text>
+                <Text fontWeight="600" fontSize="lg" flexWrap="wrap">
+                  {movieId?.director}
+                </Text>
+              </VStack>
+              <VStack space="2">
+                <Text fontWeight="normal" color="#4E4B66">
+                  Casts
+                </Text>
+                <Text fontWeight="600" fontSize="lg" flexWrap="wrap">
+                  {movieId?.casts}
+                </Text>
+              </VStack>
             </VStack>
+          </HStack>
+          <Box borderBottomWidth="1" borderColor="#D6D8E7"></Box>
+          <VStack space="3" py="8">
+            <Text fontWeight="bold" fontSize="lg">
+              Synopsis
+            </Text>
+            <Text color="#4E4B66">{movieId?.synopsis}</Text>
           </VStack>
-          <VStack space="5" width="50%">
-            <VStack space="2">
-              <Text fontWeight="normal" color="#4E4B66">
-                Directed by
-              </Text>
-              <Text fontWeight="600" fontSize="lg" flexWrap="wrap">
-                {movieId?.director}
-              </Text>
-            </VStack>
-            <VStack space="2">
-              <Text fontWeight="normal" color="#4E4B66">
-                Casts
-              </Text>
-              <Text fontWeight="600" fontSize="lg" flexWrap="wrap">
-                {movieId?.casts}
-              </Text>
-            </VStack>
-          </VStack>
-        </HStack>
-        <Box borderBottomWidth="1" borderColor="#D6D8E7"></Box>
-        <VStack space="3" py="8">
-          <Text fontWeight="bold" fontSize="lg">
-            Synopsis
-          </Text>
-          <Text color="#4E4B66">{movieId?.synopsis}</Text>
         </VStack>
-      </VStack>
+      ) : (
+        <>
+          <Skeleton h="100" startColor="#F5D5AE" />
+          <Skeleton.Text px="4" startColor="#F5D5AE" />
+          <Skeleton my="4" rounded="md" startColor="#F5D5AE" />
+        </>
+      )}
       {/* Showtimes and Tickets */}
       <VStack bg="#F5F6F8" px="3" py="5" space="4" alignItems="center">
         <Text textAlign="center" fontWeight="bold" fontSize="2xl">

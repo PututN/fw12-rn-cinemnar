@@ -17,6 +17,7 @@ import {
   NativeBaseProvider,
   Box,
   Pressable,
+  Skeleton,
 } from 'native-base';
 import Footer from '../components/Footer';
 import NavbarAdmin from '../components/NavbarAdmin';
@@ -119,6 +120,7 @@ const Home = () => {
       {/* <NavbarAdmin /> */}
       {/* <NavbarBeforeLogin /> */}
       {/* TOP SECTION */}
+
       <VStack my="30" justifyContent="center" space="5" px="5">
         <Text fontSize="lg">Nearest Cinema, Newest Movie,</Text>
         <Text fontSize="5xl" color="#EF9A53">
@@ -132,85 +134,111 @@ const Home = () => {
         />
       </VStack>
       {/* NOW SHOWING */}
-      <VStack bg="#EF9A53">
-        <HStack
-          px="5"
-          py="10"
-          justifyContent="space-between"
-          alignItems="center">
-          <Text fontSize="2xl" fontWeight="bold" color="black">
-            Now Showing
-          </Text>
-          <Pressable
-            onPress={() => navigation.navigate('ViewAll')}
-            fontSize="lg"
-            color="white">
-            <Text fontSize="lg" color="black" textDecorationLine="underline">
-              View All
-            </Text>
-          </Pressable>
-        </HStack>
-        <HStack px="5" py="5">
-          <ScrollView horizontal height={focus ? '380px' : 'auto'}>
-            <HStack space="3">
-              {nowShowing.map(data => (
-                <Pressable key={data.id} onPress={() => toggleFocus(data.id)}>
-                  <Box
-                    p="2"
-                    borderWidth="1"
-                    bg={focus === data.id ? 'white' : 'transparent'}
-                    borderColor={focus === data.id ? '#dedede' : 'white'}
-                    borderRadius="10"
-                    width="200"
-                    height="300"
-                    alignItems="center">
-                    <Image
-                      source={{uri: data.picture}}
-                      alt={data.title}
-                      width="160px"
-                      height="250px"
-                      borderRadius="10"
-                    />
-                    <Box position="relative" mb="5">
-                      {' '}
-                      {focus === data.id && (
-                        <VStack
-                          bg="white"
-                          width="110%"
-                          position="absolute"
-                          ml="-2"
-                          p="4"
-                          right="-98"
-                          space="1"
-                          mb="5"
-                          alignItems="center">
-                          <Text
-                            fontSize="lg"
-                            fontWeight="bold"
-                            textAlign="center">
-                            {data.title}
-                          </Text>
-                          <Text textAlign="center">{data.genre}</Text>
-                          <Button
-                            bgColor="#C539B4"
-                            width="50%"
-                            onPress={() =>
-                              navigation.navigate('MovieDetail', {idMovie: data.id})
-                            }>
-                            <Text fontSize="lg" fontWeight="bold" color="white">
-                              Details
-                            </Text>
-                          </Button>
-                        </VStack>
-                      )}
-                    </Box>
-                  </Box>
-                </Pressable>
-              ))}
+      {nowShowing[0] ? (
+        nowShowing[0].picture ? (
+          <VStack bg="#EF9A53">
+            <HStack
+              px="5"
+              py="10"
+              justifyContent="space-between"
+              alignItems="center">
+              <Text fontSize="2xl" fontWeight="bold" color="black">
+                Now Showing
+              </Text>
+              <Pressable
+                onPress={() => navigation.navigate('ViewAll')}
+                fontSize="lg"
+                color="white">
+                <Text
+                  fontSize="lg"
+                  color="black"
+                  textDecorationLine="underline">
+                  View All
+                </Text>
+              </Pressable>
             </HStack>
-          </ScrollView>
-        </HStack>
-      </VStack>
+            <HStack px="5" py="5">
+              <ScrollView horizontal height={focus ? '380px' : 'auto'}>
+                <HStack space="3">
+                  {nowShowing.map(data => (
+                    <Pressable
+                      key={data.id}
+                      onPress={() => toggleFocus(data.id)}>
+                      <Box
+                        p="2"
+                        borderWidth="1"
+                        bg={focus === data.id ? 'white' : 'transparent'}
+                        borderColor={focus === data.id ? '#dedede' : 'white'}
+                        borderRadius="10"
+                        width="200"
+                        height="300"
+                        alignItems="center">
+                        <Image
+                          source={{uri: data.picture}}
+                          alt={data.title}
+                          width="160px"
+                          height="250px"
+                          borderRadius="10"
+                        />
+                        <Box position="relative" mb="5">
+                          {' '}
+                          {focus === data.id && (
+                            <VStack
+                              bg="white"
+                              width="110%"
+                              position="absolute"
+                              ml="-2"
+                              p="4"
+                              right="-98"
+                              space="1"
+                              mb="5"
+                              alignItems="center">
+                              <Text
+                                fontSize="lg"
+                                fontWeight="bold"
+                                textAlign="center">
+                                {data.title}
+                              </Text>
+                              <Text textAlign="center">{data.genre}</Text>
+                              <Button
+                                bgColor="#C539B4"
+                                width="50%"
+                                onPress={() =>
+                                  navigation.navigate('MovieDetail', {
+                                    idMovie: data.id,
+                                  })
+                                }>
+                                <Text
+                                  fontSize="lg"
+                                  fontWeight="bold"
+                                  color="white">
+                                  Details
+                                </Text>
+                              </Button>
+                            </VStack>
+                          )}
+                        </Box>
+                      </Box>
+                    </Pressable>
+                  ))}
+                </HStack>
+              </ScrollView>
+            </HStack>
+          </VStack>
+        ) : (
+          <>
+            <Skeleton h="100" startColor="orange.200" />
+            <Skeleton.Text px="4" startColor="orange.200" />
+            <Skeleton my="4" rounded="md" startColor="orange.200" />
+          </>
+        )
+      ) : (
+        <>
+          <Skeleton h="100" startColor="orange.200" />
+          <Skeleton.Text px="4" startColor="orange.200" />
+          <Skeleton my="4" rounded="md" startColor="orange.200" />
+        </>
+      )}
       {/* UPCOMING MOVIE */}
       <HStack justifyContent="space-between" p="5">
         <Text fontSize="2xl" fontWeight="bold">
@@ -244,72 +272,88 @@ const Home = () => {
         </ScrollView>
       </HStack> */}
       {/* MOVIE UPCOMING */}
-      <HStack p="5">
-        <ScrollView horizontal>
-          {upComing.map(data => (
-            <View
-              key={data.id}
-              style={{
-                // flexDirection: 'row',
-                justifyContent: 'center',
-                alignContent: 'center',
-                // marginTop: 20,
-                borderColor: 'black',
-                borderStyle: 'solid',
-                borderWidth: 1,
-                borderRadius: 10,
-                marginRight: 20,
-                paddingVertical: 15,
-              }}>
-              <VStack
-                space="5"
-                justifyContent="center"
-                width="200"
-                style={{
-                  alignItems: 'center',
-                  paddingHorizontal: 20,
-                  paddingVertical: 10,
-                }}>
-                <Image
-                  source={{uri: data.picture}}
-                  alt={data.title}
-                  width="160px"
-                  height="250px"
-                  borderRadius="10"
-                />
-                <VStack
-                  space="3"
+      {upComing[0] ? (
+        upComing[0].picture ? (
+          <HStack p="5">
+            <ScrollView horizontal>
+              {upComing.map(data => (
+                <View
+                  key={data.id}
                   style={{
-                    alignContent: 'center',
-                    alignItems: 'center',
+                    // flexDirection: 'row',
                     justifyContent: 'center',
+                    alignContent: 'center',
+                    // marginTop: 20,
+                    borderColor: 'black',
+                    borderStyle: 'solid',
+                    borderWidth: 1,
+                    borderRadius: 10,
+                    marginRight: 20,
+                    paddingVertical: 15,
                   }}>
-                  <Text
-                    textAlign="center"
+                  <VStack
+                    space="5"
+                    justifyContent="center"
+                    width="200"
                     style={{
-                      fontSize: 20,
-                      fontWeight: 'bold',
+                      alignItems: 'center',
+                      paddingHorizontal: 20,
+                      paddingVertical: 10,
                     }}>
-                    {data.title}
-                  </Text>
-                  <View>
-                    <Text textAlign="center">{data.genre}</Text>
-                  </View>
-                </VStack>
-                <Button
-                  bgColor="#C539B4"
-                  onPress={() =>
-                    navigation.navigate('MovieDetail', {idMovie: data.id})
-                  }>
-                  <Text fontSize="lg" fontWeight="bold" color="white">
-                    Details
-                  </Text>
-                </Button>
-              </VStack>
-            </View>
-          ))}
-        </ScrollView>
-      </HStack>
+                    <Image
+                      source={{uri: data.picture}}
+                      alt={data.title}
+                      width="160px"
+                      height="250px"
+                      borderRadius="10"
+                    />
+                    <VStack
+                      space="3"
+                      style={{
+                        alignContent: 'center',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                      <Text
+                        textAlign="center"
+                        style={{
+                          fontSize: 20,
+                          fontWeight: 'bold',
+                        }}>
+                        {data.title}
+                      </Text>
+                      <View>
+                        <Text textAlign="center">{data.genre}</Text>
+                      </View>
+                    </VStack>
+                    <Button
+                      bgColor="#C539B4"
+                      onPress={() =>
+                        navigation.navigate('MovieDetail', {idMovie: data.id})
+                      }>
+                      <Text fontSize="lg" fontWeight="bold" color="white">
+                        Details
+                      </Text>
+                    </Button>
+                  </VStack>
+                </View>
+              ))}
+            </ScrollView>
+          </HStack>
+        ) : (
+          <>
+            <Skeleton h="100" startColor="grey.400" />
+            <Skeleton.Text px="4" startColor="grey.400" />
+            <Skeleton my="4" rounded="md" startColor="grey.400" />
+          </>
+        )
+      ) : (
+        <>
+          <Skeleton h="100" startColor="grey.400" />
+          <Skeleton.Text px="4" startColor="grey.400" />
+          <Skeleton my="4" rounded="md" startColor="grey.400" />
+        </>
+      )}
       {/* MOVIEGOERS */}
       <NativeBaseProvider>
         <View
