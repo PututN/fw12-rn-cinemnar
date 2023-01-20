@@ -1,4 +1,6 @@
 import axios from 'axios';
+import {BASE_URL_BACKEND} from '@env'
+
 
 const http = token => {
   const headers = {};
@@ -10,7 +12,7 @@ const http = token => {
   const instance = axios.create({
     // baseURL: 'http://localhost:8888',
     // baseURL: 'http://192.168.1.37:8888',
-    baseURL: 'https://dull-kilt-crab.cyclic.app',
+    baseURL: BASE_URL_BACKEND,
     headers,
   });
   return instance;
