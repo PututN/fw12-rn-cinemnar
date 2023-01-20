@@ -149,8 +149,11 @@ const Payment = () => {
         navigation.reset({
           routes: [
             {
+              name: 'Home',
+            },
+
+            {
               name: 'History',
-              params: {someParam: 'Param1'},
             },
           ],
         });

@@ -120,7 +120,6 @@ const Home = () => {
       {/* <NavbarAdmin /> */}
       {/* <NavbarBeforeLogin /> */}
       {/* TOP SECTION */}
-
       <VStack my="30" justifyContent="center" space="5" px="5">
         <Text fontSize="lg">Nearest Cinema, Newest Movie,</Text>
         <Text fontSize="5xl" color="#EF9A53">
@@ -273,87 +272,80 @@ const Home = () => {
       </HStack> */}
       {/* MOVIE UPCOMING */}
       {upComing[0] ? (
-        upComing[0].picture ? (
-          <HStack p="5">
-            <ScrollView horizontal>
-              {upComing.map(data => (
-                <View
-                  key={data.id}
+        <HStack p="5">
+          <ScrollView horizontal>
+            {upComing.map(data => (
+              <View
+                key={data.id}
+                style={{
+                  // flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignContent: 'center',
+                  // marginTop: 20,
+                  borderColor: 'black',
+                  borderStyle: 'solid',
+                  borderWidth: 1,
+                  borderRadius: 10,
+                  marginRight: 20,
+                  paddingVertical: 15,
+                }}>
+                <VStack
+                  space="5"
+                  justifyContent="center"
+                  width="200"
                   style={{
-                    // flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignContent: 'center',
-                    // marginTop: 20,
-                    borderColor: 'black',
-                    borderStyle: 'solid',
-                    borderWidth: 1,
-                    borderRadius: 10,
-                    marginRight: 20,
-                    paddingVertical: 15,
+                    alignItems: 'center',
+                    paddingHorizontal: 20,
+                    paddingVertical: 10,
                   }}>
+                  <Image
+                    source={{uri: data.picture}}
+                    alt={data.title}
+                    width="160px"
+                    height="250px"
+                    borderRadius="10"
+                  />
                   <VStack
-                    space="5"
-                    justifyContent="center"
-                    width="200"
+                    space="3"
                     style={{
+                      alignContent: 'center',
                       alignItems: 'center',
-                      paddingHorizontal: 20,
-                      paddingVertical: 10,
+                      justifyContent: 'center',
                     }}>
-                    <Image
-                      source={{uri: data.picture}}
-                      alt={data.title}
-                      width="160px"
-                      height="250px"
-                      borderRadius="10"
-                    />
-                    <VStack
-                      space="3"
+                    <Text
+                      textAlign="center"
                       style={{
-                        alignContent: 'center',
-                        alignItems: 'center',
-                        justifyContent: 'center',
+                        fontSize: 20,
+                        fontWeight: 'bold',
                       }}>
-                      <Text
-                        textAlign="center"
-                        style={{
-                          fontSize: 20,
-                          fontWeight: 'bold',
-                        }}>
-                        {data.title}
-                      </Text>
-                      <View>
-                        <Text textAlign="center">{data.genre}</Text>
-                      </View>
-                    </VStack>
-                    <Button
-                      bgColor="#C539B4"
-                      onPress={() =>
-                        navigation.navigate('MovieDetail', {idMovie: data.id})
-                      }>
-                      <Text fontSize="lg" fontWeight="bold" color="white">
-                        Details
-                      </Text>
-                    </Button>
+                      {data.title}
+                    </Text>
+                    <View>
+                      <Text textAlign="center">{data.genre}</Text>
+                    </View>
                   </VStack>
-                </View>
-              ))}
-            </ScrollView>
-          </HStack>
-        ) : (
-          <>
-            <Skeleton h="100" startColor="grey.400" />
-            <Skeleton.Text px="4" startColor="grey.400" />
-            <Skeleton my="4" rounded="md" startColor="grey.400" />
-          </>
-        )
+                  <Button
+                    bgColor="#C539B4"
+                    onPress={() =>
+                      navigation.navigate('MovieDetail', {idMovie: data.id})
+                    }>
+                    <Text fontSize="lg" fontWeight="bold" color="white">
+                      Details
+                    </Text>
+                  </Button>
+                </VStack>
+              </View>
+            ))}
+          </ScrollView>
+        </HStack>
       ) : (
-        <>
-          <Skeleton h="100" startColor="grey.400" />
-          <Skeleton.Text px="4" startColor="grey.400" />
-          <Skeleton my="4" rounded="md" startColor="grey.400" />
-        </>
+        <VStack>
+          <Skeleton h="100" startColor="#F5D5AE" />
+          <Skeleton.Text px="4" startColor="#F5D5AE" />
+          <Skeleton my="4" rounded="md" startColor="#F5D5AE" />
+        </VStack>
       )}
+
       {/* MOVIEGOERS */}
       <NativeBaseProvider>
         <View
