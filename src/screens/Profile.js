@@ -10,6 +10,7 @@ import {
   Pressable,
   ScrollView,
   useToken,
+  Skeleton,
 } from 'native-base';
 import {Edit2} from 'react-native-feather';
 import React, {useEffect, useState} from 'react';
@@ -110,7 +111,7 @@ const Profile = () => {
     try {
       setLoadingPassword(true);
       setMessageLoadingPassword('Submitting...');
-      const {password, confirmPassword} = values;
+      const {password} = values;
       const response = await http(token).patch('/profile/updated', {
         password,
       });
@@ -171,6 +172,7 @@ const Profile = () => {
             setMessageUpload(false);
             fetchProfile();
             setPreview({});
+            setToggle(false);
           }, 3000);
         } else {
           setMessageErrorFileSize('Please choose photo less than 5 MB');
@@ -223,34 +225,44 @@ const Profile = () => {
             INFO
           </Text>
           <VStack alignItems="center" space="3" position="relative">
-            <Box shadow="9">
-              {profile?.picture ? (
-                <Image
-                  source={{uri: profile?.picture}}
-                  alt="profile"
-                  width="100"
-                  height="100"
-                  borderRadius="full"
-                  shadow="9"
-                />
-              ) : (
-                <Image
-                  source={user}
-                  alt="profile"
-                  width="100"
-                  height="100"
-                  borderRadius="full"
-                  shadow="9"
-                />
-              )}
-              <Pressable
-                onPress={() => setToggle(!toggle)}
-                left="90"
-                position="absolute"
-                bottom="0">
-                <Edit2 color="black" />
-              </Pressable>
-            </Box>
+            {profile?.picture ? (
+              <Box shadow="9">
+                {profile?.picture ? (
+                  <Image
+                    source={{uri: profile?.picture}}
+                    alt="profile"
+                    width="100"
+                    height="100"
+                    borderRadius="full"
+                    shadow="9"
+                  />
+                ) : (
+                  <Image
+                    source={user}
+                    alt="profile"
+                    width="100"
+                    height="100"
+                    borderRadius="full"
+                    shadow="9"
+                  />
+                )}
+                <Pressable
+                  onPress={() => setToggle(!toggle)}
+                  left="90"
+                  position="absolute"
+                  bottom="0">
+                  <Edit2 color="black" />
+                </Pressable>
+              </Box>
+            ) : (
+              <Skeleton
+                h="100"
+                borderRadius="full"
+                width="100"
+                startColor="#F5D5AE"
+              />
+            )}
+
             {preview.uri && (
               <Image
                 source={{uri: preview.uri}}
@@ -331,40 +343,48 @@ const Profile = () => {
         <Text fontSize="2xl" fontWeight="bold">
           Account Settings
         </Text>
-        <VStack bg="white" p="5" borderRadius="10" space="5">
-          <VStack space="2">
-            <Text fontSize="lg">Details Information</Text>
-            <Box borderWidth="1" borderColor="#DEDEDE"></Box>
-          </VStack>
-          <VStack space="2">
-            <Text fontSize="lg">Full Name</Text>
-            <Input
-              onChangeText={value => setFullName(value)}
-              onFocus={() => setSuccessMessage('')}
-              defaultValue={`${profile?.firstName} ${profile?.lastName}`}
-              borderColor="black"
-              borderRadius="10"></Input>
-          </VStack>
-          <VStack space="2">
-            <Text fontSize="lg">E-mail</Text>
-            <Input
-              onChangeText={value => setEmail(value)}
-              onFocus={() => setSuccessMessage('')}
-              defaultValue={profile?.email}
-              borderColor="black"
-              borderRadius="10"></Input>
-          </VStack>
-          <VStack space="2">
-            <Text fontSize="lg">Phone Number</Text>
+        {profile.picture ? (
+          <VStack bg="white" p="5" borderRadius="10" space="5">
+            <VStack space="2">
+              <Text fontSize="lg">Details Information</Text>
+              <Box borderWidth="1" borderColor="#DEDEDE"></Box>
+            </VStack>
+            <VStack space="2">
+              <Text fontSize="lg">Full Name</Text>
+              <Input
+                onChangeText={value => setFullName(value)}
+                onFocus={() => setSuccessMessage('')}
+                defaultValue={`${profile?.firstName} ${profile?.lastName}`}
+                borderColor="black"
+                borderRadius="10"></Input>
+            </VStack>
+            <VStack space="2">
+              <Text fontSize="lg">E-mail</Text>
+              <Input
+                onChangeText={value => setEmail(value)}
+                onFocus={() => setSuccessMessage('')}
+                defaultValue={profile?.email}
+                borderColor="black"
+                borderRadius="10"></Input>
+            </VStack>
+            <VStack space="2">
+              <Text fontSize="lg">Phone Number</Text>
 
-            <Input
-              defaultValue={profile.phoneNumber}
-              onChangeText={value => setPhoneNumber(value)}
-              onFocus={() => setSuccessMessage('')}
-              borderColor="black"
-              borderRadius="10"></Input>
+              <Input
+                defaultValue={profile.phoneNumber}
+                onChangeText={value => setPhoneNumber(value)}
+                onFocus={() => setSuccessMessage('')}
+                borderColor="black"
+                borderRadius="10"></Input>
+            </VStack>
           </VStack>
-        </VStack>
+        ) : (
+          <VStack>
+            <Skeleton h="100" startColor="#F5D5AE" />
+            <Skeleton.Text px="4" startColor="#F5D5AE" />
+            <Skeleton my="4" rounded="md" startColor="#F5D5AE" />
+          </VStack>
+        )}
         {successMessage && (
           <Text color="green.500" textAlign="center" fontSize="lg">
             {successMessage}

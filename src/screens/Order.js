@@ -8,6 +8,7 @@ import {
   Image,
   Button,
   ScrollView,
+  Skeleton
 } from 'native-base';
 import React, {Component} from 'react';
 import Navbar from '../components/Navbar';
