@@ -42,7 +42,6 @@ const TicketResult = ({idTicket}) => {
       fetchTicket();
     }
   }, [token]);
-  // console.log(ticket);
 
   //set Date
   const date = moment(ticket.bookingDate)

@@ -16,6 +16,7 @@ import React, {Component} from 'react';
 import {AlertTriangle} from 'react-native-feather';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
+import PushNotification from 'react-native-push-notification';
 
 import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
@@ -143,6 +144,11 @@ const Payment = () => {
         time,
         totalPrice,
       });
+      PushNotification.localNotification({
+        channelId : 'global_notif',
+        title: 'Success!',
+        message: 'Your seat has been reserved, we wait for you!'
+      })
       setSuccessMessage('Payment Success');
       setTimeout(() => {
         setSuccessMessage(false);

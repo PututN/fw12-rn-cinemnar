@@ -55,7 +55,6 @@ const ForgotPassword = () => {
         setSuccess(false);
         navigation.navigate('ResetPassword');
       }, 3000);
-      console.log(data);
       return data.result;
     } catch (error) {
       setFailed(error.response.data.message);

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "693913266943",
+    "project_id": "cinemnar-4b66d",
+    "storage_bucket": "cinemnar-4b66d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:693913266943:android:1647fd534f9693ff943aca",
+        "android_client_info": {
+          "package_name": "com.cinemnar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "693913266943-0l358ssga8g3fm54ch6rhgnaha712te7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpHLg_M4Z7X9HLgz6V5gl3nG-9lw1BSUk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "693913266943-0l358ssga8g3fm54ch6rhgnaha712te7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

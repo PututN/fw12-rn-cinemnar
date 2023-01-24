@@ -34,7 +34,6 @@ const authReducer = createSlice({
       state.loading = true;
     });
     build.addCase(loginAction.fulfilled, (state, action) => {
-      // console.log(action)
       state.token = action.payload.token;
       state.loading = false;
       state.error = null;
@@ -50,7 +49,6 @@ const authReducer = createSlice({
       state.loading = true;
     });
     build.addCase(registerAction.fulfilled, (state, action) => {
-      // console.log(action)
       state.token = action.payload.token;
       state.loading = false;
       state.error = null;
@@ -79,7 +77,6 @@ const authReducer = createSlice({
       state.loading = true;
     });
     build.addCase(ResetPasswordAction.fulfilled, (state, action) => {
-      console.log(action);
       state.loading = false;
       state.error = null;
       state.message = action.payload;

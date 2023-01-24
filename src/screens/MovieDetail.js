@@ -135,7 +135,6 @@ const MovieDetail = ({idMovie}) => {
     }
   };
 
-  console.log(movieId);
   return (
     <ScrollView>
       <Navbar />

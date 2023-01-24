@@ -39,8 +39,6 @@ const History = () => {
     }
   }, [token]);
 
-  console.log(history);
-  //set booking date
   return (
     <ScrollView>
       <Navbar />

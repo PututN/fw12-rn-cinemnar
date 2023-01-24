@@ -58,7 +58,6 @@ const SignUp = () => {
       }, 3000);
     }
   }, [err]);
-  // console.log(err)
   const [showPassword, setShowPassword] = React.useState(false);
   const {
     control,
