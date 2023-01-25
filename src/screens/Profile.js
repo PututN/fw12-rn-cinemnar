@@ -225,8 +225,7 @@ const Profile = () => {
             INFO
           </Text>
           <VStack alignItems="center" space="3" position="relative">
-            {profile?.picture ? (
-              <Box shadow="9">
+          <Box shadow="9">
                 {profile?.picture ? (
                   <Image
                     source={{uri: profile?.picture}}
@@ -254,14 +253,6 @@ const Profile = () => {
                   <Edit2 color="black" />
                 </Pressable>
               </Box>
-            ) : (
-              <Skeleton
-                h="100"
-                borderRadius="full"
-                width="100"
-                startColor="#F5D5AE"
-              />
-            )}
 
             {preview.uri && (
               <Image
@@ -343,8 +334,7 @@ const Profile = () => {
         <Text fontSize="2xl" fontWeight="bold">
           Account Settings
         </Text>
-        {profile.picture ? (
-          <VStack bg="white" p="5" borderRadius="10" space="5">
+        <VStack bg="white" p="5" borderRadius="10" space="5">
             <VStack space="2">
               <Text fontSize="lg">Details Information</Text>
               <Box borderWidth="1" borderColor="#DEDEDE"></Box>
@@ -378,13 +368,7 @@ const Profile = () => {
                 borderRadius="10"></Input>
             </VStack>
           </VStack>
-        ) : (
-          <VStack>
-            <Skeleton h="100" startColor="#F5D5AE" />
-            <Skeleton.Text px="4" startColor="#F5D5AE" />
-            <Skeleton my="4" rounded="md" startColor="#F5D5AE" />
-          </VStack>
-        )}
+
         {successMessage && (
           <Text color="green.500" textAlign="center" fontSize="lg">
             {successMessage}
