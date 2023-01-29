@@ -13,7 +13,7 @@
 - [Technologies](#technologies)
 
 ## Description
-**Cinemanar App** is a movie ticket booking application. Here, users can select movies, schedules, select seats, and make payments.
+**Cinemnar App** is a movie ticket booking application. Here, users can select movies, schedules, select seats, and make payments.
 
 ## Preview
   <div>
