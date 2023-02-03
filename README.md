@@ -1,6 +1,6 @@
 <div align="center">
   <br>
-  <h1><strong>Cinemnar App</strong></h1>
+  <h1><strong>Cinemnar Mobile App</strong></h1>
   <p>Movie ticket booking app</p>
   <br>
 
